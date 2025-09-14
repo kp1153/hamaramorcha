@@ -1,103 +1,89 @@
+import React from "react";
+import { getAllPosts, urlFor } from "@/lib/sanity";
+import Link from "next/link";
 import Image from "next/image";
 
-export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+export const dynamic = "force-dynamic";
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+export default async function Page() {
+  const posts = await getAllPosts();
+
+  const getCategoryRoute = (categorySlug) => {
+    return categorySlug;
+  };
+
+  return (
+    <div className="max-w-6xl mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-6">ताज़ा खबरें</h1>
+
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {posts.map((post) => (
+          <div
+            key={post._id}
+            className="bg-white shadow-md rounded-lg overflow-hidden border hover:shadow-lg transition-shadow"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+            {post.mainImage && (
+              <div className="relative w-full h-48">
+                <Image
+                  src={urlFor(post.mainImage).width(600).height(400).url()}
+                  alt={post.mainImage.alt || post.title}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            )}
+
+            <div className="p-4">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full font-medium">
+                  {post.category.name}
+                </span>
+                <span className="text-xs text-gray-500">
+                  {new Date(post.publishedAt).toLocaleDateString("hi-IN")}
+                </span>
+              </div>
+
+              <h2 className="text-xl font-semibold mb-3 line-clamp-2 leading-tight">
+                {post.title}
+              </h2>
+
+              <p className="text-gray-700 text-sm line-clamp-3 mb-4 leading-relaxed">
+                {post.content && Array.isArray(post.content)
+                  ? post.content
+                      .map(
+                        (block) =>
+                          block.children?.map((child) => child.text).join("") ||
+                          ""
+                      )
+                      .join(" ")
+                      .slice(0, 150)
+                  : ""}
+                ...
+              </p>
+
+              <Link
+                href={`/${getCategoryRoute(post.category.slug.current)}/${post.slug.current}`}
+                className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm hover:underline transition-colors"
+              >
+                और पढ़ें
+                <svg
+                  className="w-4 h-4 ml-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </Link>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
