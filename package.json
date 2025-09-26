@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "build": "next build",
     "start": "next start",
     "lint": "eslint"
   },
@@ -13,6 +13,7 @@
     "@sanity/client": "^7.11.1",
     "@sanity/image-url": "^1.2.0",
     "@sanity/vision": "^4.8.1",
+    "lucide-react": "^0.544.0",
     "next": "15.5.3",
     "next-sanity": "^10.1.4",
     "react": "19.1.0",
@@ -25,6 +26,7 @@
     "@tailwindcss/postcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "15.5.3",
-    "tailwindcss": "^4"
+    "tailwindcss": "^4",
+    "vercel": "^48.0.0"
   }
 }

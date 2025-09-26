@@ -5,16 +5,7 @@ const Footer = () => {
     <footer className="w-full border-t border-gray-200 bg-white mt-8">
       <div className="max-w-5xl mx-auto px-4 py-6 text-center">
         {/* Search */}
-        <div className="mb-6">
-          <div className="flex justify-center items-center gap-2">
-            <span className="text-sm font-medium text-blue-600">खोजें:</span>
-            <input
-              type="text"
-              placeholder="यहाँ टाइप करें..."
-              className="max-w-xs border border-gray-300 px-3 py-2 text-sm rounded focus:outline-none focus:ring-1 focus:ring-blue-400"
-            />
-          </div>
-        </div>
+    
 
         {/* Developer Promotion */}
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-4 mb-6">

@@ -1,3 +1,4 @@
+// app/layout.js
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
@@ -14,18 +15,40 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "हमारा मोर्चा - समाचार पोर्टल",
-  description: "भारत की आवाज़, सच्ची खबरें",
+  title: "हुजूर यह रही आपकी खबर, क्लिक कीजिए",
+  description: "दिगंत-अद्वय की युवा टीम द्वारा संचालित",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="hi">
+      <head>
+        {/* Google Analytics */}
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'GA_MEASUREMENT_ID');
+            `,
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
+        {/* Header */}
         <Navbar />
+
+        {/* Main content */}
         <main className="flex-grow">{children}</main>
+
+        {/* Footer */}
         <Footer />
       </body>
     </html>
