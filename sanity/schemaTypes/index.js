@@ -26,7 +26,7 @@ export const schema = {
                 "देश-विदेश": "desh-videsh",
                 "इंडस्ट्रियल-एरिया": "industrial-area",
                 "जीवन के रंग": "jeevan-ke-rang",
-                "प्रतिरोध": "pratirodh",
+                प्रतिरोध: "pratirodh",
                 "कला-साहित्य": "kala-sahitya",
                 "कृषि-मवेशी": "krishi-maveshi",
               };
@@ -119,11 +119,6 @@ export const schema = {
           },
           fields: [
             {
-              name: "alt",
-              title: "Alt Text (वैकल्पिक पाठ)",
-              type: "string",
-            },
-            {
               name: "caption",
               title: "कैप्शन",
               type: "string",
@@ -146,22 +141,6 @@ export const schema = {
           to: [{ type: "category" }],
           validation: (Rule) =>
             Rule.required().error("श्रेणी का चुनाव आवश्यक है"),
-        },
-        {
-          name: "featured",
-          title: "मुख्य समाचार",
-          type: "boolean",
-          description: "क्या यह मुख्य समाचार है?",
-          initialValue: false,
-        },
-        {
-          name: "tags",
-          title: "टैग",
-          type: "array",
-          of: [{ type: "string" }],
-          options: {
-            layout: "tags",
-          },
         },
         {
           name: "views",
@@ -263,12 +242,6 @@ export const schema = {
             hotspot: true,
           },
           fields: [
-            {
-              name: "alt",
-              title: "Alt Text",
-              type: "string",
-              description: "तस्वीर का विवरण",
-            },
             {
               name: "caption",
               title: "कैप्शन",
