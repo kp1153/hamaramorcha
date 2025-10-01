@@ -26,7 +26,7 @@ export const schema = {
                 "देश-विदेश": "desh-videsh",
                 "इंडस्ट्रियल-एरिया": "industrial-area",
                 "जीवन के रंग": "jeevan-ke-rang",
-                प्रतिरोध: "pratirodh",
+                "प्रतिरोध": "pratirodh",
                 "कला-साहित्य": "kala-sahitya",
                 "कृषि-मवेशी": "krishi-maveshi",
               };
@@ -101,14 +101,6 @@ export const schema = {
           title: "सामग्री",
           type: "blockContent",
           validation: (Rule) => Rule.required().error("सामग्री आवश्यक है"),
-        },
-        {
-          name: "excerpt",
-          title: "संक्षिप्त विवरण",
-          type: "text",
-          rows: 3,
-          description:
-            "खबर का छोटा सार (वैकल्पिक - अगर नहीं दिया तो सामग्री से अपने आप बनेगा)",
         },
         {
           name: "mainImage",
