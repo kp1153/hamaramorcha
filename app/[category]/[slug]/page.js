@@ -4,9 +4,7 @@ import Link from "next/link";
 import { getPostBySlugAndCategory, urlFor } from "@/lib/sanity";
 import { PortableText } from "@portabletext/react";
 import ViewsCounter from "@/components/ViewsCounter";
-
 export const dynamic = "force-dynamic";
-
 // Category display names mapping
 const getCategoryDisplayName = (route) => {
   const displayNames = {
@@ -19,7 +17,6 @@ const getCategoryDisplayName = (route) => {
   };
   return displayNames[route] || route;
 };
-
 // Custom components for PortableText
 const portableTextComponents = {
   block: {
@@ -96,13 +93,10 @@ const portableTextComponents = {
     ),
   },
 };
-
 export default async function NewsPage({ params }) {
   const { category, slug } = await params;
-
   const safeCategory = decodeURIComponent(category);
   const safeSlug = decodeURIComponent(slug);
-
   const validCategories = [
     "desh-videsh",
     "industrial-area",
@@ -111,17 +105,13 @@ export default async function NewsPage({ params }) {
     "kala-sahitya",
     "krishi-maveshi",
   ];
-
   if (!validCategories.includes(safeCategory)) {
     notFound();
   }
-
   const post = await getPostBySlugAndCategory(safeSlug, safeCategory);
-
   if (!post) {
     notFound();
   }
-
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
@@ -131,11 +121,10 @@ export default async function NewsPage({ params }) {
       year: "numeric",
       hour: "2-digit",
       minute: "2-digit",
+      timeZone: "Asia/Kolkata",
     });
   };
-
   const categoryDisplayName = getCategoryDisplayName(safeCategory);
-
   return (
     <main className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -146,12 +135,10 @@ export default async function NewsPage({ params }) {
             <ViewsCounter slug={safeSlug} initialViews={post.views || 0} />
           </div>
         </div>
-
         {/* Title */}
         <h1 className="text-4xl font-bold mb-8 text-gray-900 leading-tight">
           {post.title}
         </h1>
-
         {/* Main Image */}
         {post.mainImageUrl && (
           <div className="w-full mb-8 flex justify-center">
@@ -165,14 +152,12 @@ export default async function NewsPage({ params }) {
             />
           </div>
         )}
-
         {/* Image Caption */}
         {post.mainImageCaption && (
           <p className="text-center text-sm text-gray-600 mb-8 italic -mt-4">
             {post.mainImageCaption}
           </p>
         )}
-
         {/* Content */}
         <article className="bg-white rounded-xl shadow-lg p-8 mb-8">
           <div className="prose prose-lg max-w-none">
@@ -182,7 +167,6 @@ export default async function NewsPage({ params }) {
             />
           </div>
         </article>
-
         {/* Back Navigation */}
         <div className="flex items-center justify-center">
           <Link
