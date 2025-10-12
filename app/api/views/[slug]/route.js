@@ -12,7 +12,7 @@ const client = createClient({
 
 export async function POST(request, { params }) {
   try {
-    const { slug } = params;
+    const { slug } = await params; // ✅ Correct
 
     if (!slug) {
       return NextResponse.json({ error: "Slug required" }, { status: 400 });
@@ -48,7 +48,7 @@ export async function POST(request, { params }) {
 
 export async function GET(request, { params }) {
   try {
-    const { slug } = params;
+    const { slug } = await params;
 
     const post = await client.fetch(
       `*[_type == "post" && slug.current == $slug][0]{ views }`,
