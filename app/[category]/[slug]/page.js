@@ -61,7 +61,7 @@ const portableTextComponents = {
     em: ({ children }) => (
       <em className="italic">{children}</em>
     ),
-link: ({ value, children }) => {
+    link: ({ value, children }) => {
       const href = value?.href || "#";
       return (
         
