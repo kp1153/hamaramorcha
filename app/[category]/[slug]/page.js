@@ -78,22 +78,26 @@ const portableTextComponents = {
     },
   },
   types: {
-    image: ({ value }) => (
-      <div className="my-8 flex justify-center">
-        <Image
-          src={urlFor(value).width(1200).url()}
-          alt={value.alt || "Article image"}
-          width={1200}
-          height={800}
-          className="object-contain rounded-lg shadow max-h-[70vh] w-auto bg-gray-100"
-        />
-        {value.caption && (
-          <p className="text-sm text-gray-600 text-center mt-2 italic w-full">
-            {value.caption}
-          </p>
-        )}
-      </div>
-    ),
+    image: ({ value }) => {
+      if (!value?.asset) return null;
+
+      return (
+        <div className="my-8 flex justify-center">
+          <Image
+            src={urlFor(value).width(1200).url()}
+            alt={value.alt || "Article image"}
+            width={1200}
+            height={800}
+            className="object-contain rounded-lg shadow max-h-[70vh] w-auto bg-gray-100"
+          />
+          {value.caption && (
+            <p className="text-sm text-gray-600 text-center mt-2 italic w-full">
+              {value.caption}
+            </p>
+          )}
+        </div>
+      );
+    },
     gallery: ({ value }) => (
       <div className="my-8 grid grid-cols-2 md:grid-cols-3 gap-4">
         {value.images?.map((img, index) => (
