@@ -5,7 +5,7 @@ import { getPostBySlugAndCategory, urlFor } from "@/lib/sanity";
 import { PortableText } from "@portabletext/react";
 import ViewsCounter from "@/components/ViewsCounter";
 export const dynamic = "force-dynamic";
-// Category display names mapping
+
 const getCategoryDisplayName = (route) => {
   const displayNames = {
     "desh-videsh": "देश-विदेश",
@@ -17,7 +17,7 @@ const getCategoryDisplayName = (route) => {
   };
   return displayNames[route] || route;
 };
-// Custom components for PortableText
+
 const portableTextComponents = {
   block: {
     normal: ({ children }) => (
@@ -40,14 +40,10 @@ const portableTextComponents = {
   },
   list: {
     bullet: ({ children }) => (
-      <ul className="list-disc ml-6 mb-4 text-gray-800 space-y-2">
-        {children}
-      </ul>
+      <ul className="list-disc ml-6 mb-4 text-gray-800 space-y-2">{children}</ul>
     ),
     number: ({ children }) => (
-      <ol className="list-decimal ml-6 mb-4 text-gray-800 space-y-2">
-        {children}
-      </ol>
+      <ol className="list-decimal ml-6 mb-4 text-gray-800 space-y-2">{children}</ol>
     ),
   },
   listItem: {
@@ -62,17 +58,22 @@ const portableTextComponents = {
     strong: ({ children }) => (
       <strong className="font-bold text-gray-900">{children}</strong>
     ),
-    em: ({ children }) => <em className="italic">{children}</em>,
-    link: ({ value, children }) => (
-      <a
-        href={value.href}
-        className="text-blue-600 hover:text-blue-800 underline font-medium"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {children}
-      </a>
+    em: ({ children }) => (
+      <em className="italic">{children}</em>
     ),
+    link: ({ value, children }) => {
+      const href = value?.href || "#";
+      return (
+        
+          href={href}
+          className="text-blue-600 hover:text-blue-800 underline font-medium"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {children}
+        </a>
+      );
+    },
   },
   types: {
     image: ({ value }) => (
@@ -91,8 +92,23 @@ const portableTextComponents = {
         )}
       </div>
     ),
+    gallery: ({ value }) => (
+      <div className="my-8 grid grid-cols-2 md:grid-cols-3 gap-4">
+        {value.images?.map((img, index) => (
+          <div key={index} className="relative aspect-square">
+            <Image
+              src={urlFor(img).width(600).url()}
+              alt={`Gallery image ${index + 1}`}
+              fill
+              className="object-cover rounded-lg shadow"
+            />
+          </div>
+        ))}
+      </div>
+    ),
   },
 };
+
 export default async function NewsPage({ params }) {
   const { category, slug } = await params;
   const safeCategory = decodeURIComponent(category);
@@ -128,18 +144,15 @@ export default async function NewsPage({ params }) {
   return (
     <main className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto px-4 py-8">
-        {/* Date and Views */}
         <div className="flex items-center justify-end mb-6">
           <div className="flex items-center gap-4 text-sm text-gray-600">
             <span className="font-medium">{formatDate(post.publishedAt)}</span>
             <ViewsCounter slug={safeSlug} initialViews={post.views || 0} />
           </div>
         </div>
-        {/* Title */}
         <h1 className="text-4xl font-bold mb-8 text-gray-900 leading-tight">
           {post.title}
         </h1>
-        {/* Main Image */}
         {post.mainImageUrl && (
           <div className="w-full mb-8 flex justify-center">
             <Image
@@ -152,13 +165,11 @@ export default async function NewsPage({ params }) {
             />
           </div>
         )}
-        {/* Image Caption */}
         {post.mainImageCaption && (
           <p className="text-center text-sm text-gray-600 mb-8 italic -mt-4">
             {post.mainImageCaption}
           </p>
         )}
-        {/* Content */}
         <article className="bg-white rounded-xl shadow-lg p-8 mb-8">
           <div className="prose prose-lg max-w-none">
             <PortableText
@@ -167,7 +178,6 @@ export default async function NewsPage({ params }) {
             />
           </div>
         </article>
-        {/* Back Navigation */}
         <div className="flex items-center justify-center">
           <Link
             href="/"

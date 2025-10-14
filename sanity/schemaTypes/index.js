@@ -26,7 +26,7 @@ export const schema = {
                 "देश-विदेश": "desh-videsh",
                 "इंडस्ट्रियल-एरिया": "industrial-area",
                 "जीवन के रंग": "jeevan-ke-rang",
-                "प्रतिरोध": "pratirodh",
+                प्रतिरोध: "pratirodh",
                 "कला-साहित्य": "kala-sahitya",
                 "कृषि-मवेशी": "krishi-maveshi",
               };
@@ -244,6 +244,32 @@ export const schema = {
         },
         {
           type: "object",
+          name: "gallery",
+          title: "फोटो गैलरी",
+          fields: [
+            {
+              name: "images",
+              title: "तस्वीरें",
+              type: "array",
+              of: [
+                {
+                  type: "image",
+                  options: {
+                    hotspot: true,
+                    accept: "image/*",
+                  },
+                },
+              ],
+              options: {
+                layout: "grid",
+              },
+              validation: (Rule) =>
+                Rule.min(1).error("कम से कम एक तस्वीर जोड़ें"),
+            },
+          ],
+        },
+        {
+          type: "object",
           name: "break",
           title: "पेज ब्रेक",
           fields: [
@@ -258,5 +284,5 @@ export const schema = {
         },
       ],
     },
-  ], // <-- types array बंद
-}; // <-- schema object बंद
+  ],
+};
