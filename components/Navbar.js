@@ -15,13 +15,16 @@ const Navbar = () => {
   return (
     <nav className="bg-white shadow-md">
       {/* Title Section */}
-      <div className="bg-red-600 text-white">
-        <div className="container mx-auto px-4 py-2">
+      <div className="bg-[#006680] text-white">
+        <div className="container mx-auto px-4 py-6">
           <Link href="/">
-            <h1 className="text-2xl font-bold text-center hover:text-red-100 transition-colors cursor-pointer">
+            <h1 className="text-3xl font-extrabold text-center text-pink-600 hover:text-pink-700 transition-colors cursor-pointer">
               हमारा मोर्चा
             </h1>
           </Link>
+          <p className="text-base font-semibold text-center mt-2">
+            हम Next.js पर बनाते हैं SEO-हितैषी वेबसाइट, होस्टिंग होती है फ्री
+          </p>
         </div>
       </div>
 
@@ -32,7 +35,7 @@ const Navbar = () => {
             <Link
               key={item.name}
               href={item.href}
-              className="px-4 py-2 text-gray-700 hover:text-red-600 font-medium transition-colors"
+              className="px-4 py-2 text-gray-700 hover:text-[#006680] font-medium transition-colors"
             >
               {item.name}
             </Link>
