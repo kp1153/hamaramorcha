@@ -22,22 +22,63 @@ export const schema = {
             source: "name",
             maxLength: 96,
             slugify: (input) => {
-              const categoryMap = {
-                "देश-विदेश": "desh-videsh",
-                "इंडस्ट्रियल-एरिया": "industrial-area",
-                "जीवन के रंग": "jeevan-ke-rang",
-                प्रतिरोध: "pratirodh",
-                "कला-साहित्य": "kala-sahitya",
-                "कृषि-मवेशी": "krishi-maveshi",
-              };
-              if (categoryMap[input]) return categoryMap[input];
-              return input
-                .toLowerCase()
-                .replace(/\s+/g, "-")
-                .replace(/[^\w\-]+/g, "")
-                .replace(/\-\-+/g, "-")
-                .replace(/^-+/, "")
-                .replace(/-+$/, "");
+              if (!input) return "";
+              const cleaned = input
+                .trim()
+                .replace(/[।!?]/g, "")
+                .replace(/[\u0964\u0965]/g, "")
+                .replace(/\s+/g, " ")
+                .split(" ")
+                .map((word) => {
+                  return word
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .replace(/[^a-zA-Z\u0900-\u097F0-9]/g, "")
+                    .toLowerCase();
+                })
+                .map((word) => {
+                  const dict = {
+                    में: "me",
+                    की: "ki",
+                    का: "ka",
+                    के: "ke",
+                    और: "aur",
+                    से: "se",
+                    पर: "par",
+                    है: "hai",
+                    हुई: "hui",
+                    हुआ: "hua",
+                  };
+                  if (dict[word]) return dict[word];
+                  return word
+                    .replace(/[अआा]/g, "a")
+                    .replace(/[इईी]/g, "i")
+                    .replace(/[उऊू]/g, "u")
+                    .replace(/[एऐेै]/g, "e")
+                    .replace(/[ओऔोौ]/g, "o")
+                    .replace(/[कखगघ]/g, "k")
+                    .replace(/[चछजझ]/g, "ch")
+                    .replace(/[टठडढ]/g, "t")
+                    .replace(/[तथदध]/g, "th")
+                    .replace(/[नणं]/g, "n")
+                    .replace(/[पफबभ]/g, "b")
+                    .replace(/[म]/g, "m")
+                    .replace(/[य]/g, "y")
+                    .replace(/[र]/g, "r")
+                    .replace(/[लळ]/g, "l")
+                    .replace(/[व]/g, "v")
+                    .replace(/[शषस]/g, "sh")
+                    .replace(/[ह]/g, "h");
+                })
+                .filter(Boolean)
+                .join("-");
+
+              const timePart = new Date()
+                .toISOString()
+                .replace(/[-:.TZ]/g, "")
+                .slice(0, 14);
+
+              return `${cleaned}-${timePart}`;
             },
           },
           validation: (Rule) => Rule.required().error("Slug आवश्यक है"),
@@ -81,17 +122,63 @@ export const schema = {
             source: "title",
             maxLength: 96,
             slugify: (input) => {
-              return (
-                input
-                  .toLowerCase()
-                  .replace(/[\u0900-\u097F]/g, "")
-                  .replace(/[^\w\s-]/g, "")
-                  .trim()
-                  .replace(/\s+/g, "-")
-                  .replace(/\-\-+/g, "-")
-                  .replace(/^-+/, "")
-                  .replace(/-+$/, "") || `post-${Date.now()}`
-              );
+              if (!input) return "";
+              const cleaned = input
+                .trim()
+                .replace(/[।!?]/g, "")
+                .replace(/[\u0964\u0965]/g, "")
+                .replace(/\s+/g, " ")
+                .split(" ")
+                .map((word) => {
+                  return word
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .replace(/[^a-zA-Z\u0900-\u097F0-9]/g, "")
+                    .toLowerCase();
+                })
+                .map((word) => {
+                  const dict = {
+                    में: "me",
+                    की: "ki",
+                    का: "ka",
+                    के: "ke",
+                    और: "aur",
+                    से: "se",
+                    पर: "par",
+                    है: "hai",
+                    हुई: "hui",
+                    हुआ: "hua",
+                  };
+                  if (dict[word]) return dict[word];
+                  return word
+                    .replace(/[अआा]/g, "a")
+                    .replace(/[इईी]/g, "i")
+                    .replace(/[उऊू]/g, "u")
+                    .replace(/[एऐेै]/g, "e")
+                    .replace(/[ओऔोौ]/g, "o")
+                    .replace(/[कखगघ]/g, "k")
+                    .replace(/[चछजझ]/g, "ch")
+                    .replace(/[टठडढ]/g, "t")
+                    .replace(/[तथदध]/g, "th")
+                    .replace(/[नणं]/g, "n")
+                    .replace(/[पफबभ]/g, "b")
+                    .replace(/[म]/g, "m")
+                    .replace(/[य]/g, "y")
+                    .replace(/[र]/g, "r")
+                    .replace(/[लळ]/g, "l")
+                    .replace(/[व]/g, "v")
+                    .replace(/[शषस]/g, "sh")
+                    .replace(/[ह]/g, "h");
+                })
+                .filter(Boolean)
+                .join("-");
+
+              const timePart = new Date()
+                .toISOString()
+                .replace(/[-:.TZ]/g, "")
+                .slice(0, 14);
+
+              return `${cleaned}-${timePart}`;
             },
           },
           validation: (Rule) => Rule.required().error("URL Slug आवश्यक है"),
@@ -106,9 +193,7 @@ export const schema = {
           name: "mainImage",
           title: "मुख्य तस्वीर",
           type: "image",
-          options: {
-            hotspot: true,
-          },
+          options: { hotspot: true },
           fields: [
             {
               name: "caption",
@@ -133,6 +218,13 @@ export const schema = {
           to: [{ type: "category" }],
           validation: (Rule) =>
             Rule.required().error("श्रेणी का चुनाव आवश्यक है"),
+        },
+        {
+          name: "videoLink",
+          title: "वीडियो लिंक",
+          type: "url",
+          validation: (Rule) =>
+            Rule.uri({ scheme: ["http", "https"] }),
         },
         {
           name: "views",
@@ -230,9 +322,7 @@ export const schema = {
         {
           type: "image",
           title: "तस्वीर",
-          options: {
-            hotspot: true,
-          },
+          options: { hotspot: true },
           fields: [
             {
               name: "caption",
@@ -251,20 +341,9 @@ export const schema = {
               name: "images",
               title: "तस्वीरें",
               type: "array",
-              of: [
-                {
-                  type: "image",
-                  options: {
-                    hotspot: true,
-                    accept: "image/*",
-                  },
-                },
-              ],
-              options: {
-                layout: "grid",
-              },
-              validation: (Rule) =>
-                Rule.min(1).error("कम से कम एक तस्वीर जोड़ें"),
+              of: [{ type: "image", options: { hotspot: true, accept: "image/*" } }],
+              options: { layout: "grid" },
+              validation: (Rule) => Rule.min(1).error("कम से कम एक तस्वीर जोड़ें"),
             },
           ],
         },
@@ -276,9 +355,7 @@ export const schema = {
             {
               name: "style",
               type: "string",
-              options: {
-                list: ["break", "line"],
-              },
+              options: { list: ["break", "line"] },
             },
           ],
         },
