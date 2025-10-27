@@ -1,4 +1,208 @@
 // schemas/index.js
+
+// Hindi to Roman transliteration function
+function hindiToRoman(input) {
+  if (!input) return "";
+
+  // Consonant mappings
+  const consonants = {
+    क: "k",
+    ख: "kh",
+    ग: "g",
+    घ: "gh",
+    ङ: "ng",
+    च: "ch",
+    छ: "chh",
+    ज: "j",
+    झ: "jh",
+    ञ: "ny",
+    ट: "t",
+    ठ: "th",
+    ड: "d",
+    ढ: "dh",
+    ण: "n",
+    त: "t",
+    थ: "th",
+    द: "d",
+    ध: "dh",
+    न: "n",
+    प: "p",
+    फ: "ph",
+    ब: "b",
+    भ: "bh",
+    म: "m",
+    य: "y",
+    र: "r",
+    ल: "l",
+    व: "v",
+    ळ: "l",
+    श: "sh",
+    ष: "sh",
+    स: "s",
+    ह: "h",
+    क्ष: "ksh",
+    त्र: "tr",
+    ज्ञ: "gya",
+  };
+
+  // Vowel mappings (standalone)
+  const vowels = {
+    अ: "a",
+    आ: "aa",
+    इ: "i",
+    ई: "ee",
+    उ: "u",
+    ऊ: "oo",
+    ऋ: "ri",
+    ए: "e",
+    ऐ: "ai",
+    ओ: "o",
+    औ: "au",
+  };
+
+  // Vowel signs (matras)
+  const matras = {
+    "ा": "aa",
+    "ि": "i",
+    "ी": "ee",
+    "ु": "u",
+    "ू": "oo",
+    "ृ": "ri",
+    "े": "e",
+    "ै": "ai",
+    "ो": "o",
+    "ौ": "au",
+  };
+
+  // Special characters
+  const specials = {
+    "ं": "n",
+    "ः": "h",
+    "ँ": "n",
+    "्": "",
+  };
+
+  // Common word dictionary for better slugs
+  const dict = {
+    में: "mein",
+    की: "ki",
+    का: "ka",
+    के: "ke",
+    और: "aur",
+    से: "se",
+    पर: "par",
+    है: "hai",
+    हुई: "hui",
+    हुआ: "hua",
+    को: "ko",
+    ने: "ne",
+    एक: "ek",
+    यह: "yah",
+    वह: "vah",
+    था: "tha",
+    थी: "thi",
+    हैं: "hain",
+    हो: "ho",
+    गया: "gaya",
+    गई: "gayi",
+    दिया: "diya",
+    लिया: "liya",
+  };
+
+  // Clean and prepare input
+  const cleaned = input
+    .trim()
+    .replace(/[।!?,.]/g, "") // Remove punctuation
+    .replace(/[\u0964\u0965]/g, "") // Remove danda
+    .replace(/\s+/g, " "); // Normalize spaces
+
+  const words = cleaned.split(" ");
+  const transliteratedWords = [];
+
+  for (let word of words) {
+    word = word.trim();
+    if (!word) continue;
+
+    // Check dictionary first
+    const lowerWord = word.toLowerCase();
+    if (dict[lowerWord]) {
+      transliteratedWords.push(dict[lowerWord]);
+      continue;
+    }
+
+    let result = "";
+    let i = 0;
+
+    while (i < word.length) {
+      const char = word[i];
+      const nextChar = word[i + 1];
+      const twoChar = char + nextChar;
+
+      // Check for two-character combinations (conjuncts)
+      if (consonants[twoChar]) {
+        result += consonants[twoChar];
+        i += 2;
+        continue;
+      }
+
+      // Standalone vowels
+      if (vowels[char]) {
+        result += vowels[char];
+        i++;
+        continue;
+      }
+
+      // Consonants
+      if (consonants[char]) {
+        result += consonants[char];
+
+        // Check if next is a matra
+        if (matras[nextChar]) {
+          result += matras[nextChar];
+          i += 2;
+          continue;
+        } else if (nextChar === "्") {
+          // Halant - no inherent 'a' sound
+          i += 2;
+          continue;
+        } else if (nextChar && !consonants[nextChar] && !vowels[nextChar]) {
+          // If next char is not Devanagari, just move on
+          i++;
+          continue;
+        } else {
+          // Add inherent 'a' sound
+          result += "a";
+          i++;
+          continue;
+        }
+      }
+
+      // Special characters
+      if (specials[char] !== undefined) {
+        result += specials[char];
+        i++;
+        continue;
+      }
+
+      // Numbers and English characters
+      if (/[a-zA-Z0-9]/.test(char)) {
+        result += char.toLowerCase();
+        i++;
+        continue;
+      }
+
+      // Skip unknown characters
+      i++;
+    }
+
+    if (result) {
+      transliteratedWords.push(result);
+    }
+  }
+
+  return transliteratedWords.join("-");
+}
+
 export const schema = {
   types: [
     // Category Schema
@@ -22,63 +226,12 @@ export const schema = {
             source: "name",
             maxLength: 96,
             slugify: (input) => {
-              if (!input) return "";
-              const cleaned = input
-                .trim()
-                .replace(/[।!?]/g, "")
-                .replace(/[\u0964\u0965]/g, "")
-                .replace(/\s+/g, " ")
-                .split(" ")
-                .map((word) => {
-                  return word
-                    .normalize("NFD")
-                    .replace(/[\u0300-\u036f]/g, "")
-                    .replace(/[^a-zA-Z\u0900-\u097F0-9]/g, "")
-                    .toLowerCase();
-                })
-                .map((word) => {
-                  const dict = {
-                    में: "me",
-                    की: "ki",
-                    का: "ka",
-                    के: "ke",
-                    और: "aur",
-                    से: "se",
-                    पर: "par",
-                    है: "hai",
-                    हुई: "hui",
-                    हुआ: "hua",
-                  };
-                  if (dict[word]) return dict[word];
-                  return word
-                    .replace(/[अआा]/g, "a")
-                    .replace(/[इईी]/g, "i")
-                    .replace(/[उऊू]/g, "u")
-                    .replace(/[एऐेै]/g, "e")
-                    .replace(/[ओऔोौ]/g, "o")
-                    .replace(/[कखगघ]/g, "k")
-                    .replace(/[चछजझ]/g, "ch")
-                    .replace(/[टठडढ]/g, "t")
-                    .replace(/[तथदध]/g, "th")
-                    .replace(/[नणं]/g, "n")
-                    .replace(/[पफबभ]/g, "b")
-                    .replace(/[म]/g, "m")
-                    .replace(/[य]/g, "y")
-                    .replace(/[र]/g, "r")
-                    .replace(/[लळ]/g, "l")
-                    .replace(/[व]/g, "v")
-                    .replace(/[शषस]/g, "sh")
-                    .replace(/[ह]/g, "h");
-                })
-                .filter(Boolean)
-                .join("-");
-
+              const romanized = hindiToRoman(input);
               const timePart = new Date()
                 .toISOString()
                 .replace(/[-:.TZ]/g, "")
                 .slice(0, 14);
-
-              return `${cleaned}-${timePart}`;
+              return `${romanized}-${timePart}`;
             },
           },
           validation: (Rule) => Rule.required().error("Slug आवश्यक है"),
@@ -122,63 +275,12 @@ export const schema = {
             source: "title",
             maxLength: 96,
             slugify: (input) => {
-              if (!input) return "";
-              const cleaned = input
-                .trim()
-                .replace(/[।!?]/g, "")
-                .replace(/[\u0964\u0965]/g, "")
-                .replace(/\s+/g, " ")
-                .split(" ")
-                .map((word) => {
-                  return word
-                    .normalize("NFD")
-                    .replace(/[\u0300-\u036f]/g, "")
-                    .replace(/[^a-zA-Z\u0900-\u097F0-9]/g, "")
-                    .toLowerCase();
-                })
-                .map((word) => {
-                  const dict = {
-                    में: "me",
-                    की: "ki",
-                    का: "ka",
-                    के: "ke",
-                    और: "aur",
-                    से: "se",
-                    पर: "par",
-                    है: "hai",
-                    हुई: "hui",
-                    हुआ: "hua",
-                  };
-                  if (dict[word]) return dict[word];
-                  return word
-                    .replace(/[अआा]/g, "a")
-                    .replace(/[इईी]/g, "i")
-                    .replace(/[उऊू]/g, "u")
-                    .replace(/[एऐेै]/g, "e")
-                    .replace(/[ओऔोौ]/g, "o")
-                    .replace(/[कखगघ]/g, "k")
-                    .replace(/[चछजझ]/g, "ch")
-                    .replace(/[टठडढ]/g, "t")
-                    .replace(/[तथदध]/g, "th")
-                    .replace(/[नणं]/g, "n")
-                    .replace(/[पफबभ]/g, "b")
-                    .replace(/[म]/g, "m")
-                    .replace(/[य]/g, "y")
-                    .replace(/[र]/g, "r")
-                    .replace(/[लळ]/g, "l")
-                    .replace(/[व]/g, "v")
-                    .replace(/[शषस]/g, "sh")
-                    .replace(/[ह]/g, "h");
-                })
-                .filter(Boolean)
-                .join("-");
-
+              const romanized = hindiToRoman(input);
               const timePart = new Date()
                 .toISOString()
                 .replace(/[-:.TZ]/g, "")
                 .slice(0, 14);
-
-              return `${cleaned}-${timePart}`;
+              return `${romanized}-${timePart}`;
             },
           },
           validation: (Rule) => Rule.required().error("URL Slug आवश्यक है"),
@@ -223,8 +325,7 @@ export const schema = {
           name: "videoLink",
           title: "वीडियो लिंक",
           type: "url",
-          validation: (Rule) =>
-            Rule.uri({ scheme: ["http", "https"] }),
+          validation: (Rule) => Rule.uri({ scheme: ["http", "https"] }),
         },
         {
           name: "views",
@@ -341,9 +442,15 @@ export const schema = {
               name: "images",
               title: "तस्वीरें",
               type: "array",
-              of: [{ type: "image", options: { hotspot: true, accept: "image/*" } }],
+              of: [
+                {
+                  type: "image",
+                  options: { hotspot: true, accept: "image/*" },
+                },
+              ],
               options: { layout: "grid" },
-              validation: (Rule) => Rule.min(1).error("कम से कम एक तस्वीर जोड़ें"),
+              validation: (Rule) =>
+                Rule.min(1).error("कम से कम एक तस्वीर जोड़ें"),
             },
           ],
         },
