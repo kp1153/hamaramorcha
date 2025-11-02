@@ -1,6 +1,4 @@
-// schemas/index.js
-
-// Hindi to Roman transliteration function
+import subscriber from './subscriber'
 function hindiToRoman(input) {
   if (!input) return "";
 
@@ -205,7 +203,7 @@ function hindiToRoman(input) {
 
 export const schema = {
   types: [
-    // Category Schema
+    subscriber,
     {
       name: "category",
       title: "श्रेणी (Category)",

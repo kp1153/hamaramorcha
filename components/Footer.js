@@ -1,11 +1,12 @@
 import Link from "next/link";
+import SubscribeForm from "./SubscribeForm";
 
 const Footer = () => {
   return (
     <footer className="w-full border-t border-gray-200 bg-white mt-8">
       <div className="max-w-5xl mx-auto px-4 py-6 text-center">
-        {/* Search */}
-    
+        {/* Subscribe Form */}
+        <SubscribeForm />
 
         {/* Developer Promotion */}
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-4 mb-6">
@@ -14,8 +15,8 @@ const Footer = () => {
           </h4>
           <p className="text-sm mb-3 text-white">
             <strong>
-              Next.js पर बनी और Vercel पर मुफ़्त होस्टिंग वाली वेबसाइट बनवाने के
-              लिए संपर्क करें:
+              Next.js/Laravel पर बनी वेबसाइट बनवाने के लिए संपर्क करें, नई
+              वेबसाइट के लिए होस्टिंग हमारी तरफ से:
             </strong>
           </p>
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 text-sm text-white mb-3">
