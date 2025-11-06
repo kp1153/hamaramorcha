@@ -23,8 +23,7 @@ const Navbar = () => {
             </h1>
           </Link>
           <p className="text-base font-semibold text-center mt-2">
-            हम Next.js पर बनाते हैं SEO-हितैषी वेबसाइट, गूगल पर टॉप पर जाती है
-            रेंकिंग
+            हम Next.js पर बनाते हैं SEO-हितैषी वेबसाइट, गूगल पर दिखती है टॉप पर
           </p>
         </div>
       </div>
