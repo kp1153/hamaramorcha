@@ -1,8 +1,10 @@
-import subscriber from './subscriber'
+import subscriber from "./subscriber";
+import MultiImageInput from "./MultiImageInput";
+import CloudinaryImageInput from "./CloudinaryImageInput";
+
 function hindiToRoman(input) {
   if (!input) return "";
 
-  // Consonant mappings
   const consonants = {
     क: "k",
     ख: "kh",
@@ -43,7 +45,6 @@ function hindiToRoman(input) {
     ज्ञ: "gya",
   };
 
-  // Vowel mappings (standalone)
   const vowels = {
     अ: "a",
     आ: "aa",
@@ -58,7 +59,6 @@ function hindiToRoman(input) {
     औ: "au",
   };
 
-  // Vowel signs (matras)
   const matras = {
     "ा": "aa",
     "ि": "i",
@@ -72,7 +72,6 @@ function hindiToRoman(input) {
     "ौ": "au",
   };
 
-  // Special characters
   const specials = {
     "ं": "n",
     "ः": "h",
@@ -80,7 +79,6 @@ function hindiToRoman(input) {
     "्": "",
   };
 
-  // Common word dictionary for better slugs
   const dict = {
     में: "mein",
     की: "ki",
@@ -107,12 +105,11 @@ function hindiToRoman(input) {
     लिया: "liya",
   };
 
-  // Clean and prepare input
   const cleaned = input
     .trim()
-    .replace(/[।!?,.]/g, "") // Remove punctuation
-    .replace(/[\u0964\u0965]/g, "") // Remove danda
-    .replace(/\s+/g, " "); // Normalize spaces
+    .replace(/[।!?,.]/g, "")
+    .replace(/[\u0964\u0965]/g, "")
+    .replace(/\s+/g, " ");
 
   const words = cleaned.split(" ");
   const transliteratedWords = [];
@@ -121,7 +118,6 @@ function hindiToRoman(input) {
     word = word.trim();
     if (!word) continue;
 
-    // Check dictionary first
     const lowerWord = word.toLowerCase();
     if (dict[lowerWord]) {
       transliteratedWords.push(dict[lowerWord]);
@@ -136,60 +132,50 @@ function hindiToRoman(input) {
       const nextChar = word[i + 1];
       const twoChar = char + nextChar;
 
-      // Check for two-character combinations (conjuncts)
       if (consonants[twoChar]) {
         result += consonants[twoChar];
         i += 2;
         continue;
       }
 
-      // Standalone vowels
       if (vowels[char]) {
         result += vowels[char];
         i++;
         continue;
       }
 
-      // Consonants
       if (consonants[char]) {
         result += consonants[char];
 
-        // Check if next is a matra
         if (matras[nextChar]) {
           result += matras[nextChar];
           i += 2;
           continue;
         } else if (nextChar === "्") {
-          // Halant - no inherent 'a' sound
           i += 2;
           continue;
         } else if (nextChar && !consonants[nextChar] && !vowels[nextChar]) {
-          // If next char is not Devanagari, just move on
           i++;
           continue;
         } else {
-          // Add inherent 'a' sound
           result += "a";
           i++;
           continue;
         }
       }
 
-      // Special characters
       if (specials[char] !== undefined) {
         result += specials[char];
         i++;
         continue;
       }
 
-      // Numbers and English characters
       if (/[a-zA-Z0-9]/.test(char)) {
         result += char.toLowerCase();
         i++;
         continue;
       }
 
-      // Skip unknown characters
       i++;
     }
 
@@ -249,7 +235,6 @@ export const schema = {
       },
     },
 
-    // Post Schema
     {
       name: "post",
       title: "समाचार (Post)",
@@ -291,17 +276,16 @@ export const schema = {
         },
         {
           name: "mainImage",
-          title: "मुख्य तस्वीर",
-          type: "image",
-          options: { hotspot: true },
-          fields: [
-            {
-              name: "caption",
-              title: "कैप्शन",
-              type: "string",
-              description: "तस्वीर के नीचे दिखने वाला कैप्शन",
-            },
-          ],
+          title: "मुख्य तस्वीर (Cloudinary URL)",
+          type: "string",
+          components: {
+            input: CloudinaryImageInput,
+          },
+        },
+        {
+          name: "mainImageCaption",
+          title: "मुख्य तस्वीर कैप्शन",
+          type: "string",
         },
         {
           name: "publishedAt",
@@ -353,20 +337,18 @@ export const schema = {
           publishedAt: "publishedAt",
         },
         prepare(selection) {
-          const { title, media, category, publishedAt } = selection;
+          const { title, category, publishedAt } = selection;
           const formattedDate = publishedAt
             ? new Date(publishedAt).toLocaleDateString("hi-IN")
             : "तारीख नहीं";
           return {
             title,
-            media,
             subtitle: `${category || "बिना श्रेणी"} • ${formattedDate}`,
           };
         },
       },
     },
 
-    // Block Content Schema
     {
       name: "blockContent",
       title: "Block Content",
@@ -394,6 +376,28 @@ export const schema = {
             ],
             annotations: [
               {
+                title: "रंग",
+                name: "color",
+                type: "object",
+                fields: [
+                  {
+                    title: "रंग चुनें",
+                    name: "value",
+                    type: "string",
+                    options: {
+                      list: [
+                        { title: "लाल", value: "red" },
+                        { title: "नीला", value: "blue" },
+                        { title: "हरा", value: "green" },
+                        { title: "पीला", value: "yellow" },
+                        { title: "नारंगी", value: "orange" },
+                        { title: "बैंगनी", value: "purple" },
+                      ],
+                    },
+                  },
+                ],
+              },
+              {
                 title: "लिंक",
                 name: "link",
                 type: "object",
@@ -419,15 +423,22 @@ export const schema = {
           },
         },
         {
-          type: "image",
-          title: "तस्वीर",
-          options: { hotspot: true },
+          type: "object",
+          name: "cloudinaryImage",
+          title: "तस्वीर (Cloudinary)",
           fields: [
+            {
+              name: "url",
+              title: "Image URL",
+              type: "string",
+              components: {
+                input: CloudinaryImageInput,
+              },
+            },
             {
               name: "caption",
               title: "कैप्शन",
               type: "string",
-              description: "तस्वीर के नीचे दिखने वाला टेक्स्ट",
             },
           ],
         },
@@ -442,11 +453,25 @@ export const schema = {
               type: "array",
               of: [
                 {
-                  type: "image",
-                  options: { hotspot: true, accept: "image/*" },
+                  type: "object",
+                  name: "galleryImage",
+                  fields: [
+                    {
+                      name: "url",
+                      title: "Image URL",
+                      type: "string",
+                    },
+                    {
+                      name: "alt",
+                      title: "Alt Text",
+                      type: "string",
+                    },
+                  ],
                 },
               ],
-              options: { layout: "grid" },
+              components: {
+                input: MultiImageInput,
+              },
               validation: (Rule) =>
                 Rule.min(1).error("कम से कम एक तस्वीर जोड़ें"),
             },

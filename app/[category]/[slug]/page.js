@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { getPostBySlugAndCategory, urlFor } from "@/lib/sanity";
+import { getPostBySlugAndCategory } from "@/lib/sanity";
 import { PortableText } from "@portabletext/react";
 import ViewsCounter from "@/components/ViewsCounter";
 export const dynamic = "force-dynamic";
@@ -63,6 +63,18 @@ const portableTextComponents = {
       <strong className="font-bold text-gray-900">{children}</strong>
     ),
     em: ({ children }) => <em className="italic">{children}</em>,
+    underline: ({ children }) => <span className="underline">{children}</span>,
+    color: ({ value, children }) => {
+      const colorMap = {
+        red: "text-red-600",
+        blue: "text-blue-600",
+        green: "text-green-600",
+        yellow: "text-yellow-600",
+        orange: "text-orange-600",
+        purple: "text-purple-600",
+      };
+      return <span className={colorMap[value?.value] || ""}>{children}</span>;
+    },
     link: ({ value, children }) => {
       const href = value?.href || "#";
       return (
@@ -78,14 +90,14 @@ const portableTextComponents = {
     },
   },
   types: {
-    image: ({ value }) => {
-      if (!value?.asset) return null;
+    cloudinaryImage: ({ value }) => {
+      if (!value?.url) return null;
 
       return (
-        <div className="my-8 flex justify-center">
+        <div className="my-8 flex flex-col items-center">
           <Image
-            src={urlFor(value).width(1200).url()}
-            alt={value.alt || "Article image"}
+            src={value.url}
+            alt={value.caption || "Article image"}
             width={1200}
             height={800}
             className="object-contain rounded-lg shadow max-h-[70vh] w-auto bg-gray-100"
@@ -103,8 +115,8 @@ const portableTextComponents = {
         {value.images?.map((img, index) => (
           <div key={index} className="relative aspect-square">
             <Image
-              src={urlFor(img).width(600).url()}
-              alt={`Gallery image ${index + 1}`}
+              src={img.url}
+              alt={img.alt || `Gallery image ${index + 1}`}
               fill
               className="object-cover rounded-lg shadow"
             />

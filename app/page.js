@@ -1,4 +1,3 @@
-// app/page.js
 import React from "react";
 import { getAllPosts } from "@/lib/sanity";
 import Link from "next/link";
@@ -37,10 +36,10 @@ export default async function Page() {
             key={post._id}
             className="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col"
           >
-            {post.mainImage && (
+            {post.mainImageUrl && (
               <div className="relative w-full bg-gray-100 flex items-center justify-center min-h-[250px]">
                 <Image
-                  src={post.mainImage}
+                  src={post.mainImageUrl}
                   alt={post.mainImageAlt}
                   width={600}
                   height={400}
