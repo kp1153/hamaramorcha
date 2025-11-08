@@ -15,9 +15,7 @@ const Footer = () => {
           </h4>
           <p className="text-sm mb-3 text-white">
             <strong>
-              Next.js/Laravel पर बनी वेबसाइट बनवाने के लिए संपर्क करें, नई
-              वेबसाइट के लिए होस्टिंग हमारी तरफ से:
-            </strong>
+              Next.js/Laravel पर हैक नहीं हो सकने वाली वज्र सुरक्षित वेबसाइट बनवाने के लिए संपर्क करें, किफायती दरों पर होस्टिंग की व्यवस्था हम करेंगे, वैसे आपके पास यह विकल्प रहेगा कि होस्टिंग स्पेस खरीदकर हमें दे दें और हम आपके मनपसंद सेवा प्रदाता पर आपकी वेबसाइट होस्ट कर देंगेः            </strong>
           </p>
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 text-sm text-white mb-3">
             <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
