@@ -64,17 +64,9 @@ const portableTextComponents = {
     ),
     em: ({ children }) => <em className="italic">{children}</em>,
     underline: ({ children }) => <span className="underline">{children}</span>,
-    color: ({ value, children }) => {
-      const colorMap = {
-        red: "text-red-600",
-        blue: "text-blue-600",
-        green: "text-green-600",
-        yellow: "text-yellow-600",
-        orange: "text-orange-600",
-        purple: "text-purple-600",
-      };
-      return <span className={colorMap[value?.value] || ""}>{children}</span>;
-    },
+    pink: ({ children }) => (
+      <span className="text-pink-600 font-medium">{children}</span>
+    ),
     link: ({ value, children }) => {
       const href = value?.href || "#";
       return (

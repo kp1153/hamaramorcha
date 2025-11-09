@@ -1,4 +1,3 @@
-import subscriber from "./subscriber";
 import MultiImageInput from "./MultiImageInput";
 import CloudinaryImageInput from "./CloudinaryImageInput";
 
@@ -189,7 +188,6 @@ function hindiToRoman(input) {
 
 export const schema = {
   types: [
-    subscriber,
     {
       name: "category",
       title: "श्रेणी (Category)",
@@ -373,30 +371,9 @@ export const schema = {
               { title: "मोटा (Bold)", value: "strong" },
               { title: "तिरछा (Italic)", value: "em" },
               { title: "अंडरलाइन", value: "underline" },
+              { title: "पिंक", value: "pink" },
             ],
             annotations: [
-              {
-                title: "रंग",
-                name: "color",
-                type: "object",
-                fields: [
-                  {
-                    title: "रंग चुनें",
-                    name: "value",
-                    type: "string",
-                    options: {
-                      list: [
-                        { title: "लाल", value: "red" },
-                        { title: "नीला", value: "blue" },
-                        { title: "हरा", value: "green" },
-                        { title: "पीला", value: "yellow" },
-                        { title: "नारंगी", value: "orange" },
-                        { title: "बैंगनी", value: "purple" },
-                      ],
-                    },
-                  },
-                ],
-              },
               {
                 title: "लिंक",
                 name: "link",
