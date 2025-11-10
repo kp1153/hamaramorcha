@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "हुजूर यह रही आपकी खबर, क्लिक कीजिए",
+  title: "यह रही आपकी खबर, क्लिक कीजिए",
   description: "दिगंत-अद्वय की युवा टीम द्वारा संचालित",
 };
 
