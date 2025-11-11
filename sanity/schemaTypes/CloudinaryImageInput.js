@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
-import { Stack, Button, Card, Text, Spinner } from "@sanity/ui";
-import { set } from "sanity";
+import { Stack, Button, Card, Text, Spinner, Flex } from "@sanity/ui";
+import { set, unset } from "sanity";
+import { TrashIcon } from "@sanity/icons";
 
 export default function CloudinaryImageInput(props) {
   const { onChange, value } = props;
@@ -46,23 +47,74 @@ export default function CloudinaryImageInput(props) {
     [onChange]
   );
 
+  const handleDelete = useCallback(() => {
+    onChange(unset());
+  }, [onChange]);
+
   return (
     <Stack space={3}>
-      <Button
-        as="label"
-        mode="ghost"
-        text={uploading ? "अपलोड हो रहा है..." : "तस्वीर चुनें"}
-        tone="primary"
-        disabled={uploading}
-      >
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          style={{ display: "none" }}
+      {value && (
+        <Card padding={3} radius={2} shadow={1}>
+          <Stack space={3}>
+            <img
+              src={value}
+              alt="Preview"
+              style={{
+                maxWidth: "100%",
+                height: "auto",
+                borderRadius: "4px",
+              }}
+            />
+            <Text size={1} muted>
+              URL: {value}
+            </Text>
+            <Flex gap={2}>
+              <Button
+                as="label"
+                mode="ghost"
+                text="नई तस्वीर चुनें"
+                tone="primary"
+                disabled={uploading}
+                style={{ flex: 1 }}
+              >
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  style={{ display: "none" }}
+                  disabled={uploading}
+                />
+              </Button>
+              <Button
+                mode="ghost"
+                text="डिलीट करें"
+                tone="critical"
+                icon={TrashIcon}
+                onClick={handleDelete}
+                disabled={uploading}
+              />
+            </Flex>
+          </Stack>
+        </Card>
+      )}
+
+      {!value && (
+        <Button
+          as="label"
+          mode="ghost"
+          text={uploading ? "अपलोड हो रहा है..." : "तस्वीर चुनें"}
+          tone="primary"
           disabled={uploading}
-        />
-      </Button>
+        >
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            style={{ display: "none" }}
+            disabled={uploading}
+          />
+        </Button>
+      )}
 
       {uploading && (
         <Card padding={3} radius={2} shadow={1}>
@@ -76,21 +128,6 @@ export default function CloudinaryImageInput(props) {
       {error && (
         <Card padding={3} radius={2} tone="critical">
           <Text size={1}>{error}</Text>
-        </Card>
-      )}
-
-      {value && (
-        <Card padding={3} radius={2} shadow={1}>
-          <Stack space={2}>
-            <img
-              src={value}
-              alt="Preview"
-              style={{ maxWidth: "100%", height: "auto" }}
-            />
-            <Text size={1} muted>
-              URL: {value}
-            </Text>
-          </Stack>
         </Card>
       )}
     </Stack>
