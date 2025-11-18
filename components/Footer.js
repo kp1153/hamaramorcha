@@ -6,12 +6,14 @@ const Footer = () => {
       <div className="max-w-5xl mx-auto px-4 py-6 text-center">
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-4 mb-6">
           <h4 className="font-semibold mb-2 text-white">
-            वर्डप्रेस पर बनी अपनी चिरकुट वेबसाइट से अगर आजिज आ गए हैं तो
+            वर्डप्रेस पर बनी आपकी वेबसाइट के डेटा को सावधानी के साथ नेक्स्ट.जेएस
+            पर माइग्रेट कर देंगे, कोई लॉस नहीं होगा। सब कुछ उसी दाम में।
           </h4>
           <p className="text-sm mb-3 text-white">
             <strong>
-              Next.js/Laravel पर हैक नहीं हो सकने वाली वज्र सुरक्षित वेबसाइट
-              बनवाने के लिए संपर्क करें, हम मेडिकल शॉप व शैक्षणिक संस्थानों के लिए भी जरूरत के अनुसार सॉफ्टवेयर विकसित करके दे देते हैं।{" "}
+              हम मेडिकल शॉप व शैक्षणिक संस्थानों के लिए भी जरूरत के अनुसार
+              सॉफ्टवेयर-मोबाइल विकसित करके दे देते हैं और वह भी एक ही डोमेन-नेम
+              पर।{" "}
             </strong>
           </p>
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 text-sm text-white mb-3">
