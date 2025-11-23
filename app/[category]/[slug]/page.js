@@ -1,9 +1,12 @@
+// app/[category]/[slug]/page.js
+
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { getPostBySlugAndCategory } from "@/lib/sanity";
 import { PortableText } from "@portabletext/react";
 import ViewsCounter from "@/components/ViewsCounter";
+
 export const dynamic = "force-dynamic";
 
 const getCategoryDisplayName = (route) => {
@@ -16,6 +19,13 @@ const getCategoryDisplayName = (route) => {
     "krishi-maveshi": "कृषि-मवेशी",
   };
   return displayNames[route] || route;
+};
+
+const getYouTubeId = (url) => {
+  if (!url) return null;
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return match && match[2].length === 11 ? match[2] : null;
 };
 
 const portableTextComponents = {
@@ -70,7 +80,7 @@ const portableTextComponents = {
     link: ({ value, children }) => {
       const href = value?.href || "#";
       return (
-        <a
+        
           href={href}
           className="text-blue-600 hover:text-blue-800 underline font-medium"
           target="_blank"
@@ -84,7 +94,6 @@ const portableTextComponents = {
   types: {
     cloudinaryImage: ({ value }) => {
       if (!value?.url) return null;
-
       return (
         <div className="my-8 flex flex-col items-center">
           <Image
@@ -116,6 +125,28 @@ const portableTextComponents = {
         ))}
       </div>
     ),
+    youtube: ({ value }) => {
+      const videoId = getYouTubeId(value?.url);
+      if (!videoId) return null;
+      return (
+        <div className="my-8">
+          <div className="relative w-full pt-[56.25%] bg-black rounded-lg overflow-hidden">
+            <iframe
+              className="absolute top-0 left-0 w-full h-full"
+              src={`https://www.youtube.com/embed/${videoId}?rel=0`}
+              title="YouTube video"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            />
+          </div>
+          {value.caption && (
+            <p className="text-sm text-gray-600 text-center mt-2 italic">
+              {value.caption}
+            </p>
+          )}
+        </div>
+      );
+    },
   },
 };
 
@@ -123,6 +154,7 @@ export default async function NewsPage({ params }) {
   const { category, slug } = await params;
   const safeCategory = decodeURIComponent(category);
   const safeSlug = decodeURIComponent(slug);
+
   const validCategories = [
     "desh-videsh",
     "industrial-area",
@@ -131,13 +163,17 @@ export default async function NewsPage({ params }) {
     "kala-sahitya",
     "krishi-maveshi",
   ];
+
   if (!validCategories.includes(safeCategory)) {
     notFound();
   }
+
   const post = await getPostBySlugAndCategory(safeSlug, safeCategory);
+
   if (!post) {
     notFound();
   }
+
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
@@ -150,7 +186,9 @@ export default async function NewsPage({ params }) {
       timeZone: "Asia/Kolkata",
     });
   };
+
   const categoryDisplayName = getCategoryDisplayName(safeCategory);
+
   return (
     <main className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -160,9 +198,11 @@ export default async function NewsPage({ params }) {
             <ViewsCounter slug={safeSlug} initialViews={post.views || 0} />
           </div>
         </div>
+
         <h1 className="text-4xl font-bold mb-8 text-gray-900 leading-tight">
           {post.title}
         </h1>
+
         {post.mainImageUrl && (
           <div className="w-full mb-8 flex justify-center">
             <Image
@@ -175,11 +215,13 @@ export default async function NewsPage({ params }) {
             />
           </div>
         )}
+
         {post.mainImageCaption && (
           <p className="text-center text-sm text-gray-600 mb-8 italic -mt-4">
             {post.mainImageCaption}
           </p>
         )}
+
         <article className="bg-white rounded-xl shadow-lg p-8 mb-8">
           <div className="prose prose-lg max-w-none">
             <PortableText
@@ -187,7 +229,22 @@ export default async function NewsPage({ params }) {
               components={portableTextComponents}
             />
           </div>
+
+          {post.videoLink && (
+            <div className="my-8">
+              <div className="relative w-full pt-[56.25%] bg-black rounded-lg overflow-hidden">
+                <iframe
+                  className="absolute top-0 left-0 w-full h-full"
+                  src={`https://www.youtube.com/embed/${getYouTubeId(post.videoLink)}`}
+                  title="Video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+          )}
         </article>
+
         <div className="flex items-center justify-center">
           <Link
             href="/"

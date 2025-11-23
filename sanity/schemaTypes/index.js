@@ -1,3 +1,5 @@
+// sanity/schemaTypes/index.js
+
 import MultiImageInput from "./MultiImageInput";
 import CloudinaryImageInput from "./CloudinaryImageInput";
 
@@ -451,6 +453,25 @@ export const schema = {
               },
               validation: (Rule) =>
                 Rule.min(1).error("कम से कम एक तस्वीर जोड़ें"),
+            },
+          ],
+        },
+        {
+          type: "object",
+          name: "youtube",
+          title: "YouTube Video",
+          fields: [
+            {
+              name: "url",
+              title: "YouTube URL",
+              type: "url",
+              validation: (Rule) =>
+                Rule.required().uri({ scheme: ["http", "https"] }),
+            },
+            {
+              name: "caption",
+              title: "Caption",
+              type: "string",
             },
           ],
         },
