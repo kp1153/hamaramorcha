@@ -80,7 +80,7 @@ const portableTextComponents = {
     link: ({ value, children }) => {
       const href = value?.href || "#";
       return (
-        
+        <a
           href={href}
           className="text-blue-600 hover:text-blue-800 underline font-medium"
           target="_blank"
