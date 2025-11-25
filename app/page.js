@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export const dynamic = "force-dynamic";
 
-export default async function Page() {
+export default async function MagazineLayout() {
   const posts = await getAllPosts();
 
   if (!posts || posts.length === 0) {
@@ -28,72 +28,219 @@ export default async function Page() {
     });
   };
 
+  // Category colors mapping (Code 1 se exact)
+  const getCategoryColor = (categorySlug) => {
+    const colors = {
+      "desh-videsh": "bg-red-500",
+      "krishi-maveshi": "bg-green-500",
+      pratirodh: "bg-orange-500",
+      "kala-sahitya": "bg-purple-500",
+      "jeevan-ke-rang": "bg-pink-500",
+      "industrial-area": "bg-blue-500",
+    };
+    return colors[categorySlug] || "bg-blue-600";
+  };
+
+  // Featured post (pehli post)
+  const featuredPost = posts[0];
+
+  // Medium posts (next 3 posts)
+  const mediumPosts = posts.slice(1, 4);
+
+  // Popular posts (top 3 by views - agar views hai to)
+  const popularPosts = [...posts]
+    .sort((a, b) => (b.views || 0) - (a.views || 0))
+    .slice(0, 3);
+
+  // Categories with count
+  const categoriesCount = posts.reduce((acc, post) => {
+    const catSlug = post.category?.slug?.current;
+    if (catSlug) {
+      acc[catSlug] = (acc[catSlug] || 0) + 1;
+    }
+    return acc;
+  }, {});
+
+  const categoriesData = Object.entries(categoriesCount).map(
+    ([slug, count]) => {
+      const names = {
+        "desh-videsh": "देश-विदेश",
+        "industrial-area": "इंडस्ट्रियल-एरिया",
+        "jeevan-ke-rang": "जीवन के रंग",
+        pratirodh: "प्रतिरोध",
+        "kala-sahitya": "कला-साहित्य",
+        "krishi-maveshi": "कृषि-मवेशी",
+      };
+      return { slug, name: names[slug] || slug, count };
+    }
+  );
+
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-max">
-        {posts.map((post) => (
-          <article
-            key={post._id}
-            className="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col"
-          >
-            {post.mainImageUrl && (
-              <div className="relative w-full bg-gray-100 flex items-center justify-center min-h-[250px]">
-                <Image
-                  src={post.mainImageUrl}
-                  alt={post.mainImageAlt}
-                  width={600}
-                  height={400}
-                  className="object-contain w-full h-auto max-h-[400px]"
-                  priority
-                />
-              </div>
-            )}
+    <div className="bg-gray-50">
+      {/* Header Section */}
+      <header className="bg-[#006680] text-white py-6">
+        <div className="container mx-auto px-4">
+          <h1 className="text-4xl font-bold text-center text-pink-600">
+            हमारा मोर्चा
+          </h1>
+          <p className="text-center mt-2">
+            वर्डप्रेस पर बनी वेबसाइट को लेटेस्ट टेक-स्टैक पर माइग्रेट कराने के
+            लिए संपर्क करें
+          </p>
+        </div>
+      </header>
 
-            <div className="p-6 flex flex-col flex-grow">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs bg-blue-600 text-white px-3 py-1 rounded-full font-semibold">
-                  {post.category?.name || "सामान्य"}
-                </span>
-                <span className="text-xs text-gray-500 font-medium">
-                  {formatDate(post.publishedAt)}
-                </span>
-              </div>
-
-              <h2 className="text-xl font-bold mb-4 line-clamp-2 leading-tight text-gray-900 hover:text-blue-700 transition-colors">
-                <Link
-                  href={`/${post.category?.slug?.current}/${post.slug?.current}`}
-                  className="hover:underline"
+      <div className="container mx-auto px-4 py-8">
+        {/* Featured Post (Big) */}
+        {featuredPost && (
+          <div className="mb-8">
+            <article className="bg-white rounded-lg shadow-lg overflow-hidden">
+              {featuredPost.mainImageUrl ? (
+                <div className="h-96 relative bg-gray-100">
+                  <Image
+                    src={featuredPost.mainImageUrl}
+                    alt={featuredPost.mainImageAlt || featuredPost.title}
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                </div>
+              ) : (
+                <div className="h-96 bg-gradient-to-r from-blue-500 to-purple-600"></div>
+              )}
+              <div className="p-8">
+                <span
+                  className={`${getCategoryColor(
+                    featuredPost.category?.slug?.current
+                  )} text-white px-3 py-1 rounded text-sm`}
                 >
-                  {post.title}
-                </Link>
-              </h2>
-
-              <div className="mt-auto">
-                {post.category?.slug?.current && post.slug?.current && (
+                  {featuredPost.category?.name || "सामान्य"}
+                </span>
+                <h2 className="text-4xl font-bold mt-4 mb-3">
+                  {featuredPost.title}
+                </h2>
+                <p className="text-gray-600 text-lg mb-4">
+                  {featuredPost.title}
+                </p>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-500">
+                    {formatDate(featuredPost.publishedAt)}
+                  </span>
                   <Link
-                    href={`/${post.category.slug.current}/${post.slug.current}`}
-                    className="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold text-sm hover:underline transition-colors"
+                    href={`/${featuredPost.category?.slug?.current}/${featuredPost.slug?.current}`}
+                    className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
                   >
-                    और पढ़ें
-                    <svg
-                      className="w-4 h-4 ml-1"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
+                    पढ़ें →
                   </Link>
-                )}
+                </div>
+              </div>
+            </article>
+          </div>
+        )}
+
+        {/* Grid Section */}
+        <div className="grid md:grid-cols-3 gap-6">
+          {/* Left Column - 2/3 Posts */}
+          <div className="md:col-span-2 space-y-6">
+            {mediumPosts.map((post) => (
+              <article
+                key={post._id}
+                className="bg-white rounded-lg shadow hover:shadow-lg transition p-6"
+              >
+                <div className="flex gap-4">
+                  {post.mainImageUrl ? (
+                    <div className="w-48 h-32 relative rounded flex-shrink-0 bg-gray-100">
+                      <Image
+                        src={post.mainImageUrl}
+                        alt={post.mainImageAlt || post.title}
+                        fill
+                        className="object-cover rounded"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-48 h-32 bg-gradient-to-r from-green-400 to-blue-500 rounded flex-shrink-0"></div>
+                  )}
+                  <div className="flex-1">
+                    <span
+                      className={`${getCategoryColor(
+                        post.category?.slug?.current
+                      )} text-white px-2 py-1 rounded text-xs`}
+                    >
+                      {post.category?.name || "सामान्य"}
+                    </span>
+                    <h3 className="text-xl font-bold mt-2 mb-2">
+                      <Link
+                        href={`/${post.category?.slug?.current}/${post.slug?.current}`}
+                        className="hover:text-blue-600"
+                      >
+                        {post.title}
+                      </Link>
+                    </h3>
+                    <p className="text-gray-600 text-sm mb-2 line-clamp-2">
+                      {post.title}
+                    </p>
+                    <span className="text-xs text-gray-500">
+                      {formatDate(post.publishedAt)}
+                    </span>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          {/* Right Sidebar - 1/3 */}
+          <div className="space-y-6">
+            {/* Popular Posts */}
+            <div className="bg-white rounded-lg shadow p-6">
+              <h3 className="text-xl font-bold mb-4 border-b pb-2">
+                लोकप्रिय पोस्ट
+              </h3>
+              <div className="space-y-4">
+                {popularPosts.map((post, index) => (
+                  <div
+                    key={post._id}
+                    className={
+                      index < popularPosts.length - 1 ? "border-b pb-3" : "pb-3"
+                    }
+                  >
+                    <Link
+                      href={`/${post.category?.slug?.current}/${post.slug?.current}`}
+                    >
+                      <h4 className="font-semibold text-sm mb-1 hover:text-blue-600">
+                        {post.title}
+                      </h4>
+                    </Link>
+                    <span className="text-xs text-gray-500">
+                      {formatDate(post.publishedAt)}
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
-          </article>
-        ))}
+
+            {/* Categories */}
+            <div className="bg-white rounded-lg shadow p-6">
+              <h3 className="text-xl font-bold mb-4 border-b pb-2">
+                श्रेणियाँ
+              </h3>
+              <div className="space-y-2">
+                {categoriesData.map((cat) => (
+                  <div key={cat.slug} className="flex justify-between">
+                    <Link
+                      href={`/${cat.slug}`}
+                      className="text-sm hover:text-blue-600"
+                    >
+                      {cat.name}
+                    </Link>
+                    <span className="text-xs bg-gray-200 px-2 py-1 rounded">
+                      {cat.count}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
