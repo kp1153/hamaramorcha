@@ -77,19 +77,6 @@ export default async function MagazineLayout() {
 
   return (
     <div className="bg-gray-50">
-      {/* Header Section */}
-      <header className="bg-[#006680] text-white py-6">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold text-center text-pink-600">
-            हमारा मोर्चा
-          </h1>
-          <p className="text-center mt-2">
-            वर्डप्रेस पर बनी वेबसाइट को लेटेस्ट टेक-स्टैक पर माइग्रेट कराने के
-            लिए संपर्क करें
-          </p>
-        </div>
-      </header>
-
       <div className="container mx-auto px-4 py-8">
         {/* Featured Post (Big) */}
         {featuredPost && (
