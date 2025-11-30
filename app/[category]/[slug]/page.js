@@ -188,6 +188,7 @@ export default async function NewsPage({ params }) {
   };
 
   const categoryDisplayName = getCategoryDisplayName(safeCategory);
+  const videoId = getYouTubeId(post.videoLink);
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -230,17 +231,31 @@ export default async function NewsPage({ params }) {
             />
           </div>
 
+          {/* YouTube या बाहरी लिंक हैंडलिंग */}
           {post.videoLink && (
             <div className="my-8">
-              <div className="relative w-full pt-[56.25%] bg-black rounded-lg overflow-hidden">
-                <iframe
-                  className="absolute top-0 left-0 w-full h-full"
-                  src={`https://www.youtube.com/embed/${getYouTubeId(post.videoLink)}`}
-                  title="Video"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                />
-              </div>
+              {videoId ? (
+                <div className="relative w-full pt-[56.25%] bg-black rounded-lg overflow-hidden">
+                  <iframe
+                    className="absolute top-0 left-0 w-full h-full"
+                    src={`https://www.youtube.com/embed/${videoId}?rel=0`}
+                    title="Video"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  />
+                </div>
+              ) : (
+                <div className="flex justify-center">
+                  <a
+                    href={post.videoLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors"
+                  >
+                    वीडियो देखें
+                  </a>
+                </div>
+              )}
             </div>
           )}
         </article>
