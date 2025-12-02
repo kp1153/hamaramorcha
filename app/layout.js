@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "यह रही आपकी खबर, क्लिक कीजिए",
-  description: "दिगंत-अद्वय की युवा टीम द्वारा संचालित",
+  description: "हम अपना खर्च वेबसाइट बनाकर चलाते हैं",
 };
 
 export default function RootLayout({ children }) {
