@@ -15,8 +15,27 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "यह रही आपकी खबर, क्लिक कीजिए",
-  description: "हम अपना खर्च वेबसाइट बनाकर चलाते हैं",
+  title: "High-Performance Next.js + Sanity Websites | Free Hosting Included",
+  description:
+    "We build fast, modern, SEO-optimized websites using Next.js and Sanity CMS. Get a powerful news-grade website with free hosting, lightning performance, and professional support.",
+  keywords: [
+    "Next.js developer",
+    "Sanity CMS",
+    "SEO optimized website",
+    "free hosting website",
+    "fast news website",
+    "Next.js India",
+    "Sanity expert",
+    "modern web development",
+  ],
+  openGraph: {
+    title: "Next.js + Sanity Websites with Free Hosting",
+    description:
+      "Build your powerful, scalable website with Next.js and Sanity. Free hosting included.",
+    url: "https://yourdomain.com",
+    siteName: "Hamara Morcha",
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -42,13 +61,10 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
-        {/* Header */}
         <Navbar />
 
-        {/* Main content */}
         <main className="flex-grow">{children}</main>
 
-        {/* Footer */}
         <Footer />
       </body>
     </html>
