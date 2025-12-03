@@ -3,6 +3,7 @@ import Link from "next/link";
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 import { PortableText } from "@portabletext/react";
+import ViewsCounter from "@/components/ViewsCounter";
 
 function formatDate(date) {
   return new Date(date).toLocaleDateString("en-US", {
@@ -177,6 +178,9 @@ export default async function Page(props) {
             <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-6 leading-tight">
               {post.title}
             </h1>
+
+            {/* ✅ VIEW COUNTER INSERTED HERE */}
+            <ViewsCounter slug={slug} />
 
             {post.excerpt && (
               <p className="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed">
