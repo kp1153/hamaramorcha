@@ -1,54 +1,79 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 
 const menuItems = [
-  { name: "होम", href: "/" },
-  { name: "देश-विदेश", href: "/desh-videsh" },
-  { name: "जीवन के रंग", href: "/jeevan-ke-rang" },
-  { name: "इंडस्ट्रियल-एरिया", href: "/industrial-area" },
-  { name: "प्रतिरोध", href: "/pratirodh" },
-  { name: "कला-साहित्य", href: "/kala-sahitya" },
-  { name: "कृषि-मवेशी", href: "/krishi-maveshi" },
-  { name: "टीम", href: "/team" },
+  { name: "Home", href: "/" },
+  { name: "World", href: "/world" },
+  { name: "India", href: "/india" },
+  { name: "Performing Arts", href: "/performing-arts" },
+  { name: "Academics", href: "/academics" },
+  { name: "Health", href: "/health" },
+  { name: "Team", href: "/team" },
+  { name: "विविध", href: "/vividha" },
 ];
 
 const Navbar = () => {
+  const [open, setOpen] = useState(false);
+
   return (
     <nav className="bg-white shadow-md">
-      {/* LINE 1 — LOGO / TITLE */}
-      <div className="bg-[#006680] text-white">
-        <div className="container mx-auto px-4 py-6">
-          <Link href="/" className="flex justify-center">
-            <h1 className="text-5xl font-bold text-amber-600">हमारा मोर्चा</h1>
+      <div className="bg-gradient-to-r from-teal-800 via-cyan-700 to-blue-700 text-white">
+        <div className="container mx-auto px-4 py-6 flex justify-between items-center">
+          {/* LOGO + TAGLINE */}
+          <Link href="/" className="flex flex-col items-start">
+            <h1
+              className="text-4xl md:text-6xl font-black tracking-tight text-amber-400"
+              style={{
+                textShadow:
+                  "4px 4px 0px rgba(0,0,0,0.3), 8px 8px 0px rgba(0,0,0,0.15), 2px 2px 10px rgba(255,193,7,0.4)",
+                letterSpacing: "0.05em",
+              }}
+            >
+              HAMARA MORCHA
+            </h1>
+            <p className="mt-2 text-sm md:text-base font-semibold tracking-wide text-gray-100 pl-1">
+              A struggle for dignity and livelihood
+            </p>
           </Link>
 
-          {/* LINE 2 — TAGLINE with WhatsApp */}
-          <div className="flex justify-center items-center gap-4 mt-4">
-            <p className="text-base font-semibold text-center">
-              वेबसाइट-सॉफ्टवेयर-मोबाइल ऐप बनाने का काम दिलाएं और आजाद पत्रकारिता
-              की करें हेल्प
-            </p>
+          {/* HAMBURGER BUTTON */}
+          <button
+            onClick={() => setOpen(!open)}
+            aria-label="Toggle menu"
+            aria-expanded={open}
+            className="text-white text-4xl focus:outline-none hover:text-amber-300 transition-colors"
+          >
+            ☰
+          </button>
+        </div>
 
-            <a
-              href="https://wa.me/919996865069"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-amber-600 font-bold text-lg hover:text-amber-500 transition-colors whitespace-nowrap"
-            >
-              📱 9996865069
-            </a>
-          </div>
+        {/* CONTACT LINE */}
+        <div className="container mx-auto px-4 pb-4 flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4">
+          <p className="text-sm sm:text-base font-semibold text-center">
+            Need a Website, Software or Mobile App? Contact us today.
+          </p>
+
+          <a
+            href="tel:+919996865069"
+            className="text-amber-300 font-bold text-base sm:text-lg hover:text-amber-200 transition-colors whitespace-nowrap"
+          >
+            📱 +91 9996865069
+          </a>
         </div>
       </div>
 
-      {/* LINE 3 — MENU */}
-      <div className="bg-yellow-600">
-        <div className="container mx-auto">
-          <ul className="flex flex-wrap md:flex-nowrap justify-evenly items-center py-3">
+      {/* MENU */}
+      {open && (
+        <div className="bg-white border-t shadow-inner">
+          <ul className="flex flex-col py-3">
             {menuItems.map((item) => (
-              <li key={item.name}>
+              <li key={item.name} className="border-b last:border-b-0">
                 <Link
                   href={item.href}
-                  className="px-4 py-2 text-rose-600 hover:text-pink-600 font-medium transition-colors"
+                  className="block px-6 py-3 text-teal-700 hover:text-cyan-600 hover:bg-gray-50 font-medium transition-all"
+                  onClick={() => setOpen(false)}
                 >
                   {item.name}
                 </Link>
@@ -56,7 +81,7 @@ const Navbar = () => {
             ))}
           </ul>
         </div>
-      </div>
+      )}
     </nav>
   );
 };

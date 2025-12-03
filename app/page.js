@@ -1,234 +1,338 @@
-import React from "react";
-import { getAllPosts } from "@/lib/sanity";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+import { client } from "@/sanity/lib/client";
+import { urlFor } from "@/sanity/lib/image";
 
-export const dynamic = "force-dynamic";
+const categories = [
+  {
+    name: "World",
+    slug: "world",
+    icon: "🌍",
+    color: "from-blue-600 to-blue-800",
+  },
+  {
+    name: "India",
+    slug: "india",
+    icon: "🇮🇳",
+    color: "from-orange-600 to-red-700",
+  },
+  {
+    name: "Performing Arts",
+    slug: "performing-arts",
+    icon: "🎭",
+    color: "from-purple-600 to-pink-700",
+  },
+  {
+    name: "Academics",
+    slug: "academics",
+    icon: "📚",
+    color: "from-green-600 to-teal-700",
+  },
+  {
+    name: "Health",
+    slug: "health",
+    icon: "🏥", // या "⚕️" या "💊"
+    color: "from-red-600 to-pink-700",
+  },
+  {
+    name: "विविध",
+    slug: "vividha",
+    icon: "✨",
+    color: "from-amber-600 to-yellow-700",
+  },
+];
 
-export default async function MagazineLayout() {
-  const posts = await getAllPosts();
+function formatDate(date) {
+  return new Date(date).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
 
-  if (!posts || posts.length === 0) {
-    return (
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="text-center py-12">
-          <p className="text-lg text-gray-600">कोई पोस्ट उपलब्ध नहीं है।</p>
-        </div>
-      </div>
-    );
+function timeAgo(date) {
+  const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+  const intervals = {
+    year: 31536000,
+    month: 2592000,
+    week: 604800,
+    day: 86400,
+    hour: 3600,
+    minute: 60,
+  };
+  for (const [unit, sec] of Object.entries(intervals)) {
+    const count = Math.floor(seconds / sec);
+    if (count >= 1) return `${count} ${unit}${count > 1 ? "s" : ""} ago`;
   }
+  return "Just now";
+}
 
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("hi-IN", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
-  };
+function safeImage(img, w, h) {
+  if (img?.asset?._ref?.startsWith("image-")) {
+    return urlFor(img).width(w).height(h).url();
+  }
+  return null;
+}
 
-  // Category colors mapping (Code 1 se exact)
-  const getCategoryColor = (categorySlug) => {
-    const colors = {
-      "desh-videsh": "bg-red-500",
-      "krishi-maveshi": "bg-green-500",
-      pratirodh: "bg-orange-500",
-      "kala-sahitya": "bg-purple-500",
-      "jeevan-ke-rang": "bg-pink-500",
-      "industrial-area": "bg-blue-500",
-    };
-    return colors[categorySlug] || "bg-blue-600";
-  };
+export default async function Page() {
+  const heroPost = await client.fetch(
+    `*[_type == "post"] | order(_createdAt desc)[0]{
+      _id, title, slug, mainImage, excerpt, category->{title, slug}, _createdAt
+    }`
+  );
 
-  // Featured post (pehli post)
-  const featuredPost = posts[0];
+  const featuredPosts = await client.fetch(
+    `*[_type == "post" && featured == true] | order(_createdAt desc)[0...3]{
+      _id, title, slug, mainImage, excerpt, category->{title, slug}, _createdAt
+    }`
+  );
 
-  // Medium posts (next 3 posts)
-  const mediumPosts = posts.slice(1, 4);
+  const latestPosts = await client.fetch(
+    `*[_type == "post"] | order(_createdAt desc)[0...6]{
+      _id, title, slug, category->{title, slug}, _createdAt
+    }`
+  );
 
-  // Popular posts (top 3 by views - agar views hai to)
-  const popularPosts = [...posts]
-    .sort((a, b) => (b.views || 0) - (a.views || 0))
-    .slice(0, 3);
-
-  // Categories with count
-  const categoriesCount = posts.reduce((acc, post) => {
-    const catSlug = post.category?.slug?.current;
-    if (catSlug) {
-      acc[catSlug] = (acc[catSlug] || 0) + 1;
-    }
-    return acc;
-  }, {});
-
-  const categoriesData = Object.entries(categoriesCount).map(
-    ([slug, count]) => {
-      const names = {
-        "desh-videsh": "देश-विदेश",
-        "industrial-area": "इंडस्ट्रियल-एरिया",
-        "jeevan-ke-rang": "जीवन के रंग",
-        pratirodh: "प्रतिरोध",
-        "kala-sahitya": "कला-साहित्य",
-        "krishi-maveshi": "कृषि-मवेशी",
-      };
-      return { slug, name: names[slug] || slug, count };
-    }
+  const editorPicks = await client.fetch(
+    `*[_type == "post"] | order(_createdAt desc)[3...6]{
+      _id, title, slug, mainImage, excerpt, category->{title, slug}, _createdAt
+    }`
   );
 
   return (
-    <div className="bg-gray-50">
-      <div className="container mx-auto px-4 py-8">
-        {/* Featured Post (Big) */}
-        {featuredPost && (
-          <div className="mb-8">
-            <article className="bg-white rounded-lg shadow-lg overflow-hidden">
-              {featuredPost.mainImageUrl ? (
-                <div className="h-96 relative bg-gray-100">
+    <div className="min-h-screen bg-gray-50">
+      {/* HERO SECTION */}
+      <section className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden">
+        <div className="container mx-auto px-4 py-12 md:py-20 relative z-10">
+          {heroPost && (
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+              <div>
+                <div className="inline-block bg-amber-500 text-white px-4 py-1 rounded-full text-sm font-bold mb-4">
+                  {heroPost.category?.title}
+                </div>
+                <h1 className="text-4xl md:text-6xl font-black mb-6">
+                  {heroPost.title}
+                </h1>
+                <p className="text-xl text-gray-300 mb-8">{heroPost.excerpt}</p>
+
+                <div className="flex flex-wrap gap-4">
+                  <Link
+                    href={`/${heroPost.category?.slug?.current}/${heroPost.slug.current}`}
+                    className="px-8 py-4 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg shadow-lg"
+                  >
+                    Read Full Story
+                  </Link>
+                  <span className="px-6 py-4 text-gray-400 font-medium">
+                    {formatDate(heroPost._createdAt)}
+                  </span>
+                </div>
+              </div>
+
+              <div className="relative h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
+                {safeImage(heroPost.mainImage, 800, 600) ? (
                   <Image
-                    src={featuredPost.mainImageUrl}
-                    alt={featuredPost.mainImageAlt || featuredPost.title}
+                    src={safeImage(heroPost.mainImage, 800, 600)}
+                    alt={heroPost.title}
                     fill
                     className="object-cover"
                     priority
                   />
-                </div>
-              ) : (
-                <div className="h-96 bg-gradient-to-r from-blue-500 to-purple-600"></div>
-              )}
-              <div className="p-8">
-                <span
-                  className={`${getCategoryColor(
-                    featuredPost.category?.slug?.current
-                  )} text-white px-3 py-1 rounded text-sm`}
-                >
-                  {featuredPost.category?.name || "सामान्य"}
-                </span>
-                <h2 className="text-4xl font-bold mt-4 mb-3">
-                  {featuredPost.title}
-                </h2>
-                <p className="text-gray-600 text-lg mb-4">
-                  {featuredPost.title}
+                ) : (
+                  <div className="w-full h-full bg-gray-700 flex items-center justify-center text-8xl">
+                    📰
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* FEATURED STORIES */}
+      <section className="container mx-auto px-4 py-12 md:py-16">
+        <h2 className="text-3xl md:text-4xl font-black mb-8">
+          Featured Stories
+        </h2>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {featuredPosts.map((post) => (
+            <Link
+              key={post._id}
+              href={`/${post.category?.slug?.current}/${post.slug.current}`}
+              className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-all"
+            >
+              <div className="relative h-56">
+                {safeImage(post.mainImage, 600, 400) ? (
+                  <Image
+                    src={safeImage(post.mainImage, 600, 400)}
+                    alt={post.title}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-300 flex items-center justify-center text-6xl">
+                    📰
+                  </div>
+                )}
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold mb-3 group-hover:text-cyan-700">
+                  {post.title}
+                </h3>
+                <p className="text-gray-600 mb-4 line-clamp-3">
+                  {post.excerpt}
                 </p>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-500">
-                    {formatDate(featuredPost.publishedAt)}
+                    {formatDate(post._createdAt)}
                   </span>
-                  <Link
-                    href={`/${featuredPost.category?.slug?.current}/${featuredPost.slug?.current}`}
-                    className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
-                  >
-                    पढ़ें →
-                  </Link>
+                  <span className="text-cyan-600 font-semibold">
+                    Read More →
+                  </span>
                 </div>
               </div>
-            </article>
-          </div>
-        )}
+            </Link>
+          ))}
+        </div>
+      </section>
 
-        {/* Grid Section */}
-        <div className="grid md:grid-cols-3 gap-6">
-          {/* Left Column - 2/3 Posts */}
-          <div className="md:col-span-2 space-y-6">
-            {mediumPosts.map((post) => (
-              <article
-                key={post._id}
-                className="bg-white rounded-lg shadow hover:shadow-lg transition p-6"
+      {/* CATEGORIES */}
+      <section className="bg-white py-12 md:py-16">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-black mb-8 text-center">
+            Explore by Category
+          </h2>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            {categories.map((cat) => (
+              <Link
+                key={cat.slug}
+                href={`/${cat.slug}`}
+                className={`group bg-gradient-to-br ${cat.color} rounded-xl p-6 text-white shadow-lg hover:scale-105 transition-transform`}
               >
-                <div className="flex gap-4">
-                  {post.mainImageUrl ? (
-                    <div className="w-48 h-32 relative rounded flex-shrink-0 bg-gray-100">
-                      <Image
-                        src={post.mainImageUrl}
-                        alt={post.mainImageAlt || post.title}
-                        fill
-                        className="object-cover rounded"
-                      />
-                    </div>
-                  ) : (
-                    <div className="w-48 h-32 bg-gradient-to-r from-green-400 to-blue-500 rounded flex-shrink-0"></div>
-                  )}
-                  <div className="flex-1">
-                    <span
-                      className={`${getCategoryColor(
-                        post.category?.slug?.current
-                      )} text-white px-2 py-1 rounded text-xs`}
-                    >
-                      {post.category?.name || "सामान्य"}
-                    </span>
-                    <h3 className="text-xl font-bold mt-2 mb-2">
-                      <Link
-                        href={`/${post.category?.slug?.current}/${post.slug?.current}`}
-                        className="hover:text-blue-600"
-                      >
-                        {post.title}
-                      </Link>
-                    </h3>
-                    <p className="text-gray-600 text-sm mb-2 line-clamp-2">
-                      {post.title}
-                    </p>
-                    <span className="text-xs text-gray-500">
-                      {formatDate(post.publishedAt)}
-                    </span>
-                  </div>
-                </div>
-              </article>
+                <div className="text-4xl mb-3">{cat.icon}</div>
+                <h3 className="text-lg font-bold">{cat.name}</h3>
+              </Link>
             ))}
           </div>
+        </div>
+      </section>
 
-          {/* Right Sidebar - 1/3 */}
-          <div className="space-y-6">
-            {/* Popular Posts */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-xl font-bold mb-4 border-b pb-2">
-                लोकप्रिय पोस्ट
-              </h3>
-              <div className="space-y-4">
-                {popularPosts.map((post, index) => (
-                  <div
-                    key={post._id}
-                    className={
-                      index < popularPosts.length - 1 ? "border-b pb-3" : "pb-3"
-                    }
-                  >
-                    <Link
-                      href={`/${post.category?.slug?.current}/${post.slug?.current}`}
-                    >
-                      <h4 className="font-semibold text-sm mb-1 hover:text-blue-600">
-                        {post.title}
-                      </h4>
-                    </Link>
-                    <span className="text-xs text-gray-500">
-                      {formatDate(post.publishedAt)}
+      {/* EDITOR'S PICKS */}
+      <section className="container mx-auto px-4 py-12 md:py-16">
+        <div className="grid lg:grid-cols-3 gap-12">
+          <div className="lg:col-span-2">
+            <h2 className="text-3xl md:text-4xl font-black mb-8">
+              Editor&apos;s Picks
+            </h2>
+
+            <div className="space-y-6">
+              {editorPicks.map((post) => (
+                <Link
+                  key={post._id}
+                  href={`/${post.category?.slug?.current}/${post.slug.current}`}
+                  className="group bg-white rounded-xl p-6 shadow-md hover:shadow-xl flex gap-6"
+                >
+                  <div className="w-40 h-40 rounded-lg overflow-hidden flex-shrink-0">
+                    {safeImage(post.mainImage, 300, 300) ? (
+                      <Image
+                        src={safeImage(post.mainImage, 300, 300)}
+                        alt={post.title}
+                        width={160}
+                        height={160}
+                        className="object-cover w-full h-full"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gray-300 flex items-center justify-center text-4xl">
+                        📄
+                      </div>
+                    )}
+                  </div>
+
+                  <div>
+                    <div className="text-sm text-cyan-600 font-semibold">
+                      {post.category?.title}
+                    </div>
+                    <h3 className="text-xl font-bold mb-2 group-hover:text-cyan-700">
+                      {post.title}
+                    </h3>
+                    <p className="text-gray-600 line-clamp-2">{post.excerpt}</p>
+                    <span className="text-sm text-gray-500">
+                      {formatDate(post._createdAt)}
                     </span>
                   </div>
-                ))}
-              </div>
+                </Link>
+              ))}
             </div>
+          </div>
 
-            {/* Categories */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-xl font-bold mb-4 border-b pb-2">
-                श्रेणियाँ
+          <div>
+            <div className="bg-slate-900 text-white rounded-xl p-6 sticky top-4">
+              <h3 className="text-2xl font-black mb-6 flex items-center gap-2">
+                <span className="text-red-500 animate-pulse">🔴</span> Latest
+                Updates
               </h3>
-              <div className="space-y-2">
-                {categoriesData.map((cat) => (
-                  <div key={cat.slug} className="flex justify-between">
+
+              <ul className="space-y-4">
+                {latestPosts.map((post) => (
+                  <li
+                    key={post._id}
+                    className="border-b border-slate-700 pb-4 last:border-b-0"
+                  >
+                    <div className="text-xs text-amber-400 font-semibold">
+                      {post.category?.title}
+                    </div>
+
                     <Link
-                      href={`/${cat.slug}`}
-                      className="text-sm hover:text-blue-600"
+                      href={`/${post.category?.slug?.current}/${post.slug.current}`}
+                      className="text-white hover:text-amber-300 font-medium line-clamp-2"
                     >
-                      {cat.name}
+                      {post.title}
                     </Link>
-                    <span className="text-xs bg-gray-200 px-2 py-1 rounded">
-                      {cat.count}
-                    </span>
-                  </div>
+
+                    <div className="text-xs text-gray-400">
+                      {timeAgo(post._createdAt)}
+                    </div>
+                  </li>
                 ))}
-              </div>
+              </ul>
+
+              <Link
+                href="/all"
+                className="block mt-6 bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-lg text-center"
+              >
+                View All News
+              </Link>
             </div>
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* NEWSLETTER */}
+      <section className="bg-gradient-to-r from-cyan-600 to-blue-700 text-white py-16">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-5xl font-black mb-4">
+            Join the Movement
+          </h2>
+          <p className="text-xl mb-8">Subscribe and stay updated</p>
+
+          <form className="flex flex-col sm:flex-row gap-4 justify-center max-w-xl mx-auto">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              required
+              className="px-6 py-4 rounded-lg text-slate-900 flex-1 focus:outline-none focus:ring-4 focus:ring-amber-400"
+            />
+            <button
+              type="submit"
+              className="px-8 py-4 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg"
+            >
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </section>
     </div>
   );
 }

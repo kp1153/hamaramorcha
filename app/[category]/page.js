@@ -1,138 +1,199 @@
-import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { getPostsByCategory } from "@/lib/sanity";
+import { client } from "@/sanity/lib/client";
+import { urlFor } from "@/sanity/lib/image";
 
-export const dynamic = "force-dynamic";
+function formatDate(date) {
+  return new Date(date).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
 
-const getCategoryDisplayName = (route) => {
-  const displayNames = {
-    "desh-videsh": "देश-विदेश",
-    "industrial-area": "इंडस्ट्रियल-एरिया",
-    "jeevan-ke-rang": "जीवन के रंग",
-    pratirodh: "प्रतिरोध",
-    "kala-sahitya": "कला-साहित्य",
-    "krishi-maveshi": "कृषि-मवेशी",
-  };
-  return displayNames[route] || route;
-};
-
-export default async function CategoryPage({ params }) {
-  const { category } = await params;
-  const safeCategory = decodeURIComponent(category);
-
-  const validCategories = [
-    "desh-videsh",
-    "industrial-area",
-    "jeevan-ke-rang",
-    "pratirodh",
-    "kala-sahitya",
-    "krishi-maveshi",
-  ];
-
-  if (!validCategories.includes(safeCategory)) {
-    notFound();
+function safeImage(img, w, h) {
+  if (img?.asset?._ref?.startsWith("image-")) {
+    return urlFor(img).width(w).height(h).url();
   }
+  return null;
+}
 
-  const posts = await getPostsByCategory(safeCategory);
+export default async function Page({ params }) {
+  const { slug } = params;
 
-  if (!posts || posts.length === 0) {
+  // Category info
+  const category = await client.fetch(
+    `*[_type == "category" && slug.current == $slug][0]{
+      title, slug, description
+    }`,
+    { slug }
+  );
+
+  // All posts in this category
+  const posts = await client.fetch(
+    `*[_type == "post" && category->slug.current == $slug] | order(_createdAt desc){
+      _id, title, slug, mainImage, excerpt, category->{title, slug}, _createdAt, author->{name}
+    }`,
+    { slug }
+  );
+
+  // Featured post (first one)
+  const featured = posts[0];
+  const restPosts = posts.slice(1);
+
+  if (!category) {
     return (
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8">
-          {getCategoryDisplayName(safeCategory)}
+      <div className="container mx-auto px-4 py-20 text-center">
+        <h1 className="text-4xl font-black text-slate-900 mb-4">
+          Category Not Found
         </h1>
-        <div className="text-center py-12">
-          <p className="text-lg text-gray-600">
-            इस श्रेणी में कोई पोस्ट उपलब्ध नहीं है।
-          </p>
-        </div>
+        <Link href="/" className="text-cyan-600 font-bold hover:text-cyan-800">
+          ← Back to Home
+        </Link>
       </div>
     );
   }
 
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("hi-IN", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
-  };
-
-  const categoryDisplayName = getCategoryDisplayName(safeCategory);
-
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8 text-gray-900">
-        {categoryDisplayName}
-      </h1>
-
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-max">
-        {posts.map((post) => (
-          <article
-            key={post._id}
-            className="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col"
+    <div className="min-h-screen bg-gray-50">
+      {/* HEADER */}
+      <section className="bg-gradient-to-r from-slate-900 to-slate-800 text-white py-12 md:py-16">
+        <div className="container mx-auto px-4">
+          <Link
+            href="/"
+            className="text-amber-400 hover:text-amber-300 font-semibold mb-4 inline-block"
           >
-            {post.mainImageUrl && (
-              <div className="relative w-full bg-gray-100 flex items-center justify-center min-h-[250px]">
-                <Image
-                  src={post.mainImageUrl}
-                  alt={post.mainImageAlt}
-                  width={600}
-                  height={400}
-                  className="object-contain w-full h-auto max-h-[400px]"
-                />
-              </div>
-            )}
+            ← Back to Home
+          </Link>
+          <h1 className="text-4xl md:text-6xl font-black mb-4">
+            {category.title}
+          </h1>
+          {category.description && (
+            <p className="text-xl text-gray-300 max-w-3xl">
+              {category.description}
+            </p>
+          )}
+        </div>
+      </section>
 
-            <div className="p-6 flex flex-col flex-grow">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs bg-blue-600 text-white px-3 py-1 rounded-full font-semibold">
-                  {post.category?.name || "सामान्य"}
-                </span>
-                <span className="text-xs text-gray-500 font-medium">
-                  {formatDate(post.publishedAt)}
-                </span>
-              </div>
-
-              <h2 className="text-xl font-bold mb-4 line-clamp-2 leading-tight text-gray-900 hover:text-blue-700 transition-colors">
-                <Link
-                  href={`/${post.category?.slug?.current}/${post.slug?.current}`}
-                  className="hover:underline"
-                >
-                  {post.title}
-                </Link>
-              </h2>
-
-              <div className="mt-auto">
-                {post.category?.slug?.current && post.slug?.current && (
-                  <Link
-                    href={`/${post.category.slug.current}/${post.slug.current}`}
-                    className="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold text-sm hover:underline transition-colors"
-                  >
-                    और पढ़ें
-                    <svg
-                      className="w-4 h-4 ml-1"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </Link>
+      <div className="container mx-auto px-4 py-12">
+        {/* FEATURED POST */}
+        {featured && (
+          <section className="mb-16">
+            <h2 className="text-2xl font-black text-slate-900 mb-6">
+              Featured Story
+            </h2>
+            <Link
+              href={`/${featured.category?.slug?.current}/${featured.slug.current}`}
+              className="group bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all grid md:grid-cols-2 gap-6"
+            >
+              <div className="relative h-64 md:h-full">
+                {safeImage(featured.mainImage, 800, 600) ? (
+                  <Image
+                    src={safeImage(featured.mainImage, 800, 600)}
+                    alt={featured.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center text-8xl">
+                    📰
+                  </div>
                 )}
               </div>
+
+              <div className="p-8 flex flex-col justify-center">
+                <div className="text-sm text-cyan-600 font-bold mb-3">
+                  {featured.category?.title}
+                </div>
+                <h3 className="text-3xl md:text-4xl font-black text-slate-900 mb-4 group-hover:text-cyan-700 transition-colors">
+                  {featured.title}
+                </h3>
+                <p className="text-gray-600 text-lg mb-6 line-clamp-3">
+                  {featured.excerpt}
+                </p>
+                <div className="flex items-center justify-between text-sm text-gray-500">
+                  <span>{formatDate(featured._createdAt)}</span>
+                  {featured.author && <span>By {featured.author.name}</span>}
+                </div>
+              </div>
+            </Link>
+          </section>
+        )}
+
+        {/* ALL POSTS GRID */}
+        <section>
+          <h2 className="text-2xl font-black text-slate-900 mb-6">
+            All Stories
+          </h2>
+
+          {restPosts.length > 0 ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {restPosts.map((post) => (
+                <Link
+                  key={post._id}
+                  href={`/${post.category?.slug?.current}/${post.slug.current}`}
+                  className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-all transform hover:-translate-y-2"
+                >
+                  <div className="relative h-56">
+                    {safeImage(post.mainImage, 600, 400) ? (
+                      <Image
+                        src={safeImage(post.mainImage, 600, 400)}
+                        alt={post.title}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center text-6xl">
+                        📰
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-cyan-700 transition-colors line-clamp-2">
+                      {post.title}
+                    </h3>
+                    <p className="text-gray-600 mb-4 line-clamp-3">
+                      {post.excerpt}
+                    </p>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-gray-500">
+                        {formatDate(post._createdAt)}
+                      </span>
+                      <span className="text-cyan-600 font-semibold group-hover:text-cyan-800">
+                        Read More →
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
             </div>
-          </article>
-        ))}
+          ) : (
+            <div className="bg-white rounded-xl p-12 text-center shadow-md">
+              <div className="text-6xl mb-4">📭</div>
+              <h3 className="text-2xl font-bold text-slate-900 mb-2">
+                No Stories Yet
+              </h3>
+              <p className="text-gray-600">
+                Check back soon for new content in this category.
+              </p>
+            </div>
+          )}
+        </section>
       </div>
     </div>
   );
+}
+
+export async function generateStaticParams() {
+  const categories = await client.fetch(
+    `*[_type == "category"]{
+      "slug": slug.current
+    }`
+  );
+
+  return categories.map((cat) => ({
+    slug: cat.slug,
+  }));
 }
