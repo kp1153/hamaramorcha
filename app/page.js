@@ -309,30 +309,4 @@ export default async function Page() {
         </div>
       </section>
 
-      {/* NEWSLETTER */}
-      <section className="bg-gradient-to-r from-cyan-600 to-blue-700 text-white py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-5xl font-black mb-4">
-            Join the Movement
-          </h2>
-          <p className="text-xl mb-8">Subscribe and stay updated</p>
-
-          <form className="flex flex-col sm:flex-row gap-4 justify-center max-w-xl mx-auto">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              required
-              className="px-6 py-4 rounded-lg text-slate-900 flex-1 focus:outline-none focus:ring-4 focus:ring-amber-400"
-            />
-            <button
-              type="submit"
-              className="px-8 py-4 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg"
-            >
-              Subscribe
-            </button>
-          </form>
-        </div>
-      </section>
-    </div>
-  );
-}
+      
