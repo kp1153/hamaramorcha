@@ -54,9 +54,7 @@ const portableTextComponents = {
       </h3>
     ),
     h4: ({ children }) => (
-      <h4 className="text-xl font-bold text-slate-900 mt-6 mb-2">
-        {children}
-      </h4>
+      <h4 className="text-xl font-bold text-slate-900 mt-6 mb-2">{children}</h4>
     ),
     normal: ({ children }) => (
       <p className="text-lg text-gray-700 leading-relaxed mb-6">{children}</p>
@@ -81,8 +79,8 @@ const portableTextComponents = {
   },
   marks: {
     link: ({ children, value }) => (
-      
-        <a href={value?.href}
+      <a
+        href={value?.href}
         target="_blank"
         rel="noopener noreferrer"
         className="text-cyan-600 font-semibold hover:text-cyan-800 underline"
@@ -97,7 +95,8 @@ const portableTextComponents = {
   },
 };
 
-export default async function Page({ params }) {
+export default async function Page(props) {
+  const params = await props.params;
   const { category, slug } = params;
 
   // Fetch post
@@ -131,10 +130,7 @@ export default async function Page({ params }) {
         <h1 className="text-4xl font-black text-slate-900 mb-4">
           Article Not Found
         </h1>
-        <Link
-          href="/"
-          className="text-cyan-600 font-bold hover:text-cyan-800"
-        >
+        <Link href="/" className="text-cyan-600 font-bold hover:text-cyan-800">
           ← Back to Home
         </Link>
       </div>
@@ -343,15 +339,16 @@ export default async function Page({ params }) {
 }
 
 export async function generateStaticParams() {
-  const posts = await client.fetch(
-    `*[_type == "post"]{
-      "slug": slug.current,
-      "category": category->slug.current
-    }`
-  );
-
-  return posts.map((post) => ({
-    category: post.category,
-    slug: post.slug,
-  }));
+  try {
+    const posts = await client.fetch(
+      `*[_type == "post"]{ "slug": slug.current, "category": category->slug.current }`
+    );
+    return posts.map((post) => ({
+      category: post.category,
+      slug: post.slug,
+    }));
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
 }

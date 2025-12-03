@@ -18,7 +18,8 @@ function safeImage(img, w, h) {
   return null;
 }
 
-export default async function Page({ params }) {
+export default async function Page(props) {
+  const params = await props.params;
   const { slug } = params;
 
   // Category info
@@ -187,13 +188,13 @@ export default async function Page({ params }) {
 }
 
 export async function generateStaticParams() {
-  const categories = await client.fetch(
-    `*[_type == "category"]{
-      "slug": slug.current
-    }`
-  );
-
-  return categories.map((cat) => ({
-    slug: cat.slug,
-  }));
+  try {
+    const categories = await client.fetch(
+      `*[_type == "category"]{ "slug": slug.current }`
+    );
+    return categories.map((cat) => ({ slug: cat.slug }));
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
 }
