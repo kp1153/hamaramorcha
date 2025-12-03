@@ -31,7 +31,7 @@ const categories = [
   {
     name: "Health",
     slug: "health",
-    icon: "🏥", // या "⚕️" या "💊"
+    icon: "🏥",
     color: "from-red-600 to-pink-700",
   },
   {
@@ -308,5 +308,6 @@ export default async function Page() {
           </div>
         </div>
       </section>
-
-      
+    </div>
+  );
+}
