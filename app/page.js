@@ -68,9 +68,16 @@ function timeAgo(date) {
 }
 
 function safeImage(img, w, h) {
+  // Cloudinary URL support
+  if (typeof img === "string" && img.startsWith("http")) {
+    return img;
+  }
+
+  // Sanity asset support
   if (img?.asset?._ref?.startsWith("image-")) {
     return urlFor(img).width(w).height(h).url();
   }
+
   return null;
 }
 

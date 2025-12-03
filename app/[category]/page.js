@@ -12,9 +12,16 @@ function formatDate(date) {
 }
 
 function safeImage(img, w, h) {
+  // Cloudinary URL support
+  if (typeof img === "string" && img.startsWith("http")) {
+    return img;
+  }
+
+  // Sanity image support
   if (img?.asset?._ref?.startsWith("image-")) {
     return urlFor(img).width(w).height(h).url();
   }
+
   return null;
 }
 
@@ -84,6 +91,7 @@ export default async function Page(props) {
             <h2 className="text-2xl font-black text-slate-900 mb-6">
               Featured Story
             </h2>
+
             <Link
               href={`/${featured.category?.slug?.current}/${featured.slug.current}`}
               className="group bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all grid md:grid-cols-2 gap-6"

@@ -12,10 +12,20 @@ function formatDate(date) {
   });
 }
 
+// ---------------------------
+// FIXED safeImage()
+// ---------------------------
 function safeImage(img, w, h) {
+  // Cloudinary URL
+  if (typeof img === "string" && img.startsWith("http")) {
+    return img;
+  }
+
+  // Sanity image
   if (img?.asset?._ref?.startsWith("image-")) {
     return urlFor(img).width(w).height(h).url();
   }
+
   return null;
 }
 
@@ -24,10 +34,17 @@ const portableTextComponents = {
   types: {
     image: ({ value }) => {
       if (!value?.asset?._ref) return null;
+
+      // Added Cloudinary + Sanity safe handling here also
+      const imgUrl =
+        typeof value === "string"
+          ? value
+          : urlFor(value).width(1200).height(800).url();
+
       return (
         <div className="my-8 rounded-lg overflow-hidden">
           <Image
-            src={urlFor(value).width(1200).height(800).url()}
+            src={imgUrl}
             alt={value.alt || "Article image"}
             width={1200}
             height={800}
@@ -207,10 +224,12 @@ export default async function Page(props) {
                   </div>
                 </div>
               )}
+
               <div className="flex items-center gap-2">
                 <span>📅</span>
                 <span>{formatDate(post._createdAt)}</span>
               </div>
+
               {post._updatedAt !== post._createdAt && (
                 <div className="flex items-center gap-2">
                   <span>🔄</span>
