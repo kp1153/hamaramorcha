@@ -15,34 +15,43 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "High-Performance Next.js + Sanity Websites | Free Hosting Included",
+  title: "Next.js + Sanity Developer India | High-Performance SEO Websites",
   description:
-    "We build fast, modern, SEO-optimized websites using Next.js and Sanity CMS. Get a powerful news-grade website with free hosting, lightning performance, and professional support.",
+    "Professional Next.js & Sanity CMS developer in India. We build fast, SEO-optimized, news-grade websites with free hosting, secure architecture, and enterprise-level performance.",
   keywords: [
-    "Next.js developer",
-    "Sanity CMS",
-    "SEO optimized website",
-    "free hosting website",
+    "Next.js developer India",
+    "Sanity CMS developer",
+    "web developer India",
+    "Next.js website India",
+    "SEO optimized website India",
     "fast news website",
-    "Next.js India",
-    "Sanity expert",
-    "modern web development",
+    "React developer India",
+    "Sanity expert India",
+    "modern web development India",
+    "Next.js hosting free",
   ],
   openGraph: {
-    title: "Next.js + Sanity Websites with Free Hosting",
+    title: "Next.js + Sanity Developer India | SEO-Optimized Websites",
     description:
-      "Build your powerful, scalable website with Next.js and Sanity. Free hosting included.",
+      "Build a powerful, scalable, SEO-friendly website with Next.js 14 and Sanity CMS. Free hosting included.",
     url: "https://yourdomain.com",
     siteName: "Hamara Morcha",
     type: "website",
+    locale: "en_IN",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Next.js + Sanity Developer India",
+    description:
+      "High-speed, SEO-friendly Next.js + Sanity CMS websites with free hosting.",
   },
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="hi">
+    <html lang="en">
       <head>
-        {/* Google Analytics */}
+        {/* Google Analytics (untouched) */}
         <script
           async
           src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"
@@ -58,13 +67,12 @@ export default function RootLayout({ children }) {
           }}
         />
       </head>
+
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
         <Navbar />
-
         <main className="flex-grow">{children}</main>
-
         <Footer />
       </body>
     </html>
