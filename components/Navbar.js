@@ -19,12 +19,12 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white shadow-md">
-      <div className="bg-gradient-to-r from-teal-800 via-cyan-700 to-blue-700 text-white">
+      <div className="bg-zinc-400">
         <div className="container mx-auto px-4 py-6 flex justify-between items-center">
           {/* LOGO + TAGLINE */}
           <Link href="/" className="flex flex-col items-start">
             <h1
-              className="text-4xl md:text-6xl font-black tracking-tight text-amber-400"
+              className="text-4xl md:text-6xl font-black tracking-tight text-amber-600"
               style={{
                 textShadow:
                   "4px 4px 0px rgba(0,0,0,0.3), 8px 8px 0px rgba(0,0,0,0.15), 2px 2px 10px rgba(255,193,7,0.4)",
@@ -33,7 +33,7 @@ const Navbar = () => {
             >
               HAMARA MORCHA
             </h1>
-            <p className="mt-2 text-sm md:text-base font-semibold tracking-wide text-gray-100 pl-1">
+            <p className="mt-2 text-sm md:text-base font-semibold tracking-wide text-blue-600 pl-1">
               A struggle for dignity and livelihood
             </p>
           </Link>
@@ -51,7 +51,7 @@ const Navbar = () => {
 
         {/* CONTACT LINE */}
         <div className="container mx-auto px-4 pb-4 flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4">
-          <p className="text-sm sm:text-base font-semibold text-center">
+          <p className="text-sm sm:text-base text-rose-600 font-bold text-center">
             Need a Website, Software or Mobile App? Contact us today.
           </p>
 
