@@ -12,30 +12,18 @@ function formatDate(date) {
   });
 }
 
-// ---------------------------
-// FIXED safeImage()
-// ---------------------------
 function safeImage(img, w, h) {
-  // Cloudinary URL
-  if (typeof img === "string" && img.startsWith("http")) {
-    return img;
-  }
-
-  // Sanity image
-  if (img?.asset?._ref?.startsWith("image-")) {
+  if (typeof img === "string" && img.startsWith("http")) return img;
+  if (img?.asset?._ref?.startsWith("image-"))
     return urlFor(img).width(w).height(h).url();
-  }
-
   return null;
 }
 
-// Portable Text Components
 const portableTextComponents = {
   types: {
     image: ({ value }) => {
       if (!value?.asset?._ref) return null;
 
-      // Added Cloudinary + Sanity safe handling here also
       const imgUrl =
         typeof value === "string"
           ? value
@@ -116,7 +104,6 @@ export default async function Page(props) {
   const params = await props.params;
   const { category, slug } = params;
 
-  // Fetch post
   const post = await client.fetch(
     `*[_type == "post" && slug.current == $slug && category->slug.current == $category][0]{
       _id,
@@ -133,9 +120,9 @@ export default async function Page(props) {
     { slug, category }
   );
 
-  // Related posts
   const relatedPosts = await client.fetch(
-    `*[_type == "post" && category->slug.current == $category && slug.current != $slug] | order(_createdAt desc)[0...3]{
+    `*[_type == "post" && category->slug.current == $category && slug.current != $slug] 
+      | order(_createdAt desc)[0...3]{
       _id, title, slug, mainImage, excerpt, category->{title, slug}, _createdAt
     }`,
     { category, slug }
@@ -180,7 +167,6 @@ export default async function Page(props) {
       <article className="bg-white">
         <div className="container mx-auto px-4 py-12 md:py-16">
           <div className="max-w-4xl mx-auto">
-            {/* Category Badge */}
             <Link
               href={`/${post.category?.slug?.current}`}
               className="inline-block bg-cyan-600 text-white px-4 py-2 rounded-full text-sm font-bold mb-6 hover:bg-cyan-700 transition-colors"
@@ -188,19 +174,16 @@ export default async function Page(props) {
               {post.category?.title}
             </Link>
 
-            {/* Title */}
             <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-6 leading-tight">
               {post.title}
             </h1>
 
-            {/* Excerpt */}
             {post.excerpt && (
               <p className="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed">
                 {post.excerpt}
               </p>
             )}
 
-            {/* Meta Info */}
             <div className="flex flex-wrap items-center gap-6 text-gray-600 mb-8 pb-8 border-b">
               {post.author && (
                 <div className="flex items-center gap-3">
@@ -360,8 +343,12 @@ export default async function Page(props) {
 export async function generateStaticParams() {
   try {
     const posts = await client.fetch(
-      `*[_type == "post"]{ "slug": slug.current, "category": category->slug.current }`
+      `*[_type == "post"]{
+        "slug": slug.current,
+        "category": category->slug.current
+      }`
     );
+
     return posts.map((post) => ({
       category: post.category,
       slug: post.slug,
