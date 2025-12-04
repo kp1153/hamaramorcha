@@ -50,42 +50,42 @@ const portableTextComponents = {
   },
   block: {
     h2: ({ children }) => (
-      <h2 className="text-3xl font-bold text-slate-900 mt-10 mb-4">
+      <h2 className="text-xl font-bold text-slate-900 mt-10 mb-4">
         {children}
       </h2>
     ),
     h3: ({ children }) => (
-      <h3 className="text-2xl font-bold text-slate-900 mt-8 mb-3">
+      <h3 className="text-lg font-bold text-slate-900 mt-8 mb-3">
         {children}
       </h3>
     ),
     h4: ({ children }) => (
-      <h4 className="text-xl font-bold text-slate-900 mt-6 mb-2">{children}</h4>
+      <h4 className="text-base font-bold text-slate-900 mt-6 mb-2">{children}</h4>
     ),
     normal: ({ children }) => (
-      <p className="text-lg text-gray-700 leading-relaxed mb-6">{children}</p>
+      <p className="text-base text-gray-700 leading-relaxed mb-6">{children}</p>
     ),
     blockquote: ({ children }) => (
-      <blockquote className="border-l-4 border-cyan-600 pl-6 italic text-xl text-gray-800 my-8">
+      <blockquote className="border-l-4 border-cyan-600 pl-6 italic text-lg text-gray-800 my-8">
         {children}
       </blockquote>
     ),
   },
   list: {
     bullet: ({ children }) => (
-      <ul className="list-disc list-inside space-y-2 mb-6 text-lg text-gray-700">
+      <ul className="list-disc list-inside space-y-2 mb-6 text-base text-gray-700">
         {children}
       </ul>
     ),
     number: ({ children }) => (
-      <ol className="list-decimal list-inside space-y-2 mb-6 text-lg text-gray-700">
+      <ol className="list-decimal list-inside space-y-2 mb-6 text-base text-gray-700">
         {children}
       </ol>
     ),
   },
   marks: {
     link: ({ children, value }) => (
-      <a
+      
         href={value?.href}
         target="_blank"
         rel="noopener noreferrer"
@@ -132,7 +132,7 @@ export default async function Page(props) {
   if (!post) {
     return (
       <div className="container mx-auto px-4 py-20 text-center">
-        <h1 className="text-4xl font-black text-slate-900 mb-4">
+        <h1 className="text-2xl font-black text-slate-900 mb-4">
           Article Not Found
         </h1>
         <Link href="/" className="text-cyan-600 font-bold hover:text-cyan-800">
@@ -175,15 +175,15 @@ export default async function Page(props) {
               {post.category?.title}
             </Link>
 
-            <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-6 leading-tight">
+            <h1 className="text-2xl md:text-3xl font-black text-slate-900 mb-6 leading-tight">
               {post.title}
             </h1>
 
-            {/* ✅ VIEW COUNTER INSERTED HERE */}
+            {/* VIEW COUNTER */}
             <ViewsCounter slug={slug} />
 
             {post.excerpt && (
-              <p className="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed">
+              <p className="text-lg md:text-xl text-gray-600 mb-8 leading-relaxed">
                 {post.excerpt}
               </p>
             )}
@@ -269,7 +269,7 @@ export default async function Page(props) {
                     </div>
                   )}
                   <div>
-                    <h3 className="text-xl font-bold text-slate-900 mb-2">
+                    <h3 className="text-lg font-bold text-slate-900 mb-2">
                       About {post.author.name}
                     </h3>
                     <p className="text-gray-700">{post.author.bio}</p>
@@ -285,7 +285,7 @@ export default async function Page(props) {
       {relatedPosts.length > 0 && (
         <section className="bg-gray-100 py-12 md:py-16">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-black text-slate-900 mb-8">
+            <h2 className="text-xl md:text-2xl font-black text-slate-900 mb-8">
               Related Stories
             </h2>
 

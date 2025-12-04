@@ -68,16 +68,12 @@ function timeAgo(date) {
 }
 
 function safeImage(img, w, h) {
-  // Cloudinary URL support
   if (typeof img === "string" && img.startsWith("http")) {
     return img;
   }
-
-  // Sanity asset support
   if (img?.asset?._ref?.startsWith("image-")) {
     return urlFor(img).width(w).height(h).url();
   }
-
   return null;
 }
 
@@ -117,10 +113,10 @@ export default async function Page() {
                 <div className="inline-block bg-amber-500 text-white px-4 py-1 rounded-full text-sm font-bold mb-4">
                   {heroPost.category?.title}
                 </div>
-                <h1 className="text-4xl md:text-6xl font-black mb-6">
+                <h1 className="text-2xl md:text-3xl font-black mb-6">
                   {heroPost.title}
                 </h1>
-                <p className="text-xl text-gray-300 mb-8">{heroPost.excerpt}</p>
+                <p className="text-lg text-gray-300 mb-8">{heroPost.excerpt}</p>
 
                 <div className="flex flex-wrap gap-4">
                   <Link
@@ -158,7 +154,7 @@ export default async function Page() {
 
       {/* FEATURED STORIES */}
       <section className="container mx-auto px-4 py-12 md:py-16">
-        <h2 className="text-3xl md:text-4xl font-black mb-8">
+        <h2 className="text-xl md:text-2xl font-black mb-8">
           Featured Stories
         </h2>
 
@@ -184,7 +180,7 @@ export default async function Page() {
                 )}
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold mb-3 group-hover:text-cyan-700">
+                <h3 className="text-lg font-bold mb-3 group-hover:text-cyan-700">
                   {post.title}
                 </h3>
                 <p className="text-gray-600 mb-4 line-clamp-3">
@@ -207,7 +203,7 @@ export default async function Page() {
       {/* CATEGORIES */}
       <section className="bg-white py-12 md:py-16">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-black mb-8 text-center">
+          <h2 className="text-xl md:text-2xl font-black mb-8 text-center">
             Explore by Category
           </h2>
 
@@ -230,7 +226,7 @@ export default async function Page() {
       <section className="container mx-auto px-4 py-12 md:py-16">
         <div className="grid lg:grid-cols-3 gap-12">
           <div className="lg:col-span-2">
-            <h2 className="text-3xl md:text-4xl font-black mb-8">
+            <h2 className="text-xl md:text-2xl font-black mb-8">
               Editor&apos;s Picks
             </h2>
 
@@ -261,7 +257,7 @@ export default async function Page() {
                     <div className="text-sm text-cyan-600 font-semibold">
                       {post.category?.title}
                     </div>
-                    <h3 className="text-xl font-bold mb-2 group-hover:text-cyan-700">
+                    <h3 className="text-lg font-bold mb-2 group-hover:text-cyan-700">
                       {post.title}
                     </h3>
                     <p className="text-gray-600 line-clamp-2">{post.excerpt}</p>
@@ -276,7 +272,7 @@ export default async function Page() {
 
           <div>
             <div className="bg-slate-900 text-white rounded-xl p-6 sticky top-4">
-              <h3 className="text-2xl font-black mb-6 flex items-center gap-2">
+              <h3 className="text-xl font-black mb-6 flex items-center gap-2">
                 <span className="text-red-500 animate-pulse">🔴</span> Latest
                 Updates
               </h3>
