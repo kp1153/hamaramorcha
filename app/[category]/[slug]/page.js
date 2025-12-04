@@ -101,6 +101,43 @@ const portableTextComponents = {
   },
 };
 
+export async function generateMetadata(props) {
+  const params = await props.params;
+  const { category, slug } = params;
+
+  const post = await client.fetch(
+    `*[_type == "post" && slug.current == $slug && category->slug.current == $category][0]{
+      title, excerpt, mainImage, category->{title}
+    }`,
+    { slug, category }
+  );
+
+  if (!post) {
+    return {
+      title: "Article Not Found | Hamara Morcha",
+    };
+  }
+
+  const imageUrl = post.mainImage ? safeImage(post.mainImage, 1200, 630) : null;
+
+  return {
+    title: `${post.title} | ${post.category?.title} | Hamara Morcha`,
+    description: post.excerpt || post.title,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      type: "article",
+      images: imageUrl ? [{ url: imageUrl }] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      images: imageUrl ? [imageUrl] : [],
+    },
+  };
+}
+
 export default async function Page(props) {
   const params = await props.params;
   const { category, slug } = params;
