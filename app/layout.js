@@ -33,7 +33,7 @@ export const metadata = {
   openGraph: {
     title: "Next.js + Sanity Developer India | SEO-Optimized Websites",
     description:
-      "Build a powerful, scalable, SEO-friendly website with Next.js 14 and Sanity CMS. Free hosting included.",
+      "Build a powerful, scalable, SEO-friendly website with Next.js 16 and Sanity CMS. Free hosting included.",
     url: "https://yourdomain.com",
     siteName: "Hamara Morcha",
     type: "website",
