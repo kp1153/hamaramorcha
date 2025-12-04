@@ -55,12 +55,12 @@ const portableTextComponents = {
       </h2>
     ),
     h3: ({ children }) => (
-      <h3 className="text-lg font-bold text-slate-900 mt-8 mb-3">
-        {children}
-      </h3>
+      <h3 className="text-lg font-bold text-slate-900 mt-8 mb-3">{children}</h3>
     ),
     h4: ({ children }) => (
-      <h4 className="text-base font-bold text-slate-900 mt-6 mb-2">{children}</h4>
+      <h4 className="text-base font-bold text-slate-900 mt-6 mb-2">
+        {children}
+      </h4>
     ),
     normal: ({ children }) => (
       <p className="text-base text-gray-700 leading-relaxed mb-6">{children}</p>
@@ -85,7 +85,7 @@ const portableTextComponents = {
   },
   marks: {
     link: ({ children, value }) => (
-      
+      <a
         href={value?.href}
         target="_blank"
         rel="noopener noreferrer"
