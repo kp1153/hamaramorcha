@@ -47,6 +47,23 @@ const portableTextComponents = {
         </div>
       );
     },
+    gallery: ({ value }) => {
+      if (!value?.images?.length) return null;
+      return (
+        <div className="my-8 grid grid-cols-2 md:grid-cols-3 gap-4">
+          {value.images.map((img, i) => (
+            <div key={i} className="relative h-64 rounded-lg overflow-hidden">
+              <Image
+                src={img.url}
+                alt={img.alt || `Gallery image ${i + 1}`}
+                fill
+                className="object-cover hover:scale-110 transition-transform duration-300"
+              />
+            </div>
+          ))}
+        </div>
+      );
+    },
   },
   block: {
     h2: ({ children }) => (
@@ -85,7 +102,7 @@ const portableTextComponents = {
   },
   marks: {
     link: ({ children, value }) => (
-      <a
+      
         href={value?.href}
         target="_blank"
         rel="noopener noreferrer"
