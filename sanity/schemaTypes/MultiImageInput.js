@@ -41,7 +41,7 @@ export default function MultiImageInput(props) {
             insert(
               [
                 {
-                  _type: "image",
+                  _type: "galleryImage", // ✅ ये होना चाहिए
                   _key: `cloudinary-${Date.now()}-${i}`,
                   url: data.secure_url,
                   alt: file.name,
