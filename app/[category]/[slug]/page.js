@@ -102,7 +102,7 @@ const portableTextComponents = {
   },
   marks: {
     link: ({ children, value }) => (
-      
+      <a
         href={value?.href}
         target="_blank"
         rel="noopener noreferrer"
