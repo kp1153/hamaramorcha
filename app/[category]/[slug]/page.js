@@ -245,7 +245,7 @@ export default async function NewsPage({ params }) {
                     </div>
                   ) : (
                     <div className="flex justify-center">
-                      
+                      <a
                         href={post.videoLink}
                         target="_blank"
                         rel="noopener noreferrer"
