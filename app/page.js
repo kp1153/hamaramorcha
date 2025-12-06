@@ -100,9 +100,6 @@ export default async function MagazineLayout() {
                 <h2 className="text-4xl font-bold mt-4 mb-3">
                   {featuredPost.title}
                 </h2>
-                <p className="text-gray-600 text-lg mb-4">
-                  {featuredPost.title}
-                </p>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-500">
                     {formatDate(featuredPost.publishedAt)}
@@ -155,9 +152,6 @@ export default async function MagazineLayout() {
                         {post.title}
                       </Link>
                     </h3>
-                    <p className="text-gray-600 text-sm mb-2 line-clamp-2">
-                      {post.title}
-                    </p>
                     <span className="text-xs text-gray-500">
                       {formatDate(post.publishedAt)}
                     </span>
