@@ -78,7 +78,7 @@ const portableTextComponents = {
       const target = value?.blank ? "_blank" : undefined;
       const rel = target === "_blank" ? "noopener noreferrer" : undefined;
       return (
-        
+        <a
           href={href}
           className="text-cyan-600 hover:text-cyan-800 underline"
           target={target}
