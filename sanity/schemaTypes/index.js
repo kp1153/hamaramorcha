@@ -1,5 +1,3 @@
-// sanity/schemaTypes/index.js
-
 import MultiImageInput from "./MultiImageInput";
 import CloudinaryImageInput from "./CloudinaryImageInput";
 
@@ -192,93 +190,57 @@ export const schema = {
   types: [
     {
       name: "category",
-      title: "Category",
+      title: "श्रेणी (Category)",
       type: "document",
       fields: [
         {
-          name: "title",
-          title: "Category Name",
+          name: "name",
+          title: "श्रेणी का नाम",
           type: "string",
           validation: (Rule) =>
-            Rule.required().error("Category name is required"),
+            Rule.required().error("श्रेणी का नाम आवश्यक है"),
         },
         {
           name: "slug",
           title: "URL Slug",
           type: "slug",
           options: {
-            source: "title",
+            source: "name",
             maxLength: 96,
-            slugify: (input) => hindiToRoman(input),
+            slugify: (input) => {
+              const romanized = hindiToRoman(input);
+              const timePart = new Date()
+                .toISOString()
+                .replace(/[-:.TZ]/g, "")
+                .slice(0, 14);
+              return `${romanized}-${timePart}`;
+            },
           },
-          validation: (Rule) => Rule.required().error("Slug is required"),
-        },
-        {
-          name: "description",
-          title: "Description",
-          type: "text",
-          rows: 3,
+          validation: (Rule) => Rule.required().error("Slug आवश्यक है"),
         },
       ],
       preview: {
         select: {
-          title: "title",
+          title: "name",
           subtitle: "slug.current",
         },
       },
     },
 
     {
-      name: "author",
-      title: "Author",
-      type: "document",
-      fields: [
-        {
-          name: "name",
-          title: "Name",
-          type: "string",
-          validation: (Rule) => Rule.required(),
-        },
-        {
-          name: "slug",
-          title: "Slug",
-          type: "slug",
-          options: {
-            source: "name",
-            maxLength: 96,
-          },
-        },
-        {
-          name: "image",
-          title: "Image",
-          type: "string",
-          components: {
-            input: CloudinaryImageInput,
-          },
-        },
-        {
-          name: "bio",
-          title: "Bio",
-          type: "text",
-          rows: 4,
-        },
-      ],
-    },
-
-    {
       name: "post",
-      title: "Post",
+      title: "समाचार (Post)",
       type: "document",
       fields: [
         {
           name: "title",
-          title: "Title",
+          title: "शीर्षक",
           type: "string",
           validation: (Rule) =>
             Rule.required()
               .min(10)
               .max(200)
-              .error("Title must be between 10-200 characters"),
+              .error("शीर्षक 10-200 अक्षरों के बीच होना चाहिए"),
         },
         {
           name: "slug",
@@ -287,27 +249,26 @@ export const schema = {
           options: {
             source: "title",
             maxLength: 96,
-            slugify: (input) => hindiToRoman(input),
+            slugify: (input) => {
+              const romanized = hindiToRoman(input);
+              const timePart = new Date()
+                .toISOString()
+                .replace(/[-:.TZ]/g, "")
+                .slice(0, 14);
+              return `${romanized}-${timePart}`;
+            },
           },
-          validation: (Rule) => Rule.required().error("URL Slug is required"),
+          validation: (Rule) => Rule.required().error("URL Slug आवश्यक है"),
         },
         {
-          name: "excerpt",
-          title: "Excerpt",
-          type: "text",
-          rows: 3,
-          validation: (Rule) =>
-            Rule.max(300).error("Excerpt should be under 300 characters"),
-        },
-        {
-          name: "body",
-          title: "Content",
+          name: "content",
+          title: "सामग्री",
           type: "blockContent",
-          validation: (Rule) => Rule.required().error("Content is required"),
+          validation: (Rule) => Rule.required().error("सामग्री आवश्यक है"),
         },
         {
           name: "mainImage",
-          title: "Main Image (Cloudinary URL)",
+          title: "मुख्य तस्वीर (Cloudinary URL)",
           type: "string",
           components: {
             input: CloudinaryImageInput,
@@ -315,32 +276,28 @@ export const schema = {
         },
         {
           name: "mainImageCaption",
-          title: "Main Image Caption",
+          title: "मुख्य तस्वीर कैप्शन",
           type: "string",
         },
         {
+          name: "publishedAt",
+          title: "प्रकाशन तारीख",
+          type: "datetime",
+          initialValue: () => new Date().toISOString(),
+          validation: (Rule) =>
+            Rule.required().error("प्रकाशन तारीख आवश्यक है"),
+        },
+        {
           name: "category",
-          title: "Category",
+          title: "श्रेणी",
           type: "reference",
           to: [{ type: "category" }],
           validation: (Rule) =>
-            Rule.required().error("Category selection is required"),
-        },
-        {
-          name: "author",
-          title: "Author",
-          type: "reference",
-          to: [{ type: "author" }],
-        },
-        {
-          name: "featured",
-          title: "Featured Post",
-          type: "boolean",
-          initialValue: false,
+            Rule.required().error("श्रेणी का चुनाव आवश्यक है"),
         },
         {
           name: "videoLink",
-          title: "Video Link",
+          title: "वीडियो लिंक",
           type: "url",
           validation: (Rule) => Rule.uri({ scheme: ["http", "https"] }),
         },
@@ -354,12 +311,12 @@ export const schema = {
       ],
       orderings: [
         {
-          title: "Publication Date (Newest First)",
-          name: "createdAtDesc",
-          by: [{ field: "_createdAt", direction: "desc" }],
+          title: "प्रकाशन तारीख के अनुसार (नया पहले)",
+          name: "publishedAtDesc",
+          by: [{ field: "publishedAt", direction: "desc" }],
         },
         {
-          title: "Title",
+          title: "शीर्षक के अनुसार",
           name: "titleAsc",
           by: [{ field: "title", direction: "asc" }],
         },
@@ -368,14 +325,17 @@ export const schema = {
         select: {
           title: "title",
           media: "mainImage",
-          category: "category.title",
-          featured: "featured",
+          category: "category.name",
+          publishedAt: "publishedAt",
         },
         prepare(selection) {
-          const { title, category, featured } = selection;
+          const { title, category, publishedAt } = selection;
+          const formattedDate = publishedAt
+            ? new Date(publishedAt).toLocaleDateString("hi-IN")
+            : "तारीख नहीं";
           return {
             title,
-            subtitle: `${category || "No Category"}${featured ? " • ⭐ Featured" : ""}`,
+            subtitle: `${category || "बिना श्रेणी"} • ${formattedDate}`,
           };
         },
       },
@@ -390,25 +350,26 @@ export const schema = {
           title: "Block",
           type: "block",
           styles: [
-            { title: "Normal", value: "normal" },
-            { title: "Heading 1", value: "h1" },
-            { title: "Heading 2", value: "h2" },
-            { title: "Heading 3", value: "h3" },
-            { title: "Quote", value: "blockquote" },
+            { title: "सामान्य", value: "normal" },
+            { title: "शीर्षक 1", value: "h1" },
+            { title: "शीर्षक 2", value: "h2" },
+            { title: "शीर्षक 3", value: "h3" },
+            { title: "उद्धरण", value: "blockquote" },
           ],
           lists: [
-            { title: "Bullet Points", value: "bullet" },
-            { title: "Numbered List", value: "number" },
+            { title: "बुलेट पॉइंट", value: "bullet" },
+            { title: "संख्या सूची", value: "number" },
           ],
           marks: {
             decorators: [
-              { title: "Bold", value: "strong" },
-              { title: "Italic", value: "em" },
-              { title: "Underline", value: "underline" },
+              { title: "मोटा (Bold)", value: "strong" },
+              { title: "तिरछा (Italic)", value: "em" },
+              { title: "अंडरलाइन", value: "underline" },
+              { title: "पिंक", value: "pink" },
             ],
             annotations: [
               {
-                title: "Link",
+                title: "लिंक",
                 name: "link",
                 type: "object",
                 fields: [
@@ -422,7 +383,7 @@ export const schema = {
                       }),
                   },
                   {
-                    title: "Open in New Window",
+                    title: "नई विंडो में खोलें",
                     name: "blank",
                     type: "boolean",
                     initialValue: false,
@@ -435,27 +396,19 @@ export const schema = {
         {
           type: "object",
           name: "cloudinaryImage",
-          title: "Image (Cloudinary)",
+          title: "तस्वीर (Cloudinary)",
           fields: [
             {
-              name: "imageRef",
-              title: "Image",
-              type: "object",
-              fields: [
-                {
-                  name: "ref",
-                  type: "string",
-                },
-              ],
-            },
-            {
-              name: "alt",
-              title: "Alt Text",
+              name: "url",
+              title: "Image URL",
               type: "string",
+              components: {
+                input: CloudinaryImageInput,
+              },
             },
             {
               name: "caption",
-              title: "Caption",
+              title: "कैप्शन",
               type: "string",
             },
           ],
@@ -463,11 +416,11 @@ export const schema = {
         {
           type: "object",
           name: "gallery",
-          title: "Photo Gallery",
+          title: "फोटो गैलरी",
           fields: [
             {
               name: "images",
-              title: "Images",
+              title: "तस्वीरें",
               type: "array",
               of: [
                 {
@@ -490,10 +443,12 @@ export const schema = {
               components: {
                 input: MultiImageInput,
               },
-              validation: (Rule) => Rule.min(1).error("Add at least one image"),
+              validation: (Rule) =>
+                Rule.min(1).error("कम से कम एक तस्वीर जोड़ें"),
             },
           ],
         },
+
         {
           type: "object",
           name: "youtube",
@@ -510,6 +465,19 @@ export const schema = {
               name: "caption",
               title: "Caption",
               type: "string",
+            },
+          ],
+        },
+
+        {
+          type: "object",
+          name: "break",
+          title: "पेज ब्रेक",
+          fields: [
+            {
+              name: "style",
+              type: "string",
+              options: { list: ["break", "line"] },
             },
           ],
         },
