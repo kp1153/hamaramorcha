@@ -12,6 +12,7 @@ const menuItems = [
   { name: "Health", href: "/health" },
   { name: "Team", href: "/team" },
   { name: "विविध", href: "/vividha" },
+  { name: "Payment", href: "/payment" },
 ];
 
 const Navbar = () => {
