@@ -6,6 +6,7 @@ import Link from "next/link";
 import { getPostBySlugAndCategory, getPopularPosts } from "@/lib/sanity";
 import { PortableText } from "@portabletext/react";
 import { urlFor } from "@/sanity/lib/image";
+import ViewsCounter from "@/components/ViewsCounter";
 
 export const dynamic = "force-dynamic";
 
@@ -217,7 +218,7 @@ export default async function NewsPage({ params }) {
 
               <div className="flex items-center gap-4 text-sm text-gray-500 mb-6 pb-4 border-b border-gray-200">
                 <span>{formatDate(post.publishedAt)}</span>
-                <span>{post.views || 0} views</span>
+                <ViewsCounter slug={post.slug.current} />
               </div>
 
               <div className="prose prose-base max-w-none">
