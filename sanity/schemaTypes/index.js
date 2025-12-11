@@ -295,12 +295,7 @@ export const schema = {
           validation: (Rule) =>
             Rule.required().error("श्रेणी का चुनाव आवश्यक है"),
         },
-        {
-          name: "videoLink",
-          title: "वीडियो लिंक",
-          type: "url",
-          validation: (Rule) => Rule.uri({ scheme: ["http", "https"] }),
-        },
+      
         {
           name: "views",
           title: "Views Count",
