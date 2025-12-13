@@ -10,6 +10,7 @@ import {
 } from "@/lib/sanity";
 
 export const dynamic = "force-dynamic";
+export const dynamicParams = true;
 
 const getCategoryDisplayName = (categoryData) => {
   return categoryData?.title || categoryData?.name || "News";
@@ -24,6 +25,15 @@ const formatDate = (dateString) => {
     year: "numeric",
   });
 };
+
+// यह function Next.js को बताता है कि कौन से routes exist करते हैं
+export async function generateStaticParams() {
+  const categories = await getCategories();
+
+  return categories.map((category) => ({
+    category: category.slug.current,
+  }));
+}
 
 export default async function CategoryPage({ params }) {
   const { category } = await params;
@@ -63,6 +73,7 @@ export default async function CategoryPage({ params }) {
                       fill
                       className="object-cover"
                       priority
+                      unoptimized
                     />
                   </div>
                 )}
@@ -109,6 +120,7 @@ export default async function CategoryPage({ params }) {
                         alt={post.mainImageAlt || post.title}
                         fill
                         className="object-cover"
+                        unoptimized
                       />
                     </div>
                   )}
@@ -164,6 +176,7 @@ export default async function CategoryPage({ params }) {
                             alt={post.mainImageAlt || post.title}
                             fill
                             className="object-cover"
+                            unoptimized
                           />
                         </div>
                       )}
