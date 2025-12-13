@@ -9,8 +9,7 @@ import {
   getPopularPosts,
 } from "@/lib/sanity";
 
-export const dynamic = "force-dynamic";
-export const dynamicParams = true;
+export const revalidate = 60;
 
 const getCategoryDisplayName = (categoryData) => {
   return categoryData?.title || categoryData?.name || "News";
@@ -26,28 +25,26 @@ const formatDate = (dateString) => {
   });
 };
 
-// यह function Next.js को बताता है कि कौन से routes exist करते हैं
-export async function generateStaticParams() {
-  const categories = await getCategories();
+export default async function CategoryPage(props) {
+  const params = await props.params;
+  const { category } = params;
 
-  return categories.map((category) => ({
-    category: category.slug.current,
-  }));
-}
-
-export default async function CategoryPage({ params }) {
-  const { category } = await params;
-  const posts = await getPostsByCategory(category);
   const allCategories = await getCategories();
-  const popularPosts = await getPopularPosts(4);
 
-  const currentCategory = allCategories.find(
-    (cat) => cat.slug.current === category
-  );
+  const validCategories = allCategories
+    .map((cat) => cat?.slug?.current || cat?.slug)
+    .filter(Boolean);
 
-  if (!currentCategory) {
+  if (!validCategories.includes(category)) {
     notFound();
   }
+
+  const currentCategory = allCategories.find(
+    (cat) => (cat?.slug?.current || cat?.slug) === category
+  );
+
+  const posts = await getPostsByCategory(category);
+  const popularPosts = await getPopularPosts(4);
 
   const categoryDisplayName = getCategoryDisplayName(currentCategory);
 
@@ -71,6 +68,7 @@ export default async function CategoryPage({ params }) {
                       src={heroPost.mainImageUrl}
                       alt={heroPost.mainImageAlt || heroPost.title}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
                       className="object-cover"
                       priority
                       unoptimized
@@ -119,6 +117,7 @@ export default async function CategoryPage({ params }) {
                         src={post.mainImageUrl}
                         alt={post.mainImageAlt || post.title}
                         fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
                         className="object-cover"
                         unoptimized
                       />
@@ -175,6 +174,7 @@ export default async function CategoryPage({ params }) {
                             src={post.mainImageUrl}
                             alt={post.mainImageAlt || post.title}
                             fill
+                            sizes="80px"
                             className="object-cover"
                             unoptimized
                           />

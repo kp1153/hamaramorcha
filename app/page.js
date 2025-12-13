@@ -5,7 +5,7 @@ import { getAllPosts, getCategories, getPopularPosts } from "@/lib/sanity";
 import Link from "next/link";
 import Image from "next/image";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export default async function MagazineLayout() {
   const posts = await getAllPosts();
@@ -82,8 +82,10 @@ export default async function MagazineLayout() {
                     src={featuredPost.mainImageUrl}
                     alt={featuredPost.mainImageAlt || featuredPost.title}
                     fill
+                    sizes="(max-width: 768px) 100vw, 1200px"
                     className="object-cover"
                     priority
+                    unoptimized
                   />
                 </div>
               ) : (
@@ -130,7 +132,9 @@ export default async function MagazineLayout() {
                         src={post.mainImageUrl}
                         alt={post.mainImageAlt || post.title}
                         fill
+                        sizes="192px"
                         className="object-cover rounded"
+                        unoptimized
                       />
                     </div>
                   ) : (

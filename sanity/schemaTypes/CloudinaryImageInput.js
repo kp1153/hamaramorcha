@@ -1,3 +1,5 @@
+// sanity/schemaTypes/CloudinaryImageInput.js
+
 import { useCallback, useState } from "react";
 import { Stack, Button, Card, Text, Spinner, Flex } from "@sanity/ui";
 import { set, unset } from "sanity";
@@ -23,18 +25,19 @@ export default function CloudinaryImageInput(props) {
         formData.append("folder", "sanity-images");
 
         const response = await fetch(
-          `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+          "https://api.cloudinary.com/v1_1/djz6rfq9v/image/upload",
           {
             method: "POST",
             body: formData,
           }
         );
 
+        const data = await response.json();
+
         if (!response.ok) {
-          throw new Error("Upload failed");
+          throw new Error(data.error?.message || "Upload failed");
         }
 
-        const data = await response.json();
         onChange(set(data.secure_url));
       } catch (err) {
         setError("अपलोड विफल रहा। पुनः प्रयास करें।");

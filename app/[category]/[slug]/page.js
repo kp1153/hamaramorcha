@@ -8,7 +8,7 @@ import { PortableText } from "@portabletext/react";
 import { urlFor } from "@/sanity/lib/image";
 import ViewsCounter from "@/components/ViewsCounter";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 const getCategoryDisplayName = (categoryData) => {
   return categoryData?.title || categoryData?.name || "News";
@@ -19,13 +19,6 @@ const getYouTubeId = (url) => {
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
   const match = url.match(regExp);
   return match && match[2].length === 11 ? match[2] : null;
-};
-
-const safeImage = (img, w, h) => {
-  if (typeof img === "string" && img.startsWith("http")) return img;
-  if (img?.asset?._ref?.startsWith("image-"))
-    return urlFor(img).width(w).height(h).url();
-  return null;
 };
 
 const portableTextComponents = {
@@ -101,6 +94,7 @@ const portableTextComponents = {
             width={1200}
             height={800}
             className="object-contain max-h-[70vh] w-auto bg-gray-100"
+            unoptimized
           />
           {value.caption && (
             <p className="text-sm text-gray-600 text-center mt-2 italic w-full">
@@ -120,7 +114,9 @@ const portableTextComponents = {
                 src={img.url}
                 alt={img.alt || `Gallery image ${index + 1}`}
                 fill
+                sizes="(max-width: 768px) 50vw, 33vw"
                 className="object-cover"
+                unoptimized
               />
             </div>
           ))}
@@ -158,8 +154,10 @@ const portableTextComponents = {
   },
 };
 
-export default async function NewsPage({ params }) {
-  const { category, slug } = await params;
+export default async function NewsPage(props) {
+  const params = await props.params;
+  const { category, slug } = params;
+
   const decodedSlug = decodeURIComponent(slug);
   const post = await getPostBySlugAndCategory(decodedSlug, category);
   const popularPosts = await getPopularPosts(4);
@@ -196,6 +194,7 @@ export default async function NewsPage({ params }) {
                     height={600}
                     className="object-cover w-full bg-gray-100"
                     priority
+                    unoptimized
                   />
                 </div>
               )}
@@ -285,7 +284,9 @@ export default async function NewsPage({ params }) {
                             src={popularPost.mainImageUrl}
                             alt={popularPost.mainImageAlt || popularPost.title}
                             fill
+                            sizes="80px"
                             className="object-cover"
+                            unoptimized
                           />
                         </div>
                       )}
