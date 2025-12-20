@@ -25,16 +25,16 @@ const Navbar = () => {
           {/* LOGO + TAGLINE */}
           <Link href="/" className="flex flex-col items-start">
             <h1
-              className="text-4xl md:text-6xl font-black tracking-tight text-amber-600"
+              className="text-4xl md:text-6xl font-black tracking-tight text-blue-600"
               style={{
                 textShadow:
-                  "4px 4px 0px rgba(0,0,0,0.3), 8px 8px 0px rgba(0,0,0,0.15), 2px 2px 10px rgba(255,193,7,0.4)",
+                  "4px 4px 0px rgba(0,0,0,0.3), 8px 8px 0px rgba(0,0,0,0.15), 2px 2px 10px rgba(59,130,246,0.4)",
                 letterSpacing: "0.05em",
               }}
             >
               HAMARA MORCHA
             </h1>
-            <p className="mt-2 text-sm md:text-base font-semibold tracking-wide text-blue-600 pl-1">
+            <p className="mt-2 text-sm md:text-base font-semibold tracking-wide text-amber-600 pl-1">
               A struggle for dignity and livelihood
             </p>
           </Link>
@@ -44,7 +44,7 @@ const Navbar = () => {
             onClick={() => setOpen(!open)}
             aria-label="Toggle menu"
             aria-expanded={open}
-            className="text-white text-4xl focus:outline-none hover:text-amber-300 transition-colors"
+            className="text-white text-4xl focus:outline-none hover:text-blue-300 transition-colors"
           >
             ☰
           </button>
