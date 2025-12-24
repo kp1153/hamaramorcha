@@ -34,7 +34,7 @@ const Navbar = () => {
             >
               HAMARA MORCHA
             </h1>
-            <p className="mt-2 text-sm md:text-base font-semibold tracking-wide text-amber-600 pl-1">
+            <p className="mt-2 text-sm md:text-base font-semibold tracking-wide text-green-700 pl-1">
               A struggle for dignity and livelihood
             </p>
           </Link>
