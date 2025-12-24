@@ -58,7 +58,7 @@ const Navbar = () => {
 
           <a
             href="tel:+919996865069"
-            className="text-amber-300 font-bold text-base sm:text-lg hover:text-amber-200 transition-colors whitespace-nowrap"
+            className="text-indigo-600 font-bold text-base sm:text-lg hover:text-amber-200 transition-colors whitespace-nowrap"
           >
             📱 +91 9996865069
           </a>
