@@ -7,6 +7,22 @@ import Image from "next/image";
 
 export const revalidate = 60;
 
+// SEO Metadata
+export const metadata = {
+  title: 'Home - Latest News & Updates',
+  description: 'Stay updated with the latest news, articles and stories from around the world. Breaking news, trending topics and in-depth coverage.',
+  openGraph: {
+    title: 'Latest News & Updates',
+    description: 'Breaking news and trending stories from around the world',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Latest News & Updates',
+    description: 'Breaking news and trending stories',
+  },
+};
+
 export default async function MagazineLayout() {
   const posts = await getAllPosts();
   const categories = await getCategories();

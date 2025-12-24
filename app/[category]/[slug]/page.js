@@ -10,6 +10,49 @@ import ViewsCounter from "@/components/ViewsCounter";
 
 export const revalidate = 60;
 
+// SEO Metadata
+export async function generateMetadata(props) {
+  const params = await props.params;
+  const { category, slug } = params;
+  
+  const decodedSlug = decodeURIComponent(slug);
+  const post = await getPostBySlugAndCategory(decodedSlug, category);
+  
+  if (!post) {
+    return {
+      title: 'Post Not Found',
+    };
+  }
+
+  const categoryName = post.category?.title || post.category?.name || "News";
+  
+  return {
+    title: `${post.title} | ${categoryName}`,
+    description: post.excerpt || post.title,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt || post.title,
+      type: 'article',
+      publishedTime: post.publishedAt,
+      authors: [post.author?.name || 'Admin'],
+      images: [
+        {
+          url: post.mainImageUrl || '/default-image.jpg',
+          width: 1200,
+          height: 630,
+          alt: post.mainImageAlt || post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt || post.title,
+      images: [post.mainImageUrl || '/default-image.jpg'],
+    },
+  };
+}
+
 const getCategoryDisplayName = (categoryData) => {
   return categoryData?.title || categoryData?.name || "News";
 };
@@ -72,7 +115,7 @@ const portableTextComponents = {
       const target = value?.blank ? "_blank" : undefined;
       const rel = target === "_blank" ? "noopener noreferrer" : undefined;
       return (
-        <a
+        
           href={href}
           className="text-cyan-600 hover:text-cyan-800 underline"
           target={target}
@@ -245,7 +288,7 @@ export default async function NewsPage(props) {
                     </div>
                   ) : (
                     <div className="flex justify-center">
-                      <a
+                      
                         href={post.videoLink}
                         target="_blank"
                         rel="noopener noreferrer"

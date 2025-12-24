@@ -11,6 +11,40 @@ import {
 
 export const revalidate = 60;
 
+// SEO Metadata
+export async function generateMetadata(props) {
+  const params = await props.params;
+  const { category } = params;
+  
+  const allCategories = await getCategories();
+  const currentCategory = allCategories.find(
+    (cat) => (cat?.slug?.current || cat?.slug) === category
+  );
+  
+  if (!currentCategory) {
+    return {
+      title: 'Category Not Found',
+    };
+  }
+
+  const categoryName = currentCategory?.title || currentCategory?.name || "News";
+  
+  return {
+    title: `${categoryName} - Latest News & Updates`,
+    description: `Browse latest ${categoryName} news, articles and updates. Stay informed with our comprehensive coverage.`,
+    openGraph: {
+      title: `${categoryName} - Latest News`,
+      description: `Latest ${categoryName} news and updates`,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary',
+      title: `${categoryName} - Latest News`,
+      description: `Latest ${categoryName} news and updates`,
+    },
+  };
+}
+
 const getCategoryDisplayName = (categoryData) => {
   return categoryData?.title || categoryData?.name || "News";
 };
