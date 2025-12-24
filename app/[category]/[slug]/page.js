@@ -1,5 +1,3 @@
-// app/[category]/[slug]/page.js
-
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,10 +5,7 @@ import { getPostBySlugAndCategory, getPopularPosts } from "@/lib/sanity";
 import { PortableText } from "@portabletext/react";
 import { urlFor } from "@/sanity/lib/image";
 import ViewsCounter from "@/components/ViewsCounter";
-
 export const revalidate = 60;
-
-// SEO Metadata
 export async function generateMetadata(props) {
   const params = await props.params;
   const { category, slug } = params;
@@ -23,7 +18,6 @@ export async function generateMetadata(props) {
       title: 'Post Not Found',
     };
   }
-
   const categoryName = post.category?.title || post.category?.name || "News";
   
   return {
@@ -56,14 +50,13 @@ export async function generateMetadata(props) {
 const getCategoryDisplayName = (categoryData) => {
   return categoryData?.title || categoryData?.name || "News";
 };
-
 const getYouTubeId = (url) => {
   if (!url) return null;
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  
   const match = url.match(regExp);
   return match && match[2].length === 11 ? match[2] : null;
 };
-
 const portableTextComponents = {
   block: {
     normal: ({ children }) => (
@@ -115,7 +108,7 @@ const portableTextComponents = {
       const target = value?.blank ? "_blank" : undefined;
       const rel = target === "_blank" ? "noopener noreferrer" : undefined;
       return (
-        
+        <a
           href={href}
           className="text-cyan-600 hover:text-cyan-800 underline"
           target={target}
@@ -196,19 +189,15 @@ const portableTextComponents = {
     },
   },
 };
-
 export default async function NewsPage(props) {
   const params = await props.params;
   const { category, slug } = params;
-
   const decodedSlug = decodeURIComponent(slug);
   const post = await getPostBySlugAndCategory(decodedSlug, category);
   const popularPosts = await getPopularPosts(4);
-
   if (!post) {
     notFound();
   }
-
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
@@ -218,10 +207,8 @@ export default async function NewsPage(props) {
       year: "numeric",
     });
   };
-
   const categoryDisplayName = getCategoryDisplayName(post.category);
   const videoId = getYouTubeId(post.videoLink);
-
   return (
     <main className="min-h-screen bg-white">
       <div className="container mx-auto px-4 py-6">
@@ -241,28 +228,23 @@ export default async function NewsPage(props) {
                   />
                 </div>
               )}
-
               {post.mainImageCaption && (
                 <p className="text-sm text-gray-600 mb-4 italic">
                   {post.mainImageCaption}
                 </p>
               )}
-
               <div className="mb-4">
                 <span className="inline-block bg-cyan-600 text-white px-3 py-1 text-xs font-bold uppercase rounded-full">
                   {categoryDisplayName}
                 </span>
               </div>
-
               <h1 className="text-3xl font-bold mb-4 text-gray-900 leading-tight">
                 {post.title}
               </h1>
-
               <div className="flex items-center gap-4 text-sm text-gray-500 mb-6 pb-4 border-b border-gray-200">
                 <span>{formatDate(post.publishedAt)}</span>
                 <ViewsCounter slug={post.slug.current} />
               </div>
-
               <div className="prose prose-base max-w-none">
                 {post.content ? (
                   <PortableText
@@ -273,7 +255,6 @@ export default async function NewsPage(props) {
                   <p className="text-gray-600">No content available.</p>
                 )}
               </div>
-
               {post.videoLink && (
                 <div className="my-6">
                   {videoId ? (
@@ -288,7 +269,7 @@ export default async function NewsPage(props) {
                     </div>
                   ) : (
                     <div className="flex justify-center">
-                      
+                      <a
                         href={post.videoLink}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -300,7 +281,6 @@ export default async function NewsPage(props) {
                   )}
                 </div>
               )}
-
               <div className="mt-8 pt-6 border-t border-gray-200">
                 <Link
                   href="/"
@@ -311,7 +291,6 @@ export default async function NewsPage(props) {
               </div>
             </article>
           </div>
-
           <div className="space-y-6">
             <div className="bg-gray-50 p-4 rounded-lg">
               <h3 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b-2 border-cyan-600">
