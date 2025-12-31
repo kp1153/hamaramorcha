@@ -53,19 +53,37 @@ const teamMembers = [
     phone: "7754093975",
     slug: "akhilesh-chaudhary",
   },
+  {
+    id: 7,
+    name: "अंकिता शुक्ला",
+    role: "विशेष प्रतिनिधि",
+    designation: "नार्थ-ईस्ट",
+    photo: "/images/ankita.jpg",
+    email: "ankita@hamaramorcha.com",
+    slug: "ankita-shukla",
+  },
+  {
+    id: 8,
+    name: "चाँदनी तिवारी",
+    role: "विशेष प्रतिनिधि",
+    designation: "पंजाब-हरियाणा और जम्मू-कश्मीर",
+    photo: "/images/chandni.jpg",
+    email: "chandni@hamaramorcha.com",
+    slug: "chandni-tiwari",
+  },
 ];
 
-// ✅ STATIC PARAMS
-export function generateStaticParams() {
+// Next.js 16
+export async function generateStaticParams() {
   return teamMembers.map((member) => ({
     slug: member.slug,
   }));
 }
 
-export default function TeamMemberPage({ params }) {
-  const member = teamMembers.find(
-    (m) => m.slug === params.slug
-  );
+export default async function TeamMemberPage({ params }) {
+  const { slug } = await params; // ✅ Next 16
+
+  const member = teamMembers.find((m) => m.slug === slug);
 
   if (!member) {
     notFound();
