@@ -34,7 +34,7 @@ const teamMembers = [
     name: "कामता प्रसाद",
     role: "कार्यकारी संपादक",
     photo: "/images/4.jpg",
-    address: "शुक्ला सदन, ग्रामः बैदौला-272189, सिद्धार्थनगर।",
+    address: "तिवारी भवन, ग्रामः गहरपुर, पोस्टः पुआरीकलाँ-221202, वाराणसी।",
     phone: "9996865069",
     email: "hamaramorcha1153@gmail.com",
     slug: "kamta-prasad",
@@ -44,6 +44,7 @@ const teamMembers = [
     name: "सुमन तिवारी",
     role: "प्रबंध निदेशक",
     photo: "/images/5.jpg",
+     address: "तिवारी भवन, ग्रामः गहरपुर, पोस्टः पुआरीकलाँ-221202, वाराणसी।",
     slug: "suman-tiwari",
   },
   {
