@@ -13,14 +13,14 @@ const teamMembers = [
   },
   {
     id: 2,
-    name: "दिगंत शुक्ल",
+    name: "अश्विनी कुमार शुक्ला",
     role: "प्रधान संपादक",
     photo: "/images/2.jpg",
     slug: "digant-shukla",
   },
   {
     id: 3,
-    name: "अद्वय शुक्ल",
+    name: "वंदना शुक्ला",
     role: "संपादक",
     photo: "/images/3.jpg",
     slug: "advay-shukla",
