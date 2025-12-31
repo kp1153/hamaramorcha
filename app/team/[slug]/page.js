@@ -63,6 +63,7 @@ const teamMembers = [
     role: "विशेष प्रतिनिधि",
     designation: "नार्थ-ईस्ट",
     photo: "/images/ankita.jpg",
+     email: "ankitaanuradha99a@gmail.com", 
     slug: "ankita-shukla",
   },
   {
@@ -71,7 +72,7 @@ const teamMembers = [
     role: "विशेष प्रतिनिधि",
     designation: "पंजाब-हरियाणा और जम्मू-कश्मीर",
     photo: "/images/chandni.jpg",
-    email: "chandni@hamaramorcha.com",
+    email: "chandni@hamaramorcha.com",  
     slug: "chandni-tiwari",
   },
 ];
