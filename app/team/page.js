@@ -6,32 +6,30 @@ const teamMembers = [
   {
     id: 1,
     name: "चीकू सिंह बुंदेला",
-    role: "उर्फ दीवान जी, जिन्होंने नाग-पंचमी के दिन हमारे परिवार की नाग-देवता से रक्षा की थी और जिन्हें गोद में उठाए हुए हैं हमारे प्रधान संपादक दिगंत शुक्ल और उनके साथ में विक्ट्री का चिह्न बनाकर खड़े हुए हैं संपादक अद्वय शुक्ल",
+    role:
+      "उर्फ दीवान जी, जिन्होंने नाग-पंचमी के दिन हमारे परिवार की नाग-देवता से रक्षा की थी",
     photo: "/images/1.jpg",
     slug: "cheeku-singh-bundela",
   },
   {
     id: 2,
-    name: "दिगंत शुक्ल",
+    name: "अश्विनी कुमार शुक्ला",
     role: "प्रधान संपादक",
-    photo: "/images/2.jpg",
-    slug: "digant-shukla",
+    photo: "/images/2.jpeg",
+    slug: "ashwini-kumar-shukla",
   },
   {
     id: 3,
-    name: "अद्वय शुक्ल",
+    name: "वंदना शुक्ला",
     role: "संपादक",
-    photo: "/images/3.jpg",
-    slug: "advay-shukla",
+    photo: "/images/3.jpeg",
+    slug: "vandana-shukla",
   },
   {
     id: 4,
     name: "कामता प्रसाद",
     role: "कार्यकारी संपादक",
     photo: "/images/4.jpg",
-    address: "तिवारी भवन, ग्रामः गहरपुर, पोस्टः पुआरीकलां -221202, वाराणसी।",
-    phone: "9996865069",
-    email: "hamaramorcha1153@gmail.com",
     slug: "kamta-prasad",
   },
   {
@@ -47,7 +45,6 @@ const teamMembers = [
     role: "सीनियर रिपोर्टर",
     designation: "प्रभारीः सिद्धार्थनगर, बस्ती और गोरखपुर",
     photo: "/images/6.jpg",
-    phone: "77540 93975",
     slug: "akhilesh-chaudhary",
   },
 ];
@@ -55,101 +52,47 @@ const teamMembers = [
 export default function TeamPage() {
   return (
     <main className="max-w-6xl mx-auto px-4 py-8">
-      <div className="mb-6">
-        <Link
-          href="/"
-          className="text-blue-600 hover:text-blue-800 font-medium hover:underline mb-2 inline-block"
-        >
-          ← होम
-        </Link>
-      </div>
+      <Link href="/" className="text-blue-600 hover:underline">
+        ← होम
+      </Link>
 
-      <h1 className="text-4xl font-bold mb-8 text-gray-900 text-center">
-        हमारी टीम
-      </h1>
+      <h1 className="text-4xl font-bold text-center my-8">हमारी टीम</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {teamMembers.map((member) => (
           <article
             key={member.id}
-            className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+            className="bg-white rounded-xl shadow-lg overflow-hidden"
           >
-            <div className="relative h-64 w-full">
+            <div className="relative h-64">
               <Image
                 src={member.photo}
                 alt={member.name}
                 fill
+                sizes="(max-width:768px) 100vw, 25vw"
                 className="object-cover"
               />
             </div>
 
-            <div className="p-6">
-              <h2 className="text-xl font-bold mb-2 text-gray-900 leading-tight">
-                {member.name}
-              </h2>
+            <div className="p-4">
+              <h2 className="font-bold text-lg">{member.name}</h2>
 
-              {member.id === 6 ? (
-                <div className="mb-3">
-                  <p className="text-orange-600 font-semibold text-sm">
-                    {member.role}
+              {member.designation ? (
+                <>
+                  <p className="text-orange-600 text-sm">{member.role}</p>
+                  <p className="text-gray-600 text-sm">
+                    {member.designation}
                   </p>
-                  <p className="text-gray-600 text-sm">{member.designation}</p>
-                </div>
+                </>
               ) : (
-                <p className="text-orange-600 font-semibold mb-3 text-sm">
-                  {member.role}
-                </p>
-              )}
-
-              {member.address && (
-                <p className="text-gray-600 text-xs mb-2 flex items-start">
-                  <span className="mr-1">📍</span>
-                  <span>{member.address}</span>
-                </p>
-              )}
-
-              {member.phone && (
-                <p className="text-gray-600 text-xs mb-2 flex items-center">
-                  <span className="mr-1">📞</span>
-                  <a
-                    href={`tel:${member.phone}`}
-                    className="hover:text-blue-600 transition-colors"
-                  >
-                    {member.phone}
-                  </a>
-                </p>
-              )}
-
-              {member.email && (
-                <p className="text-gray-600 text-xs mb-2 flex items-center">
-                  <span className="mr-1">✉️</span>
-                  <a
-                    href={`mailto:${member.email}`}
-                    className="hover:text-blue-600 transition-colors"
-                  >
-                    {member.email}
-                  </a>
-                </p>
+                <p className="text-orange-600 text-sm">{member.role}</p>
               )}
 
               <Link
                 href={`/team/${member.slug}`}
-                className="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold text-sm hover:underline transition-colors mt-3"
+                className="inline-block mt-3 text-blue-600 hover:underline text-sm"
               >
-                विस्तार से देखें
-                <svg
-                  className="w-4 h-4 ml-1"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
+                विस्तार से देखें →
               </Link>
             </div>
           </article>
