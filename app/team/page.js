@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 
-// Static Team Data
 const teamMembers = [
   {
     id: 1,
@@ -16,6 +15,9 @@ const teamMembers = [
     name: "अश्विनी कुमार शुक्ला",
     role: "प्रधान संपादक",
     photo: "/images/2.jpeg",
+    address: "शुक्ला सदन, ग्रामः बैदौला-272189, सिद्धार्थनगर।",
+    phone: "9918921792",
+    email: "ashwini@hamaramorcha.com",
     slug: "ashwini-kumar-shukla",
   },
   {
@@ -23,6 +25,8 @@ const teamMembers = [
     name: "वंदना शुक्ला",
     role: "संपादक",
     photo: "/images/3.jpeg",
+    address: "शुक्ला सदन, ग्रामः बैदौला-272189, सिद्धार्थनगर।",
+    email: "vandana@hamaramorcha.com",
     slug: "vandana-shukla",
   },
   {
@@ -30,6 +34,9 @@ const teamMembers = [
     name: "कामता प्रसाद",
     role: "कार्यकारी संपादक",
     photo: "/images/4.jpg",
+    address: "शुक्ला सदन, ग्रामः बैदौला-272189, सिद्धार्थनगर।",
+    phone: "9996865069",
+    email: "hamaramorcha1153@gmail.com",
     slug: "kamta-prasad",
   },
   {
@@ -45,6 +52,7 @@ const teamMembers = [
     role: "सीनियर रिपोर्टर",
     designation: "प्रभारीः सिद्धार्थनगर, बस्ती और गोरखपुर",
     photo: "/images/6.jpg",
+    phone: "7754093975",
     slug: "akhilesh-chaudhary",
   },
   {
@@ -52,7 +60,7 @@ const teamMembers = [
     name: "अंकिता शुक्ला",
     role: "विशेष प्रतिनिधि",
     designation: "नार्थ-ईस्ट",
-    photo: "/images/ankita.jpg", // अपनी फोटो रखें
+    photo: "/images/ankita.jpg",
     email: "ankita@hamaramorcha.com",
     slug: "ankita-shukla",
   },
@@ -61,7 +69,7 @@ const teamMembers = [
     name: "चाँदनी तिवारी",
     role: "विशेष प्रतिनिधि",
     designation: "पंजाब-हरियाणा और जम्मू-कश्मीर",
-    photo: "/images/chandni.jpg", // अपनी फोटो रखें
+    photo: "/images/chandni.jpg",
     email: "chandni@hamaramorcha.com",
     slug: "chandni-tiwari",
   },
@@ -70,18 +78,12 @@ const teamMembers = [
 export default function TeamPage() {
   return (
     <main className="max-w-6xl mx-auto px-4 py-8">
-      <Link href="/" className="text-blue-600 hover:underline">
-        ← होम
-      </Link>
-
+      <Link href="/" className="text-blue-600 hover:underline">← होम</Link>
       <h1 className="text-4xl font-bold text-center my-8">हमारी टीम</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {teamMembers.map((member) => (
-          <article
-            key={member.id}
-            className="bg-white rounded-xl shadow-lg overflow-hidden"
-          >
+          <article key={member.id} className="bg-white rounded-xl shadow-lg overflow-hidden">
             <div className="relative h-64">
               <Image
                 src={member.photo}
@@ -91,25 +93,12 @@ export default function TeamPage() {
                 className="object-cover"
               />
             </div>
-
             <div className="p-4">
               <h2 className="font-bold text-lg">{member.name}</h2>
-
-              {member.designation ? (
-                <>
-                  <p className="text-orange-600 text-sm">{member.role}</p>
-                  <p className="text-gray-600 text-sm">
-                    {member.designation}
-                  </p>
-                </>
-              ) : (
-                <p className="text-orange-600 text-sm">{member.role}</p>
-              )}
-
-              <Link
-                href={`/team/${member.slug}`}
-                className="inline-block mt-3 text-blue-600 hover:underline text-sm"
-              >
+              <p className="text-orange-600 text-sm">{member.role}</p>
+              {member.designation && <p className="text-gray-600 text-sm">{member.designation}</p>}
+              {member.address && <p className="text-gray-600 text-xs mt-1">📍 {member.address}</p>}
+              <Link href={`/team/${member.slug}`} className="inline-block mt-3 text-blue-600 hover:underline text-sm">
                 विस्तार से देखें →
               </Link>
             </div>

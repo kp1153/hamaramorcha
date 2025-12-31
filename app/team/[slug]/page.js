@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
-// Team Data
 const teamMembers = [
   {
     id: 1,
@@ -17,6 +16,9 @@ const teamMembers = [
     name: "अश्विनी कुमार शुक्ला",
     role: "प्रधान संपादक",
     photo: "/images/2.jpeg",
+    address: "शुक्ला सदन, ग्रामः बैदौला-272189, सिद्धार्थनगर।",
+    phone: "9918921792",
+    email: "ashwini@hamaramorcha.com",
     slug: "ashwini-kumar-shukla",
   },
   {
@@ -24,6 +26,8 @@ const teamMembers = [
     name: "वंदना शुक्ला",
     role: "संपादक",
     photo: "/images/3.jpeg",
+    address: "शुक्ला सदन, ग्रामः बैदौला-272189, सिद्धार्थनगर।",
+    email: "vandana@hamaramorcha.com",
     slug: "vandana-shukla",
   },
   {
@@ -31,8 +35,7 @@ const teamMembers = [
     name: "कामता प्रसाद",
     role: "कार्यकारी संपादक",
     photo: "/images/4.jpg",
-    address:
-      "तिवारी भवन, ग्रामः गहरपुर, पोस्टः पुआरीकलां -221202, वाराणसी।",
+    address: "शुक्ला सदन, ग्रामः बैदौला-272189, सिद्धार्थनगर।",
     phone: "9996865069",
     email: "hamaramorcha1153@gmail.com",
     slug: "kamta-prasad",
@@ -73,65 +76,32 @@ const teamMembers = [
   },
 ];
 
-// Next.js 16
 export async function generateStaticParams() {
-  return teamMembers.map((member) => ({
-    slug: member.slug,
-  }));
+  return teamMembers.map((m) => ({ slug: m.slug }));
 }
 
 export default async function TeamMemberPage({ params }) {
-  const { slug } = await params; // ✅ Next 16
-
+  const { slug } = await params;
   const member = teamMembers.find((m) => m.slug === slug);
-
-  if (!member) {
-    notFound();
-  }
+  if (!member) notFound();
 
   return (
     <main className="max-w-4xl mx-auto px-4 py-8">
-      <Link href="/team" className="text-blue-600 hover:underline">
-        ← टीम
-      </Link>
+      <Link href="/team" className="text-blue-600 hover:underline">← टीम</Link>
 
       <div className="bg-white rounded-xl shadow-lg mt-6 p-6">
         <div className="relative w-64 h-80 mx-auto">
-          <Image
-            src={member.photo}
-            alt={member.name}
-            fill
-            sizes="256px"
-            className="object-cover rounded-lg"
-          />
+          <Image src={member.photo} alt={member.name} fill sizes="256px" className="object-cover rounded-lg" />
         </div>
 
-        <h1 className="text-3xl font-bold text-center mt-6">
-          {member.name}
-        </h1>
-
-        <p className="text-orange-600 text-center mt-2 text-lg">
-          {member.role}
-        </p>
-
-        {member.designation && (
-          <p className="text-center text-gray-600 mt-1">
-            {member.designation}
-          </p>
-        )}
+        <h1 className="text-3xl font-bold text-center mt-6">{member.name}</h1>
+        <p className="text-orange-600 text-center mt-2 text-lg">{member.role}</p>
+        {member.designation && <p className="text-center text-gray-600 mt-1">{member.designation}</p>}
 
         <div className="mt-6 space-y-2 text-center">
           {member.address && <p>📍 {member.address}</p>}
-          {member.phone && (
-            <p>
-              📞 <a href={`tel:${member.phone}`}>{member.phone}</a>
-            </p>
-          )}
-          {member.email && (
-            <p>
-              ✉️ <a href={`mailto:${member.email}`}>{member.email}</a>
-            </p>
-          )}
+          {member.phone && <p>📞 <a href={`tel:${member.phone}`}>{member.phone}</a></p>}
+          {member.email && <p>✉️ <a href={`mailto:${member.email}`}>{member.email}</a></p>}
         </div>
       </div>
     </main>
