@@ -55,14 +55,21 @@ const teamMembers = [
   },
 ];
 
-export async function generateStaticParams() {
-  return teamMembers.map((m) => ({ slug: m.slug }));
+// ✅ STATIC PARAMS
+export function generateStaticParams() {
+  return teamMembers.map((member) => ({
+    slug: member.slug,
+  }));
 }
 
 export default function TeamMemberPage({ params }) {
-  const member = teamMembers.find((m) => m.slug === params.slug);
+  const member = teamMembers.find(
+    (m) => m.slug === params.slug
+  );
 
-  if (!member) notFound();
+  if (!member) {
+    notFound();
+  }
 
   return (
     <main className="max-w-4xl mx-auto px-4 py-8">
