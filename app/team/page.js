@@ -26,7 +26,7 @@ const teamMembers = [
     role: "संपादक",
     photo: "/images/3.jpeg",
     address: "शुक्ला सदन, ग्रामः बैदौला-272189, सिद्धार्थनगर।",
-    email: "vandana@hamaramorcha.com",
+    email: "editor@hamaramorcha.com",
     slug: "vandana-shukla",
   },
   {

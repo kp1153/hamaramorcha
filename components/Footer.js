@@ -20,7 +20,7 @@ const Footer = () => {
 
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 text-sm text-white mb-3">
             <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
-              <span>hamaramorcha1153@gmail.com</span>
+              <span>editor@hamaramorcha.com</span>
               <span className="hidden sm:inline">|</span>
 
               <a

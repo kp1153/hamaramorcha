@@ -27,7 +27,7 @@ const teamMembers = [
     role: "संपादक",
     photo: "/images/3.jpeg",
     address: "शुक्ला सदन, ग्रामः बैदौला-272189, सिद्धार्थनगर।",
-    email: "vandana@hamaramorcha.com",
+    email: "editor@hamaramorcha.com",
     slug: "vandana-shukla",
   },
   {
@@ -37,7 +37,7 @@ const teamMembers = [
     photo: "/images/4.jpg",
     address: "तिवारी भवन, ग्रामः गहरपुर, पोस्टः पुआरीकलाँ-221202, वाराणसी।",
     phone: "9996865069",
-    email: "hamaramorcha1153@gmail.com",
+    email: "kamta@hamaramorcha.com",
     slug: "kamta-prasad",
   },
   {
@@ -63,7 +63,6 @@ const teamMembers = [
     role: "विशेष प्रतिनिधि",
     designation: "नार्थ-ईस्ट",
     photo: "/images/ankita.jpg",
-    email: "ankita@hamaramorcha.com",
     slug: "ankita-shukla",
   },
   {
