@@ -57,12 +57,15 @@ const teamMembers = [
     slug: "akhilesh-chaudhary",
   },
   {
+   
+{
     id: 7,
     name: "रामचंद्र शुक्ल",
-    role: "संपादक",
-    designation: "साहित्य",
+    role: "साहित्य संपादक",
     photo: "/images/rc.jpg",
-     email: "ramchandra.shukla@hamaramorcha.com", 
+    address: "548 वी/125, विक्रम नगर, पोस्ट-मानक नगर, लखनऊ-226011",
+    phone: "9454413842",
+    email: "ramchandra.shukla@hamaramorcha.com", 
     slug: "ramchandra-shukla",
   },
   {
