@@ -36,7 +36,7 @@ const teamMembers = [
     photo: "/images/4.jpg",
     address: "तिवारी भवन, ग्रामः गहरपुर, पोस्टः पुआरीकलाँ-221202, वाराणसी।",
     phone: "9996865069",
-    email: "hamaramorcha1153@gmail.com",
+    email: "kamta@hamaramorcha.com",
     slug: "kamta-prasad",
   },
   {
@@ -58,12 +58,12 @@ const teamMembers = [
   },
   {
     id: 7,
-    name: "अंकिता शुक्ला",
-    role: "विशेष प्रतिनिधि",
-    designation: "नार्थ-ईस्ट",
-    photo: "/images/ankita.jpg",
-    email: "ankita@hamaramorcha.com",
-    slug: "ankita-shukla",
+    name: "रामचंद्र शुक्ल",
+    role: "संपादक",
+    designation: "साहित्य",
+    photo: "/images/rc.jpg",
+     email: "ramchandra.shukla@hamaramorcha.com", 
+    slug: "ramchandra-shukla",
   },
   {
     id: 8,
