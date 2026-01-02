@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 
 const menuItems = [
@@ -22,24 +23,19 @@ const Navbar = () => {
     <nav className="bg-white shadow-md">
       <div className="bg-zinc-400">
         <div className="container mx-auto px-4 py-6 flex justify-between items-center">
-          {/* LOGO + TAGLINE */}
           <Link href="/" className="flex flex-col items-start">
-            <h1
-              className="text-4xl md:text-6xl font-black tracking-tight text-blue-600"
-              style={{
-                textShadow:
-                  "4px 4px 0px rgba(0,0,0,0.3), 8px 8px 0px rgba(0,0,0,0.15), 2px 2px 10px rgba(59,130,246,0.4)",
-                letterSpacing: "0.05em",
-              }}
-            >
-              HAMARA MORCHA
-            </h1>
+            <Image
+              src="/logo.jpeg"
+              alt="Hamara Morcha Logo"
+              width={300}
+              height={80}
+              className="object-contain"
+            />
             <p className="mt-2 text-sm md:text-base font-semibold tracking-wide text-green-700 pl-1">
               A struggle for dignity and livelihood
             </p>
           </Link>
 
-          {/* HAMBURGER BUTTON */}
           <button
             onClick={() => setOpen(!open)}
             aria-label="Toggle menu"
@@ -50,7 +46,6 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* CONTACT LINE */}
         <div className="container mx-auto px-4 pb-4 flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4">
           <p className="text-sm sm:text-base text-rose-600 font-bold text-center">
             Need a Website, Software or Mobile App? Contact us today.
@@ -65,7 +60,6 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* MENU */}
       {open && (
         <div className="bg-white border-t shadow-inner">
           <ul className="flex flex-col py-3">
