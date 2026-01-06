@@ -5,7 +5,10 @@ import { getPostBySlugAndCategory, getPopularPosts } from "@/lib/sanity";
 import { PortableText } from "@portabletext/react";
 import { urlFor } from "@/sanity/lib/image";
 import ViewsCounter from "@/components/ViewsCounter";
+import { Edit } from "lucide-react";
+
 export const revalidate = 60;
+
 export async function generateMetadata(props) {
   const params = await props.params;
   const { category, slug } = params;
@@ -50,6 +53,7 @@ export async function generateMetadata(props) {
 const getCategoryDisplayName = (categoryData) => {
   return categoryData?.title || categoryData?.name || "News";
 };
+
 const getYouTubeId = (url) => {
   if (!url) return null;
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
@@ -57,6 +61,7 @@ const getYouTubeId = (url) => {
   const match = url.match(regExp);
   return match && match[2].length === 11 ? match[2] : null;
 };
+
 const portableTextComponents = {
   block: {
     normal: ({ children }) => (
@@ -189,15 +194,18 @@ const portableTextComponents = {
     },
   },
 };
+
 export default async function NewsPage(props) {
   const params = await props.params;
   const { category, slug } = params;
   const decodedSlug = decodeURIComponent(slug);
   const post = await getPostBySlugAndCategory(decodedSlug, category);
   const popularPosts = await getPopularPosts(4);
+
   if (!post) {
     notFound();
   }
+
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
@@ -207,10 +215,22 @@ export default async function NewsPage(props) {
       year: "numeric",
     });
   };
+
   const categoryDisplayName = getCategoryDisplayName(post.category);
   const videoId = getYouTubeId(post.videoLink);
+
   return (
     <main className="min-h-screen bg-white">
+      <a 
+        href={`https://www.hamaramorcha.com/studio/structure/post;${post._id}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 bg-blue-600 text-white px-4 py-3 rounded-lg shadow-lg hover:bg-blue-700 flex items-center gap-2 z-50"
+      >
+        <Edit size={18} />
+        Edit
+      </a>
+
       <div className="container mx-auto px-4 py-6">
         <div className="grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
