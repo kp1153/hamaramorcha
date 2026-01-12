@@ -15,35 +15,36 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Next.js + Sanity Developer India | High-Performance SEO Websites",
+  title: "Hamara Morcha | World, India, Performing Arts, Academics, Health & More",
   description:
-    "Professional Next.js & Sanity CMS developer in India. We build fast, SEO-optimized, news-grade websites with free hosting, secure architecture, and enterprise-level performance.",
+    "Hamara Morcha - A struggle for dignity and livelihood. Get latest news on World, India, Performing Arts, Academics, Health, and विविध.",
   keywords: [
-    "Next.js developer India",
-    "Sanity CMS developer",
-    "web developer India",
-    "Next.js website India",
-    "SEO optimized website India",
-    "fast news website",
-    "React developer India",
-    "Sanity expert India",
-    "modern web development India",
-    "Next.js hosting free",
+    "Hamara Morcha",
+    "World news",
+    "India news",
+    "Performing Arts",
+    "Academics news",
+    "Health news",
+    "विविध समाचार",
+    "news website",
+    "breaking news",
+    "current affairs",
   ],
   openGraph: {
-    title: "Next.js + Sanity Developer India | SEO-Optimized Websites",
+    title: "Hamara Morcha | Latest News & Updates",
     description:
-      "Build a powerful, scalable, SEO-friendly website with Next.js 16 and Sanity CMS. Free hosting included.",
-    url: "https://yourdomain.com",
+      "A struggle for dignity and livelihood. World, India, Performing Arts, Academics, Health & विविध news.",
+    url: "https://www.hamaramorcha.com",
     siteName: "Hamara Morcha",
+    images: ["https://www.hamaramorcha.com/logo.png"],
     type: "website",
     locale: "en_IN",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Next.js + Sanity Developer India",
-    description:
-      "High-speed, SEO-friendly Next.js + Sanity CMS websites with free hosting.",
+    title: "Hamara Morcha | Latest News",
+    description: "A struggle for dignity and livelihood. World, India, Performing Arts & more.",
+    images: ["https://www.hamaramorcha.com/logo.png"],
   },
 };
 
@@ -51,7 +52,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        {/* Google Analytics (untouched) */}
+        {/* Google Analytics */}
         <script
           async
           src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"
