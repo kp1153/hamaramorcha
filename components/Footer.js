@@ -59,6 +59,15 @@ const Footer = () => {
           </div>
         </div>
 
+        <div className="flex justify-center gap-4 mb-4">
+          <Link 
+            href="/privacy-policy" 
+            className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
+          >
+            Privacy Policy
+          </Link>
+        </div>
+
         <p className="text-xs text-gray-600">
           © 2025 Hamara Morcha. All rights reserved.
         </p>
