@@ -11,7 +11,7 @@ const menuItems = [
   { name: "Performing Arts", href: "/performing-arts" },
   { name: "Academics", href: "/academics" },
   { name: "Health", href: "/health" },
-  { name: "Team", href: "/team" },
+  { name: "Contact Us", href: "/team" },
   { name: "विविध", href: "/vividha" },
   { name: "Payment", href: "/payment" },
 ];

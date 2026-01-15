@@ -3,14 +3,6 @@ import Image from "next/image";
 
 const teamMembers = [
   {
-    id: 1,
-    name: "चीकू सिंह बुंदेला",
-    role:
-      "उर्फ दीवान जी, जिन्होंने नाग-पंचमी के दिन हमारे परिवार की नाग-देवता से रक्षा की थी",
-    photo: "/images/1.jpg",
-    slug: "cheeku-singh-bundela",
-  },
-  {
     id: 2,
     name: "अश्विनी कुमार शुक्ला",
     role: "प्रधान संपादक",
@@ -81,6 +73,16 @@ export default function TeamPage() {
   return (
     <main className="max-w-6xl mx-auto px-4 py-8">
       <Link href="/" className="text-blue-600 hover:underline">← होम</Link>
+
+      <div className="bg-blue-50 p-6 rounded-lg my-8">
+        <h2 className="text-2xl font-bold mb-4">संपर्क करें / Contact Us</h2>
+        <div className="space-y-2">
+          <p>📧 <strong>Email:</strong> editor@hamaramorcha.com</p>
+          <p>📞 <strong>Phone:</strong> +91 9996865069</p>
+          <p>📍 <strong>Address:</strong> तिवारी भवन, ग्रामः गहरपुर, पोस्टः पुआरीकलाँ-221202, वाराणसी</p>
+        </div>
+      </div>
+
       <h1 className="text-4xl font-bold text-center my-8">हमारी टीम</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
