@@ -4,14 +4,6 @@ import Link from "next/link";
 
 const teamMembers = [
   {
-    id: 1,
-    name: "चीकू सिंह बुंदेला",
-    role:
-      "उर्फ दीवान जी, जिन्होंने नाग-पंचमी के दिन हमारे परिवार की नाग-देवता से रक्षा की थी",
-    photo: "/images/1.jpg",
-    slug: "cheeku-singh-bundela",
-  },
-  {
     id: 2,
     name: "अश्विनी कुमार शुक्ला",
     role: "प्रधान संपादक",
@@ -91,7 +83,16 @@ export default async function TeamMemberPage({ params }) {
     <main className="max-w-4xl mx-auto px-4 py-8">
       <Link href="/team" className="text-blue-600 hover:underline">← टीम</Link>
 
-      <div className="bg-white rounded-xl shadow-lg mt-6 p-6">
+      <div className="bg-blue-50 p-6 rounded-lg mb-8 mt-6">
+        <h2 className="text-2xl font-bold mb-4">संपर्क करें / Contact Us</h2>
+        <div className="space-y-2">
+          <p>📧 <strong>Email:</strong> editor@hamaramorcha.com</p>
+          <p>📞 <strong>Phone:</strong> +91 9996865069</p>
+          <p>📍 <strong>Address:</strong> तिवारी भवन, ग्रामः गहरपुर, पोस्टः पुआरीकलाँ-221202, वाराणसी</p>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-xl shadow-lg p-6">
         <div className="relative w-64 h-80 mx-auto">
           <Image src={member.photo} alt={member.name} fill sizes="256px" className="object-cover rounded-lg" />
         </div>
