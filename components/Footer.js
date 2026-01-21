@@ -13,7 +13,7 @@ const Footer = () => {
           <p className="text-sm mb-3 text-white">
             <strong>
               We also develop custom software and mobile applications for
-              medical shops and educational institutions – all under one domain
+              medical shops and educational institutions — all under one domain
               name.
             </strong>
           </p>
@@ -60,8 +60,15 @@ const Footer = () => {
         </div>
 
         <div className="flex justify-center gap-4 mb-4">
-          <Link 
-            href="/privacy-policy" 
+          <Link
+            href="/contact"
+            className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
+          >
+            Contact Us
+          </Link>
+
+          <Link
+            href="/privacy-policy"
             className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
           >
             Privacy Policy
