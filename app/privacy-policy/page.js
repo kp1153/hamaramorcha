@@ -1,79 +1,88 @@
-// app/privacy-policy/page.js
-
-export const metadata = {
-  title: 'Privacy Policy - Hamara Morcha',
-  description: 'Privacy Policy for Hamara Morcha News App',
-};
-
-export default function PrivacyPolicyPage() {
+export default function PrivacyPolicy() {
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-gray-900">Privacy Policy</h1>
+    <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <h1 className="text-3xl font-bold mb-6">गोपनीयता नीति</h1>
       
       <div className="space-y-6 text-gray-700">
-        <p className="text-sm text-gray-500">
-          <strong>Effective Date:</strong> January 13, 2026
-        </p>
-
         <section>
-          <h2 className="text-xl font-semibold mb-3 text-gray-900">Introduction</h2>
+          <h2 className="text-2xl font-semibold mb-3">परिचय</h2>
           <p>
-            Welcome to Hamara Morcha. We respect your privacy and are committed to protecting your personal information. 
-            This Privacy Policy explains how we collect, use, and safeguard your data when you use our news application.
+            हमारा मोर्चा ("हम", "हमारा", या "हमें") आपकी गोपनीयता की रक्षा के लिए प्रतिबद्ध है। 
+            यह गोपनीयता नीति बताती है कि हम आपकी व्यक्तिगत जानकारी को कैसे एकत्र, उपयोग और सुरक्षित करते हैं।
           </p>
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold mb-3 text-gray-900">Information We Collect</h2>
+          <h2 className="text-2xl font-semibold mb-3">जानकारी संग्रह</h2>
           <p>
-            Hamara Morcha is a news reading application. We do not collect, store, or share any personal information from our users. 
-            You can use our app without providing any personal data.
+            हम निम्नलिखित प्रकार की जानकारी एकत्र कर सकते हैं:
           </p>
-        </section>
-
-        <section>
-          <h2 className="text-xl font-semibold mb-3 text-gray-900">Data We Do Not Collect</h2>
-          <ul className="list-disc pl-6 space-y-2">
-            <li>Personal identification information (name, email, phone number)</li>
-            <li>Location data</li>
-            <li>Device information</li>
-            <li>Usage statistics</li>
-            <li>Cookies or tracking data</li>
+          <ul className="list-disc ml-6 mt-2 space-y-1">
+            <li>नाम और संपर्क जानकारी</li>
+            <li>ईमेल पता</li>
+            <li>उपयोग डेटा और प्राथमिकताएं</li>
           </ul>
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold mb-3 text-gray-900">Third-Party Services</h2>
+          <h2 className="text-2xl font-semibold mb-3">जानकारी का उपयोग</h2>
           <p>
-            Our app may contain links to external news sources and websites. We are not responsible for the privacy practices 
-            of these third-party sites. We encourage you to read their privacy policies.
+            हम आपकी जानकारी का उपयोग निम्नलिखित उद्देश्यों के लिए करते हैं:
+          </p>
+          <ul className="list-disc ml-6 mt-2 space-y-1">
+            <li>सेवाएं प्रदान करना और बनाए रखना</li>
+            <li>उपयोगकर्ता अनुभव में सुधार करना</li>
+            <li>महत्वपूर्ण अपडेट और सूचनाएं भेजना</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 className="text-2xl font-semibold mb-3">डेटा सुरक्षा</h2>
+          <p>
+            हम आपकी व्यक्तिगत जानकारी की सुरक्षा के लिए उचित तकनीकी और संगठनात्मक उपाय करते हैं। 
+            हालांकि, इंटरनेट पर कोई भी प्रसारण पूरी तरह से सुरक्षित नहीं है।
           </p>
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold mb-3 text-gray-900">Children's Privacy</h2>
+          <h2 className="text-2xl font-semibold mb-3">तृतीय पक्ष सेवाएं</h2>
           <p>
-            Our app is intended for users aged 18 and above. We do not knowingly collect information from anyone under 18 years of age.
+            हम तृतीय पक्ष सेवाओं का उपयोग कर सकते हैं जो अपनी गोपनीयता नीतियों के अधीन हैं। 
+            हम इन तृतीय पक्ष नीतियों के लिए जिम्मेदार नहीं हैं।
           </p>
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold mb-3 text-gray-900">Changes to This Policy</h2>
+          <h2 className="text-2xl font-semibold mb-3">आपके अधिकार</h2>
           <p>
-            We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated effective date.
+            आपको अपनी व्यक्तिगत जानकारी तक पहुंचने, सुधारने या हटाने का अधिकार है। 
+            इन अधिकारों का प्रयोग करने के लिए कृपया हमसे संपर्क करें।
           </p>
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold mb-3 text-gray-900">Contact Us</h2>
+          <h2 className="text-2xl font-semibold mb-3">नीति में बदलाव</h2>
           <p>
-            If you have any questions about this Privacy Policy, please contact us at:
+            हम समय-समय पर इस गोपनीयता नीति को अपडेट कर सकते हैं। 
+            किसी भी बदलाव के बारे में हम आपको इस पृष्ठ पर सूचित करेंगे।
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-2xl font-semibold mb-3">संपर्क करें</h2>
+          <p>
+            यदि इस गोपनीयता नीति के बारे में आपके कोई प्रश्न हैं, तो कृपया हमसे संपर्क करें:
           </p>
           <div className="mt-3 space-y-1">
-            <p><strong>Email:</strong> editor@hamaramorcha.com</p>
-            <p><strong>Phone:</strong> +91 9996865069</p>
-            <p><strong>Website:</strong> https://www.hamaramorcha.com</p>
+            <p><strong>ईमेल:</strong> <a href="mailto:hamaramorcha1153@gmail.com" className="text-blue-600 hover:underline">hamaramorcha1153@gmail.com</a></p>
+            <p><strong>फोन:</strong> <a href="tel:+919996865069" className="text-blue-600 hover:underline">+91 9996865069</a></p>
           </div>
+        </section>
+
+        <section className="mt-8 pt-6 border-t">
+          <p className="text-sm text-gray-600">
+            <strong>अंतिम अपडेट:</strong> जनवरी 2026
+          </p>
         </section>
       </div>
     </div>
