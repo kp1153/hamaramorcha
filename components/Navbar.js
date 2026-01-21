@@ -6,12 +6,13 @@ import { useState } from "react";
 
 const menuItems = [
   { name: "Home", href: "/" },
+  { name: "📞 संपर्क करें", href: "/contact" },
+  { name: "हमारी टीम", href: "/team" },
   { name: "World", href: "/world" },
   { name: "India", href: "/india" },
   { name: "Performing Arts", href: "/performing-arts" },
   { name: "Academics", href: "/academics" },
   { name: "Health", href: "/health" },
-  { name: "Contact Us", href: "/team" },
   { name: "विविध", href: "/vividha" },
   { name: "Payment", href: "/payment" },
 ];

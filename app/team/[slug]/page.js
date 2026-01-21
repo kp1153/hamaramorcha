@@ -23,15 +23,16 @@ const teamMembers = [
     slug: "vandana-shukla",
   },
   {
-    id: 4,
-    name: "कामता प्रसाद",
-    role: "कार्यकारी संपादक",
-    photo: "/images/4.jpg",
-    address: "तिवारी भवन, ग्रामः गहरपुर, पोस्टः पुआरीकलाँ-221202, वाराणसी।",
-    phone: "9996865069",
-    email: "kamta@hamaramorcha.com",
-    slug: "kamta-prasad",
-  },
+  id: 4,
+  name: "कामता प्रसाद",
+  role: "कार्यकारी संपादक",
+  photo: "/images/4.jpg",
+  address: "तिवारी भवन, ग्रामः गहरपुर, पोस्टः पुआरीकलाँ-221202, वाराणसी।",
+  phone: "9996865069",
+  email: "hamaramorcha1153@gmail.com",
+  slug: "kamta-prasad",
+},
+  
   {
     id: 5,
     name: "सुमन तिवारी",
@@ -83,16 +84,7 @@ export default async function TeamMemberPage({ params }) {
     <main className="max-w-4xl mx-auto px-4 py-8">
       <Link href="/team" className="text-blue-600 hover:underline">← टीम</Link>
 
-      <div className="bg-blue-50 p-6 rounded-lg mb-8 mt-6">
-        <h2 className="text-2xl font-bold mb-4">संपर्क करें / Contact Us</h2>
-        <div className="space-y-2">
-          <p>📧 <strong>Email:</strong> editor@hamaramorcha.com</p>
-          <p>📞 <strong>Phone:</strong> +91 9996865069</p>
-          <p>📍 <strong>Address:</strong> तिवारी भवन, ग्रामः गहरपुर, पोस्टः पुआरीकलाँ-221202, वाराणसी</p>
-        </div>
-      </div>
-
-      <div className="bg-white rounded-xl shadow-lg p-6">
+      <div className="bg-white rounded-xl shadow-lg p-6 mt-6">
         <div className="relative w-64 h-80 mx-auto">
           <Image src={member.photo} alt={member.name} fill sizes="256px" className="object-cover rounded-lg" />
         </div>
