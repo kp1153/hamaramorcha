@@ -1,0 +1,16 @@
+{
+  "expo": {
+    "name": "Hamara Morcha",
+    "slug": "himakat",
+    "version": "1.0.1",
+    "extra": {
+      "eas": {
+        "projectId": "1a068263-1c1f-46a2-958e-023636b3d165"
+      }
+    },
+    "android": {
+      "package": "com.hamaramorcha.app",
+      "versionCode": 3
+    }
+  }
+}
