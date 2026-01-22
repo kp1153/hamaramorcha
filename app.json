@@ -9,7 +9,8 @@
       }
     },
     "android": {
-      "package": "com.hamaramorcha.app"
+      "package": "com.hamaramorcha.app",
+      "versionCode": 8
     }
   }
 }
