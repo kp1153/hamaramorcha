@@ -186,7 +186,7 @@ function hindiToRoman(input) {
   return transliteratedWords.join("-");
 }
 
-export const schema = {
+export const schemaTypes = {
   types: [
     {
       name: "category",
