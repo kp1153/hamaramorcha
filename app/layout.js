@@ -30,6 +30,7 @@ export const metadata = {
     "breaking news",
     "current affairs",
   ],
+  manifest: "/manifest.json",
   openGraph: {
     title: "Hamara Morcha | Latest News & Updates",
     description:
@@ -46,12 +47,24 @@ export const metadata = {
     description: "A struggle for dignity and livelihood. World, India, Performing Arts & more.",
     images: ["https://www.hamaramorcha.com/logo.png"],
   },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Hamara Morcha",
+  },
+};
+
+export const viewport = {
+  themeColor: "#ef4444",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
         {/* Google Analytics */}
         <script
           async

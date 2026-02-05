@@ -1,0 +1,26 @@
+{
+  "name": "हमारा मोर्चा - Latest News & Updates",
+  "short_name": "हमारा मोर्चा",
+  "description": "हमारा मोर्चा - ताज़ा खबरें और अपडेट्स",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ef4444",
+  "orientation": "portrait",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["news", "magazines"]
+}

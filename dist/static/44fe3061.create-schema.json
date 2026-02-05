@@ -1,0 +1,411 @@
+[
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "श्रेणी का नाम आवश्यक है"
+          }
+        ],
+        "name": "name",
+        "type": "string",
+        "title": "श्रेणी का नाम"
+      },
+      {
+        "options": {
+          "source": "name",
+          "maxLength": 96
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Slug आवश्यक है"
+          }
+        ],
+        "name": "slug",
+        "type": "slug",
+        "title": "URL Slug"
+      }
+    ],
+    "name": "category",
+    "type": "document",
+    "title": "श्रेणी (Category)"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              },
+              {
+                "flag": "min",
+                "constraint": 10
+              },
+              {
+                "flag": "max",
+                "constraint": 200
+              }
+            ],
+            "level": "error",
+            "message": "शीर्षक 10-200 अक्षरों के बीच होना चाहिए"
+          }
+        ],
+        "name": "title",
+        "type": "string",
+        "title": "शीर्षक"
+      },
+      {
+        "options": {
+          "source": "title",
+          "maxLength": 96
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "URL Slug आवश्यक है"
+          }
+        ],
+        "name": "slug",
+        "type": "slug",
+        "title": "URL Slug"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "सामग्री आवश्यक है"
+          }
+        ],
+        "name": "content",
+        "type": "blockContent",
+        "title": "सामग्री"
+      },
+      {
+        "name": "mainImage",
+        "type": "string",
+        "title": "मुख्य तस्वीर (Cloudinary URL)"
+      },
+      {
+        "name": "mainImageCaption",
+        "type": "string",
+        "title": "मुख्य तस्वीर कैप्शन"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "प्रकाशन तारीख आवश्यक है"
+          }
+        ],
+        "name": "publishedAt",
+        "type": "datetime",
+        "title": "प्रकाशन तारीख"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "श्रेणी का चुनाव आवश्यक है"
+          }
+        ],
+        "to": [
+          {
+            "type": "category"
+          }
+        ],
+        "name": "category",
+        "type": "reference",
+        "title": "श्रेणी"
+      },
+      {
+        "initialValue": 0,
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "min",
+                "constraint": 0
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "views",
+        "type": "number",
+        "title": "Views Count"
+      }
+    ],
+    "name": "post",
+    "type": "document",
+    "title": "समाचार (Post)"
+  },
+  {
+    "of": [
+      {
+        "marks": {
+          "annotations": [
+            {
+              "fields": [
+                {
+                  "validation": [
+                    {
+                      "rules": [
+                        {
+                          "flag": "uri",
+                          "constraint": {
+                            "options": {
+                              "scheme": [
+                                "/^http$/",
+                                "/^https$/",
+                                "/^mailto$/",
+                                "/^tel$/"
+                              ],
+                              "allowRelative": false,
+                              "relativeOnly": false,
+                              "allowCredentials": false
+                            }
+                          }
+                        }
+                      ],
+                      "level": "error"
+                    }
+                  ],
+                  "name": "href",
+                  "type": "url",
+                  "title": "URL"
+                },
+                {
+                  "initialValue": false,
+                  "name": "blank",
+                  "type": "boolean",
+                  "title": "नई विंडो में खोलें"
+                }
+              ],
+              "name": "link",
+              "type": "object",
+              "title": "लिंक"
+            }
+          ],
+          "decorators": [
+            {
+              "value": "strong",
+              "title": "मोटा (Bold)"
+            },
+            {
+              "value": "em",
+              "title": "तिरछा (Italic)"
+            },
+            {
+              "value": "underline",
+              "title": "अंडरलाइन"
+            },
+            {
+              "value": "pink",
+              "title": "पिंक"
+            }
+          ]
+        },
+        "lists": [
+          {
+            "value": "bullet",
+            "title": "बुलेट पॉइंट"
+          },
+          {
+            "value": "number",
+            "title": "संख्या सूची"
+          }
+        ],
+        "styles": [
+          {
+            "value": "normal",
+            "title": "सामान्य"
+          },
+          {
+            "value": "h1",
+            "title": "शीर्षक 1"
+          },
+          {
+            "value": "h2",
+            "title": "शीर्षक 2"
+          },
+          {
+            "value": "h3",
+            "title": "शीर्षक 3"
+          },
+          {
+            "value": "blockquote",
+            "title": "उद्धरण"
+          }
+        ],
+        "of": [],
+        "type": "block"
+      },
+      {
+        "fields": [
+          {
+            "name": "url",
+            "type": "string",
+            "title": "Image URL"
+          },
+          {
+            "name": "caption",
+            "type": "string",
+            "title": "कैप्शन"
+          }
+        ],
+        "type": "object",
+        "name": "cloudinaryImage",
+        "title": "तस्वीर (Cloudinary)"
+      },
+      {
+        "fields": [
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "min",
+                    "constraint": 1
+                  }
+                ],
+                "level": "error",
+                "message": "कम से कम एक तस्वीर जोड़ें"
+              }
+            ],
+            "of": [
+              {
+                "fields": [
+                  {
+                    "name": "url",
+                    "type": "string",
+                    "title": "Image URL"
+                  },
+                  {
+                    "name": "alt",
+                    "type": "string",
+                    "title": "Alt Text"
+                  }
+                ],
+                "type": "object",
+                "name": "galleryImage"
+              }
+            ],
+            "name": "images",
+            "type": "array",
+            "title": "तस्वीरें"
+          }
+        ],
+        "type": "object",
+        "name": "gallery",
+        "title": "फोटो गैलरी"
+      },
+      {
+        "fields": [
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  },
+                  {
+                    "flag": "uri",
+                    "constraint": {
+                      "options": {
+                        "scheme": [
+                          "/^http$/",
+                          "/^https$/"
+                        ],
+                        "allowRelative": false,
+                        "relativeOnly": false,
+                        "allowCredentials": false
+                      }
+                    }
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "url",
+            "type": "url",
+            "title": "YouTube URL"
+          },
+          {
+            "name": "caption",
+            "type": "string"
+          }
+        ],
+        "type": "object",
+        "name": "youtube",
+        "title": "YouTube Video"
+      },
+      {
+        "fields": [
+          {
+            "options": {
+              "list": [
+                "break",
+                "line"
+              ]
+            },
+            "name": "style",
+            "type": "string"
+          }
+        ],
+        "type": "object",
+        "name": "break",
+        "title": "पेज ब्रेक"
+      }
+    ],
+    "name": "blockContent",
+    "type": "array"
+  }
+]
