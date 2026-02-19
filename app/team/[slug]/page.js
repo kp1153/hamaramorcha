@@ -74,7 +74,7 @@ const teamMembers = [
     name: "अखिलेश यादव",
     role: "रिपोर्टर",
     designation: "मेडिकल बीट",
-    photo: "/images/7.jpeg",
+    photo: "/images/7.jpg",
     address: "अखिल मेडिकल स्टोर, हथियवा चौराहा, सिद्धार्थ नगर-272189, उत्तर-प्रदेश।",
     phone: "8400017027",
     email: "akhileshyadav72513@gmail.com",
