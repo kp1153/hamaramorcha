@@ -67,6 +67,17 @@ const teamMembers = [
     email: "chandni@hamaramorcha.com",
     slug: "chandni-tiwari",
   },
+  {
+    id: 9,
+    name: "अखिलेश यादव",
+    role: "रिपोर्टर",
+    designation: "मेडिकल बीट",
+    photo: "/images/7.jpeg",
+    address: "अखिल मेडिकल स्टोर, हथियवा चौराहा, सिद्धार्थ नगर-272189, उत्तर-प्रदेश।",
+    phone: "8400017027",
+    email: "akhileshyadav72513@gmail.com",
+    slug: "akhilesh-yadav",
+  },
 ];
 
 export default function TeamPage() {
