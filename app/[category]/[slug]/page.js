@@ -192,6 +192,34 @@ const portableTextComponents = {
       }
       return <hr className="my-6 border-gray-300" />;
     },
+    pdfDocument: ({ value }) => {
+      const url = value?.file?.asset?.url;
+      if (!url) return null;
+      return (
+        <figure className="my-6">
+          {value.caption && (
+            <p className="mb-2 font-semibold text-gray-700">{value.caption}</p>
+          )}
+          <iframe
+            src={url}
+            width="100%"
+            height="800px"
+            className="rounded-lg border border-gray-200"
+            title={value.caption || "PDF दस्तावेज़"}
+          />
+          <figcaption className="mt-2 text-right">
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-blue-600 hover:underline"
+            >
+              नई विंडो में खोलें ↗
+            </a>
+          </figcaption>
+        </figure>
+      );
+    },
   },
 };
 
