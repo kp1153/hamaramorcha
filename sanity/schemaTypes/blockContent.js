@@ -128,6 +128,35 @@ export default {
     },
     {
       type: "object",
+      name: "pdfDocument",
+      title: "PDF दस्तावेज़",
+      fields: [
+        {
+          name: "file",
+          title: "PDF फाइल",
+          type: "file",
+          options: { accept: "application/pdf" },
+          validation: (Rule) => Rule.required().error("PDF फाइल आवश्यक है"),
+        },
+        {
+          name: "caption",
+          title: "शीर्षक",
+          type: "string",
+        },
+      ],
+      preview: {
+        select: {
+          title: "caption",
+        },
+        prepare({ title }) {
+          return {
+            title: title || "PDF दस्तावेज़",
+          };
+        },
+      },
+    },
+    {
+      type: "object",
       name: "break",
       title: "पेज ब्रेक",
       fields: [
