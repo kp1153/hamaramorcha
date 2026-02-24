@@ -1,3 +1,4 @@
+// app/[category]/[slug]/page.js
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -6,6 +7,10 @@ import { PortableText } from "@portabletext/react";
 import { urlFor } from "@/sanity/lib/image";
 import ViewsCounter from "@/components/ViewsCounter";
 import { Edit } from "lucide-react";
+import CommentForm from "@/components/CommentForm";
+import CommentsList from "@/components/CommentsList";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export const revalidate = 60;
 
@@ -229,6 +234,8 @@ export default async function NewsPage(props) {
   const decodedSlug = decodeURIComponent(slug);
   const post = await getPostBySlugAndCategory(decodedSlug, category);
   const popularPosts = await getPopularPosts(4);
+  const session = await getServerSession(authOptions);
+  const user = session?.user || null;
 
   if (!post) {
     notFound();
@@ -261,6 +268,7 @@ export default async function NewsPage(props) {
 
       <div className="container mx-auto px-4 py-6">
         <div className="grid lg:grid-cols-3 gap-6">
+          {/* Main Content */}
           <div className="lg:col-span-2">
             <article className="bg-white">
               {post.mainImageUrl && (
@@ -293,6 +301,8 @@ export default async function NewsPage(props) {
                 <span>{formatDate(post.publishedAt)}</span>
                 <ViewsCounter slug={post.slug.current} />
               </div>
+              
+              {/* Content */}
               <div className="prose prose-base max-w-none">
                 {post.content ? (
                   <PortableText
@@ -303,6 +313,8 @@ export default async function NewsPage(props) {
                   <p className="text-gray-600">No content available.</p>
                 )}
               </div>
+              
+              {/* Video */}
               {post.videoLink && (
                 <div className="my-6">
                   {videoId ? (
@@ -329,6 +341,22 @@ export default async function NewsPage(props) {
                   )}
                 </div>
               )}
+              
+              {/* Comments Section */}
+              <div className="mt-8 pt-6 border-t border-gray-200">
+                <h2 className="text-2xl font-bold mb-6 text-gray-900">टिप्पणियाँ (Comments)</h2>
+                
+                {/* Comments List */}
+                <CommentsList postId={post._id} />
+                
+                {/* Comment Form with Real User */}
+                <div className="mt-8">
+                  <h3 className="text-lg font-semibold mb-4 text-gray-900">एक टिप्पणी जोड़ें</h3>
+                  <CommentForm postId={post._id} user={user} />
+                </div>
+              </div>
+              
+              {/* Back to Home */}
               <div className="mt-8 pt-6 border-t border-gray-200">
                 <Link
                   href="/"
@@ -339,6 +367,8 @@ export default async function NewsPage(props) {
               </div>
             </article>
           </div>
+
+          {/* Sidebar */}
           <div className="space-y-6">
             <div className="bg-gray-50 p-4 rounded-lg">
               <h3 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b-2 border-cyan-600">

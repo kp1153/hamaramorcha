@@ -100,7 +100,7 @@ export default function HomeContent({ posts = [], categories = [], popularPosts 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-8">
           <div className="lg:col-span-3 relative h-[500px] overflow-hidden group">
             {sliderPosts[currentSlide] && (
-              <Link href={`/${sliderPosts[currentSlide].category?.slug?.current}/${sliderPosts[currentSlide].slug.current}`}>
+              <Link href={`/${sliderPosts[currentSlide].category?.slug?.current || ''}/${sliderPosts[currentSlide].slug?.current || ''}`}>
                 <div className="relative w-full h-full">
                   {sliderPosts[currentSlide].mainImageUrl ? (
                     <Image
@@ -163,7 +163,7 @@ export default function HomeContent({ posts = [], categories = [], popularPosts 
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
                   {worldPosts.map((post) => (
-                    <Link key={post._id} href={`/${post.category?.slug?.current}/${post.slug.current}`} className="bg-white group">
+                    <Link key={post._id} href={`/${post.category?.slug?.current}/${post.slug?.current}`} className="bg-white group">
                       <div className="relative aspect-[16/10] overflow-hidden">
                         {post.mainImageUrl ? (
                           <Image src={post.mainImageUrl} alt={post.title} fill className="object-cover group-hover:scale-105 duration-500" unoptimized />
@@ -188,7 +188,7 @@ export default function HomeContent({ posts = [], categories = [], popularPosts 
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
                   {indiaPosts.map((post) => (
-                    <Link key={post._id} href={`/${post.category?.slug?.current}/${post.slug.current}`} className="bg-white group">
+                    <Link key={post._id} href={`/${post.category?.slug?.current}/${post.slug?.current}`} className="bg-white group">
                       <div className="relative aspect-[16/10] overflow-hidden">
                         {post.mainImageUrl ? (
                           <Image src={post.mainImageUrl} alt={post.title} fill className="object-cover group-hover:scale-105 duration-500" unoptimized />
@@ -213,7 +213,7 @@ export default function HomeContent({ posts = [], categories = [], popularPosts 
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
                   {performingArtsPosts.map((post) => (
-                    <Link key={post._id} href={`/${post.category?.slug?.current}/${post.slug.current}`} className="bg-white group">
+                    <Link key={post._id} href={`/${post.category?.slug?.current}/${post.slug?.current}`} className="bg-white group">
                       <div className="relative aspect-[16/10] overflow-hidden">
                         {post.mainImageUrl ? (
                           <Image src={post.mainImageUrl} alt={post.title} fill className="object-cover group-hover:scale-105 duration-500" unoptimized />
@@ -238,7 +238,7 @@ export default function HomeContent({ posts = [], categories = [], popularPosts 
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
                   {academicsPosts.map((post) => (
-                    <Link key={post._id} href={`/${post.category?.slug?.current}/${post.slug.current}`} className="bg-white group">
+                    <Link key={post._id} href={`/${post.category?.slug?.current}/${post.slug?.current}`} className="bg-white group">
                       <div className="relative aspect-[16/10] overflow-hidden">
                         {post.mainImageUrl ? (
                           <Image src={post.mainImageUrl} alt={post.title} fill className="object-cover group-hover:scale-105 duration-500" unoptimized />
@@ -263,43 +263,93 @@ export default function HomeContent({ posts = [], categories = [], popularPosts 
                 Latest News
               </h4>
               <div className="space-y-3">
-                {sidebarTextOnly.map((post, idx) => (
-                  <Link key={post._id} href={`/${post.category?.slug?.current}/${post.slug.current}`} className="block border-b pb-3 last:border-none group">
-                    <div className="flex gap-2">
-                      <span style={{color: 'rgb(37, 99, 235)'}} className="font-bold text-sm flex-shrink-0">{idx + 1}.</span>
-                      <div>
-                        <h5 className="text-sm font-semibold leading-snug group-hover:text-blue-600">{post.title}</h5>
-                        <p className="text-[10px] text-gray-500 mt-1">{formatDate(post.publishedAt)}</p>
+                {sidebarTextOnly.map((post, idx) => {
+                  const categorySlug = post?.category?.slug?.current;
+                  const postSlug = post?.slug?.current;
+
+                  if (!categorySlug || !postSlug) return null;
+
+                  return (
+                    <Link
+                      key={post._id}
+                      href={`/${categorySlug}/${postSlug}`}
+                      className="block border-b pb-3 last:border-none group"
+                    >
+                      <div className="flex gap-2">
+                        <span
+                          style={{ color: "rgb(37, 99, 235)" }}
+                          className="font-bold text-sm flex-shrink-0"
+                        >
+                          {idx + 1}.
+                        </span>
+                        <div>
+                          <h5 className="text-sm font-semibold leading-snug group-hover:text-blue-600">
+                            {post.title}
+                          </h5>
+                          <p className="text-[10px] text-gray-500 mt-1">
+                            {formatDate(post.publishedAt)}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </Link>
-                ))}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
 
             <div className="bg-white p-4 shadow-sm">
-              <h4 style={{backgroundColor: 'rgb(37, 99, 235)'}} className="text-white text-xs font-bold px-3 py-1 inline-block mb-4">
+              <h4
+                style={{ backgroundColor: "rgb(37, 99, 235)" }}
+                className="text-white text-xs font-bold px-3 py-1 inline-block mb-4"
+              >
                 Popular Posts
               </h4>
+
               <div className="space-y-4">
-                {popularPosts.map((post, idx) => (
-                  <Link key={post._id} href={`/${post.category?.slug?.current}/${post.slug.current}`} className="flex gap-3 border-b pb-3 last:border-none group">
-                    <div className="w-20 h-16 relative flex-shrink-0 overflow-hidden">
-                      {post.mainImageUrl ? (
-                        <Image src={post.mainImageUrl} alt={post.title} fill className="object-cover" unoptimized />
-                      ) : (
-                        <div className="w-full h-full bg-gray-200" />
-                      )}
-                      <span style={{backgroundColor: 'rgb(37, 99, 235)'}} className="absolute top-0 left-0 w-5 h-5 text-white text-[10px] flex items-center justify-center font-bold">
-                        {idx + 1}
-                      </span>
-                    </div>
-                    <div className="flex-1">
-                      <h5 className="text-sm font-bold leading-tight group-hover:text-blue-600">{post.title}</h5>
-                      <small className="text-[10px] text-gray-500">{formatDate(post.publishedAt)}</small>
-                    </div>
-                  </Link>
-                ))}
+                {popularPosts.map((post, idx) => {
+                  const categorySlug = post?.category?.slug?.current;
+                  const postSlug = post?.slug?.current;
+
+                  if (!categorySlug || !postSlug) return null;
+
+                  return (
+                    <Link
+                      key={post._id}
+                      href={`/${categorySlug}/${postSlug}`}
+                      className="flex gap-3 border-b pb-3 last:border-none group"
+                    >
+                      <div className="w-20 h-16 relative flex-shrink-0 overflow-hidden">
+                        {post.mainImageUrl ? (
+                          <Image
+                            src={post.mainImageUrl}
+                            alt={post.title}
+                            fill
+                            className="object-cover"
+                            unoptimized
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gray-200" />
+                        )}
+
+                        <span
+                          style={{ backgroundColor: "rgb(37, 99, 235)" }}
+                          className="absolute top-0 left-0 w-5 h-5 text-white text-[10px] flex items-center justify-center font-bold"
+                        >
+                          {idx + 1}
+                        </span>
+                      </div>
+
+                      <div className="flex-1">
+                        <h5 className="text-sm font-bold leading-tight group-hover:text-blue-600">
+                          {post.title}
+                        </h5>
+                        <small className="text-[10px] text-gray-500">
+                          {formatDate(post.publishedAt)}
+                        </small>
+                      </div>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           </div>

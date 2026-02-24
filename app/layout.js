@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Providers } from "./providers";  // ← सिर्फ यह एक लाइन जोड़नी है
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -85,9 +86,11 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
-        <Navbar />
-        <main className="flex-grow">{children}</main>
-        <Footer />
+        <Providers>  {/* ← बस यह wrapper add किया है */}
+          <Navbar />
+          <main className="flex-grow">{children}</main>
+          <Footer />
+        </Providers>  {/* ← और यह closing tag */}
       </body>
     </html>
   );
