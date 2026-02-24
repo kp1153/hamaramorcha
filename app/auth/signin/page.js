@@ -1,11 +1,13 @@
 // app/auth/signin/page.js
 "use client";
 
-import { signIn } from "next-auth/react";
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import { signIn } from "next-auth/react";
 import { FcGoogle } from "react-icons/fc";
 
-export default function SignIn() {
+// कंटेंट कंपोनेंट जो useSearchParams इस्तेमाल करता है
+function SignInContent() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
 
@@ -32,5 +34,18 @@ export default function SignIn() {
         </div>
       </div>
     </div>
+  );
+}
+
+// मुख्य पेज कंपोनेंट जो Suspense में wrap करता है
+export default function SignInPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-600"></div>
+      </div>
+    }>
+      <SignInContent />
+    </Suspense>
   );
 }
