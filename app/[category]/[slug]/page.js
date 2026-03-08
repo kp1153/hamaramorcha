@@ -17,29 +17,29 @@ export const revalidate = 60;
 export async function generateMetadata(props) {
   const params = await props.params;
   const { category, slug } = params;
-  
+
   const decodedSlug = decodeURIComponent(slug);
   const post = await getPostBySlugAndCategory(decodedSlug, category);
-  
+
   if (!post) {
     return {
-      title: 'Post Not Found',
+      title: "Post Not Found",
     };
   }
   const categoryName = post.category?.title || post.category?.name || "News";
-  
+
   return {
     title: `${post.title} | ${categoryName}`,
     description: post.excerpt || post.title,
     openGraph: {
       title: post.title,
       description: post.excerpt || post.title,
-      type: 'article',
+      type: "article",
       publishedTime: post.publishedAt,
-      authors: [post.author?.name || 'Admin'],
+      authors: [post.author?.name || "Admin"],
       images: [
         {
-          url: post.mainImageUrl || '/default-image.jpg',
+          url: post.mainImageUrl || "/default-image.jpg",
           width: 1200,
           height: 630,
           alt: post.mainImageAlt || post.title,
@@ -47,10 +47,10 @@ export async function generateMetadata(props) {
       ],
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title: post.title,
       description: post.excerpt || post.title,
-      images: [post.mainImageUrl || '/default-image.jpg'],
+      images: [post.mainImageUrl || "/default-image.jpg"],
     },
   };
 }
@@ -62,7 +62,7 @@ const getCategoryDisplayName = (categoryData) => {
 const getYouTubeId = (url) => {
   if (!url) return null;
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-  
+
   const match = url.match(regExp);
   return match && match[2].length === 11 ? match[2] : null;
 };
@@ -151,20 +151,19 @@ const portableTextComponents = {
       );
     },
     gallery: ({ value }) => {
-      if (!value?.images) return null;
+      if (!value?.images?.length) return null;
       return (
-        <div className="my-6 grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="my-6 -mx-4 md:-mx-8 flex flex-col">
           {value.images.map((img, index) => (
-            <div key={index} className="relative aspect-square">
-              <Image
-                src={img.url}
-                alt={img.alt || `Gallery image ${index + 1}`}
-                fill
-                sizes="(max-width: 768px) 50vw, 33vw"
-                className="object-cover"
-                unoptimized
-              />
-            </div>
+            <Image
+              key={index}
+              src={img.url}
+              alt={img.alt || `Gallery image ${index + 1}`}
+              width={1600}
+              height={900}
+              className="w-full h-auto mb-6"
+              unoptimized
+            />
           ))}
         </div>
       );
@@ -256,7 +255,7 @@ export default async function NewsPage(props) {
 
   return (
     <main className="min-h-screen bg-white">
-      <a 
+      <a
         href={`https://www.hamaramorcha.com/studio/structure/post;${post._id}`}
         target="_blank"
         rel="noopener noreferrer"
@@ -301,7 +300,7 @@ export default async function NewsPage(props) {
                 <span>{formatDate(post.publishedAt)}</span>
                 <ViewsCounter slug={post.slug.current} />
               </div>
-              
+
               {/* Content */}
               <div className="prose prose-base max-w-none">
                 {post.content ? (
@@ -313,7 +312,7 @@ export default async function NewsPage(props) {
                   <p className="text-gray-600">No content available.</p>
                 )}
               </div>
-              
+
               {/* Video */}
               {post.videoLink && (
                 <div className="my-6">
@@ -341,21 +340,25 @@ export default async function NewsPage(props) {
                   )}
                 </div>
               )}
-              
+
               {/* Comments Section */}
               <div className="mt-8 pt-6 border-t border-gray-200">
-                <h2 className="text-2xl font-bold mb-6 text-gray-900">टिप्पणियाँ (Comments)</h2>
-                
+                <h2 className="text-2xl font-bold mb-6 text-gray-900">
+                  टिप्पणियाँ (Comments)
+                </h2>
+
                 {/* Comments List */}
                 <CommentsList postId={post._id} />
-                
+
                 {/* Comment Form with Real User */}
                 <div className="mt-8">
-                  <h3 className="text-lg font-semibold mb-4 text-gray-900">एक टिप्पणी जोड़ें</h3>
+                  <h3 className="text-lg font-semibold mb-4 text-gray-900">
+                    एक टिप्पणी जोड़ें
+                  </h3>
                   <CommentForm postId={post._id} user={user} />
                 </div>
               </div>
-              
+
               {/* Back to Home */}
               <div className="mt-8 pt-6 border-t border-gray-200">
                 <Link
