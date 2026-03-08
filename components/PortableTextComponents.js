@@ -25,14 +25,13 @@ export const portableTextComponents = {
     gallery: ({ value }) => {
       if (!value?.images?.length) return null;
       return (
-        <div className="my-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="my-6 grid grid-cols-2 gap-2 sm:grid-cols-3">
           {value.images.map((img, i) => (
             <img
               key={img._key || i}
               src={img.url}
               alt={img.alt || ""}
-              className="w-full rounded-lg object-cover"
-              style={{ maxHeight: "480px" }}
+              className="w-full rounded-lg object-cover aspect-square"
             />
           ))}
         </div>
