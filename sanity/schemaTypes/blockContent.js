@@ -14,7 +14,6 @@ export default {
         { title: "शीर्षक 1", value: "h1" },
         { title: "शीर्षक 2", value: "h2" },
         { title: "शीर्षक 3", value: "h3" },
-        { title: "उद्धरण", value: "blockquote" },
       ],
       lists: [
         { title: "बुलेट पॉइंट", value: "bullet" },

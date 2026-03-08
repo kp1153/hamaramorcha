@@ -41,7 +41,7 @@ export default function MultiImageInput(props) {
             insert(
               [
                 {
-                  _type: "galleryImage", // ✅ ये होना चाहिए
+                  _type: "galleryImage",
                   _key: `cloudinary-${Date.now()}-${i}`,
                   url: data.secure_url,
                   alt: file.name,
@@ -92,7 +92,26 @@ export default function MultiImageInput(props) {
         </Card>
       )}
 
-      {props.renderDefault(props)}
+      {value.length > 0 && (
+        <Stack space={3}>
+          {value.map((img, i) => (
+            <div key={img._key || i} style={{
+              borderRadius: "4px",
+              overflow: "hidden",
+              boxShadow: "0 1px 4px rgba(0,0,0,0.15)"
+            }}>
+              <img
+                src={img.url}
+                alt={img.alt || ""}
+                style={{ width: "100%", height: "auto", display: "block" }}
+              />
+              <div style={{ padding: "8px 12px", fontSize: "12px", color: "#888" }}>
+                {img.alt || img.url}
+              </div>
+            </div>
+          ))}
+        </Stack>
+      )}
     </Stack>
   );
 }
