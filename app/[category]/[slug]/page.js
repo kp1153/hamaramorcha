@@ -153,7 +153,14 @@ const portableTextComponents = {
     gallery: ({ value }) => {
       if (!value?.images?.length) return null;
       return (
-        <div className="my-6 -mx-4 md:-mx-8 flex flex-col">
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "24px",
+            margin: "24px -16px",
+          }}
+        >
           {value.images.map((img, index) => (
             <Image
               key={index}
@@ -302,7 +309,7 @@ export default async function NewsPage(props) {
               </div>
 
               {/* Content */}
-              <div className="prose prose-base max-w-none">
+              <div className="prose prose-base max-w-none [&_figure]:block [&_img]:block">
                 {post.content ? (
                   <PortableText
                     value={post.content}
